@@ -77,6 +77,8 @@
                 scoopSize: 150,
                 crushedBagWeight: 4,
                 crushedBagCost: 0,
+                largeCubeSize: 50,
+                largeCubeCost: 0,
               },
             },
           });
@@ -125,6 +127,23 @@
           const scoopSize = event.barProgram.ice.scoopSize;
 
           return numScoops*scoopSize/1000;
+        },
+
+        getNumLargeCubes(id) {
+          const cocktails = this.data.cocktails.filter((c) => c.event = id);
+          if (!cocktails) {return 0};
+
+          return cocktails.reduce((sum, c) => sum + c.largeCubes * c.numToPrep, 0 );
+        },
+
+        getLargeCubeWeight(id) {
+          const event = this.getEvent(id);
+
+          const numCubes = this.getNumLargeCubes(id);
+          const cubeSize = event.barProgram.ice.largeCubeSize;
+          const density = 0.917;
+
+          return numCubes*(cubeSize/10)**3*density/1000;
         },
 
         // Prep Methods
@@ -197,6 +216,7 @@
             notes: '',
             cubes: 0,
             crushed: 0,
+            largeCubes: 0,
             method: '',
             event: event,
             numToPrep: 0,
@@ -1163,7 +1183,7 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-5">
+                    <div class="col-3">
                       <div class="input-group">
                         <input
                           type="text"
@@ -1177,7 +1197,21 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-7">
+                    <div class="col-4">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          size="2"
+                          maxLength="2"
+                          class="form-control text-end"
+                          x-model="cocktail.largeCubes"
+                          :class="(isNaN(cocktail.largeCubes) || cocktail.largeCubes === '') ? 'is-invalid' : ''">
+                        <div class="input-group-append">
+                          <span class="input-group-text">big cubes</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-5">
                       <div class="input-group">
                         <input
                           type="text"
@@ -1397,6 +1431,41 @@
               <div class="col-2 text-end" style="padding: .375rem .75rem;">
                 <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCrushedWeight(activeTab)) + ' kg'"></span>
                 <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCrushedWeight(activeTab)/barProgram.ice.crushedBagWeight)*barProgram.ice.crushedBagWeight + ' kg'"></span>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-3">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">cube size</span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control text-end"
+                    x-model="barProgram.ice.largeCubeSize"
+                    :class="(isNaN(barProgram.ice.largeCubeSize) || barProgram.ice.largeCubeSize === '') ? 'is-invalid' : ''">
+                  <div class="input-group-append">
+                    <span class="input-group-text">mm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control text-end"
+                    x-model="barProgram.ice.largeCubeCost"
+                    :class="(isNaN(barProgram.ice.largeCubeCost) || barProgram.ice.largeCubeCost === '') ? 'is-invalid' : ''">
+                  <div class="input-group-append">
+                    <span class="input-group-text">€/pc</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-7 text-end" style="padding: .375rem .75rem;">
+                <span x-text="$store.barkeeper.getNumLargeCubes(activeTab) + ' pcs'"></span>
+                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getLargeCubeWeight(activeTab)) + ' kg'"></span>
               </div>
             </div>
 
