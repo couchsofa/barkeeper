@@ -80,6 +80,7 @@
                 largeCubeSize: 50,
                 largeCubeCost: 0,
               },
+              equipment: [],
             },
           });
         },
@@ -1472,6 +1473,101 @@
           </div><!-- /card body -->
 
         </div><!-- /card -->
+
+      </section>
+
+<!-- equipmentlist -->
+      <section class="double-width mt-3">
+
+        <div class="card shadow-sm rounded">
+          <div class="card-header card-title">Equipment</div>
+
+          <div class="card-body">
+
+            <div class="container grid-table grid-table-striped">
+              <div>
+                <div class="row grid-table-heading">
+                  <div class="col-3">Name</div>
+                  <div class="col-1">Quant.</div>
+                  <div class="col-1">Price</div>
+                  <div class="col-3">Source</div>
+                  <div class="col-4">Comment</div>
+                </div>
+
+                <template x-for="item in barProgram.equipment">
+                  <div class="row">
+                    <div class="col-3 p-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        :class="(item.name === '') ? 'is-invalid' : ''"
+                        x-model="item.name"
+                      >
+                    </div>
+                    <div class="col-1 p-1">
+                      <input
+                        type="text"
+                        class="form-control text-end"
+                        :class="(isNaN(item.num) || item.num === '') ? 'is-invalid' : ''"
+                        x-model="item.num"
+                      >
+                    </div>
+                    <div class="col-1 p-1">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control text-end input-group"
+                          :class="(isNaN(item.price) || item.price === '') ? 'is-invalid' : ''"
+                          x-model="item.price"
+                        >
+                        <span class="input-group-text">€</span>
+                      </div>
+                    </div>
+                    <div class="col-3 p-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        x-model="item.source"
+                      >
+                    </div>
+                    <div class="col-4 p-1">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          x-model="item.comment"
+                        >
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-xs m-1 p-0"
+                          x-on:click="barProgram.equipment = barProgram.equipment.filter((e) => JSON.stringify(e) !== JSON.stringify(item))">✗</button>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <button
+                  type="button"
+                  class="btn btn-outline-success btn-xs m-0 p-1 w-100"
+                  x-on:click="barProgram.equipment.push({
+                    name: '',
+                    num: 0,
+                    price: 0,
+                    source: '',
+                    comment: '',
+                  })"
+                >✚</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
 
       </section>
 
