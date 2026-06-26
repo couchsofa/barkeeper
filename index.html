@@ -1292,7 +1292,7 @@
 <!-- Barprogram -->
   <template
     x-if="$store.barkeeper.data.events.some((e) => e.id === activeTab)">
-    <div class="container p-3" x-data="barProgram = $store.barkeeper.getEvent(activeTab).barProgram">
+    <div class="container p-3" x-data="{barProgram: $store.barkeeper.getEvent(activeTab).barProgram}">
       <section class="mt-3">
         <template
           x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === activeTab)"
