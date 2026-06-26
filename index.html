@@ -25,6 +25,23 @@
 
         charts: {},
 
+        palette: {
+          'Neutral':          'e9ecef',
+          'Forest Moss':      '669900',
+          'Lime Cream':       'ccee66',
+          'Baltic Blue':      '006699',
+          'Blue Bell':        '3399cc',
+          'Raspberry Plum':   'cc3399',
+          'Blaze Orange':     'ff6600',
+          'Bright Amber':     'ffcc00',
+          'Atomic Tangerine': 'f9844a',
+          'Willow Green':     '90be6d',
+          'Seaweed':          '43aa8b',
+          'Dark Cyan':        '4d908e',
+          'Blue Slate':       '577590',
+          'Cerulean':         '277da1'
+        },
+
         // Utilities
         formatNumber(num) {
           const options = {
@@ -170,6 +187,7 @@
             notes: '',
             safetyFactor: 0.1,
             abv: 0,
+            color: 'Neutral',
           });
         },
 
@@ -246,7 +264,7 @@
             }
           };
 
-          recipe_entry.raw_amount = recipe_entry.amount * conversionFactor;
+          recipe_entry.color      = ingredient.color;
           recipe_entry.amount     = recipe_entry.amount * conversionFactor * (1 + +safetyFactor);
           recipe_entry.unit       = ingredient.baseUnit;
           recipe_entry.name       = ingredient.name;
@@ -257,7 +275,6 @@
             // jump one level up and adjust amounts for yield
             ingredient.ingredients.forEach((e, index) => {
               ingredient.ingredients[index].amount = (e.amount / ingredient.yield) * recipe_entry.amount * conversionFactor;
-              ingredient.ingredients[index].raw_amount = (e.raw_amount / ingredient.yield) * recipe_entry.raw_amount * conversionFactor;
             });
           };
 
@@ -278,7 +295,6 @@
             if (_recipe.ingredients.length !== 0) {
               // remove the recipe and insert ingredients
               _recipe.amount     = entry.amount;
-              _recipe.raw_amount = entry.raw_amount;
               recipe[index] = this.assembleRecipe(_recipe.ingredients);
 
               // add info about the recipe
@@ -286,7 +302,7 @@
                 id:         entry.id,
                 name:       this.getIngredient(entry.id).name,
                 amount:     entry.amount,
-                raw_amount: entry.raw_amount,
+                color:      entry.color,
                 unit:       entry.unit,
                 notes:      entry.notes,
               };
@@ -505,7 +521,7 @@
                 recipe_collection[parent_index].ingredients.push({
                   unit:       item.unit,
                   amount:     item.amount,
-                  raw_amount: item.raw_amount,
+                  color:      item.color,
                   id:         item.id,
                   name:       item.name,
                   type:       'ingredient',                  
@@ -514,7 +530,7 @@
                 const recipe = {
                   unit:       item.recipe_info.unit,
                   amount:     item.recipe_info.amount,
-                  raw_amount: item.recipe_info.raw_amount,
+                  color:      item.recipe_info.color,
                   id:         item.recipe_info.id,
                   name:       item.recipe_info.name,
                   notes:      item.recipe_info.notes,
@@ -543,7 +559,7 @@
                 recipes.cocktails[cocktail.id].push({
                   unit:       item.unit,
                   amount:     item.amount * cocktail.numToPrep,
-                  raw_amount: item.raw_amount * cocktail.numToPrep,
+                  color:      item.color,
                   id:         item.id,
                   name:       item.name,
                   type:       'ingredient',                  
@@ -552,7 +568,7 @@
                 recipes.cocktails[cocktail.id].push({
                   unit:       item.recipe_info.unit,
                   amount:     item.recipe_info.amount * cocktail.numToPrep,
-                  raw_amount: item.recipe_info.raw_amount * cocktail.numToPrep,
+                  color:      item.recipe_info.color,
                   id:         item.recipe_info.id,
                   name:       item.recipe_info.name,
                   notes:      item.recipe_info.notes,
@@ -588,7 +604,7 @@
             let summedRecipe = {
               unit:        recipe[0].unit,
               amount:      recipe.reduce((acc, {amount}) => acc + +amount, 0),
-              raw_amount:  recipe.reduce((acc, {raw_amount}) => acc + +raw_amount, 0),
+              color:       recipe[0].color,
               id:          recipe[0].id,
               name:        recipe[0].name,
               type:        recipe[0].type,
@@ -602,7 +618,7 @@
               summedIngredients.push({
                 unit:        ingredient[0].unit,
                 amount:      ingredient.reduce((acc, {amount}) => acc + +amount, 0),
-                raw_amount:  ingredient.reduce((acc, {raw_amount}) => acc + +raw_amount, 0),
+                color:       ingredient[0].color,
                 id:          ingredient[0].id,
                 name:        ingredient[0].name,
                 type:        ingredient[0].type,
@@ -813,7 +829,7 @@
     }
 
     .grid-table-block {
-      background-color: #cfe2ff !important;
+      background-color: #fff !important;
     }
 
     .grid-table-block > div:first-child{
@@ -838,6 +854,12 @@
 
     .grid-table-muted:after {
       content: ")";
+    }
+
+    .pill {
+      display: inline-block;
+      border-radius: .5rem;
+      padding: .1rem .35rem .1rem .35rem;
     }
 
   </style>
@@ -1591,8 +1613,9 @@
                       <div
                         class="col-7"
                         :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''"
-                        x-text="ingredient.name"
-                        ></div>
+                        >
+                        <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
+                      </div>
                       <div class="col-4 text-end">
                         <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
                       </div>
@@ -1617,7 +1640,7 @@
             <div class="container grid-table grid-table-striped">
               <template x-for="recipe in $store.barkeeper.getEvent(activeTab).barProgram.recipes.recipes">
                 <div>
-                  <div class="row grid-table-heading">
+                  <div class="row grid-table-heading" :style="'background-color: #' + $store.barkeeper.palette[recipe.color] + ';'">
                     <div
                       class="col-7"
                       x-text="recipe.name"
@@ -1633,7 +1656,6 @@
                   <div class="row grid-table-block">
                     <div
                       class="col-12"
-                      style="white-space: pre;"
                       x-text="recipe.notes"
                       ></div>
                   </div>
@@ -1641,10 +1663,9 @@
                   <template x-for="ingredient in recipe.ingredients">
                     <div class="row">
                       <div
-                        class="col-7"
-                        :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''"
-                        x-text="ingredient.name"
-                        ></div>
+                        class="col-7" :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''">
+                          <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
+                        </div>
                       <div class="col-4 text-end">
                         <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
                       </div>
@@ -1695,7 +1716,7 @@
           <div>
             <div
               class="card shadow-sm rounded"
-              x-bind:style="(ingredient.ingredients.length === 0 && ingredient.sources.length === 0) ? 'border-color: red;' : ''">
+              x-bind:style="(ingredient.ingredients.length === 0 && ingredient.sources.length === 0) ? 'border-color: red; border-width: 3px' : ''">
 
   <!-- Ingredients / Name -->
               <div class="card-header p-2">
@@ -1710,16 +1731,37 @@
 
     <!-- Ingredients / misc -->
                 <div class="row mb-3">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Base unit</span>
+                  <div class="col-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Base unit</span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        x-model="ingredient.baseUnit">
                     </div>
-                    <input
-                      type="text"
-                      class="form-control text-center"
-                      x-model="ingredient.baseUnit">
+                  </div>
+                  <div class="col-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Color</span>
+                      </div>
+                      <select
+                        class="form-select color-picker"
+                        :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'"
+                        x-model="ingredient.color">
+                        <template x-for="(color, name) in $store.barkeeper.palette">
+                          <option
+                            :style="'background-color: #' + color + ';'"
+                            x-bind:selected="ingredient.color === name"
+                            x-text="name"/>
+                        </template>
+                      </select>
+                    </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="col-6">
                     <div class="input-group">
