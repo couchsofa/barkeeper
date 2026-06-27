@@ -23,6 +23,7 @@
           prepMethods: [],
           settings: {
             costDistRange: [50, 200],
+            unitConvTable: [],
           }
         },
 
@@ -1008,41 +1009,110 @@
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header card-title">
-            Cost distribution
-          </div>
-          <div class="alert alert-secondary m-3" role="alert">
-            Set the range for which to calculate ingredient costs.
-          </div>
-
-          <div class="card-body">
-
-            <div class="row">
-              <div class="col-6">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Min</span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.data.settings.costDistRange[0]">
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Max</span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.data.settings.costDistRange[1]">
-                </div>
-              </div>
+        <div>
+          <div class="card">
+            <div class="card-header card-title">
+              Cost distribution
+            </div>
+            <div class="alert alert-secondary m-3" role="alert">
+              Set the range for which to calculate ingredient costs.
             </div>
 
+            <div class="card-body">
+
+              <div class="row">
+                <div class="col-6">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Min</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.data.settings.costDistRange[0]">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Max</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.data.settings.costDistRange[1]">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" x-data="{ unitConvTable: $store.barkeeper.data.settings.unitConvTable }">
+            <div class="card-header card-title">
+              Unit conversion table
+            </div>
+            <div class="alert alert-secondary m-3" role="alert">
+              Global unit conversion table. Merged if the ingredients base unit matches one of the units.
+            </div>
+
+            <div class="card-body row">
+
+              <template x-for="unit in unitConvTable">
+                <div class="input-group mb-1">
+
+                  <div class="col-5">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">1</span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        :class="(unit[0] === '' || unit[0] === unit[1]) ? 'is-invalid' : ''"
+                        x-model="unit[0]">
+                      <div class="input-group-append">
+                        <span class="input-group-text">=</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-2">
+                    <input
+                      type="text"
+                      class="form-control text-center"
+                      :class="(isNaN(unit[2]) || unit[2] === '') ? 'is-invalid' : ''"
+                      x-model="unit[2]">
+                  </div>
+
+                  <div class="col-4">
+                    <input
+                      type="text"
+                      class="form-control text-center"
+                      :class="(unit[1] === '' || unit[0] === unit[1]) ? 'is-invalid' : ''"
+                      x-model="unit[1]">
+                  </div>
+
+                  <div class="col-1">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
+                      x-on:click="unitConvTable = unitConvTable.filter((e) => e[0] !== unit[0])">✗</button>
+                  </div>
+
+                </div>
+              </template>
+
+              <div class="input-group justify-content-md-end" style="padding-right: 7px;">
+                <button
+                  type="button"
+                  class="btn btn-outline-success btn-xs col-1 m-1 p-0"
+                  x-on:click="unitConvTable.push(['', '', 0])">✚</button>
+              </div>
+
+            </div>
           </div>
         </div>
 
