@@ -224,9 +224,22 @@
         },
 
         // return an array of allowed units for an ingredient (including the base unit)
-        getIngredientUnits(id) {
-          const i = this.data.ingredients.find((e) => e.id === id);
+        getIngredientAllowedUnits(id) {
+          const i = this.getIngredient(id);
           return [...i.units.flatMap((e) => e[0]), i.baseUnit];
+        },
+
+        // return all global conversions from the global table that match
+        getIngredientStandardUnits(id) {
+          const i = this.getIngredient(id);
+          let units = [];
+
+          this.data.settings.unitConvTable.forEach((entry) => {
+            if (entry[0] === i.baseUnit) { units.push([entry[1], 1/entry[2]]) };
+            if (entry[1] === i.baseUnit) { units.push([entry[0], entry[2]]) };
+          });
+
+          return units;
         },
 
         getIngredient(id) {
@@ -1058,7 +1071,7 @@
         </div>
 
         <div>
-          <div class="card" x-data="{ unitConvTable: $store.barkeeper.data.settings.unitConvTable }">
+          <div class="card">
             <div class="card-header card-title">
               Unit conversion table
             </div>
@@ -1068,7 +1081,7 @@
 
             <div class="card-body row">
 
-              <template x-for="unit in unitConvTable">
+              <template x-for="unit in $store.barkeeper.data.settings.unitConvTable">
                 <div class="input-group mb-1">
 
                   <div class="col-5">
@@ -1078,8 +1091,8 @@
                       </div>
                       <input
                         type="text"
-                        class="form-control text-center"
-                        :class="(unit[0] === '' || unit[0] === unit[1]) ? 'is-invalid' : ''"
+                        class="form-control"
+                        :class="(unit[0] === '' || unit[0] === unit[1] || ( $store.barkeeper.data.settings.unitConvTable.some((u) => u[0] === unit[1]) && $store.barkeeper.data.settings.unitConvTable.some((u) => u[1] === unit[0]) )) ? 'is-invalid' : ''"
                         x-model="unit[0]">
                       <div class="input-group-append">
                         <span class="input-group-text">=</span>
@@ -1098,8 +1111,8 @@
                   <div class="col-4">
                     <input
                       type="text"
-                      class="form-control text-center"
-                      :class="(unit[1] === '' || unit[0] === unit[1]) ? 'is-invalid' : ''"
+                      class="form-control"
+                      :class="(unit[1] === '' || unit[0] === unit[1] || ( $store.barkeeper.data.settings.unitConvTable.some((u) => u[0] === unit[1]) && $store.barkeeper.data.settings.unitConvTable.some((u) => u[1] === unit[0]))) ? 'is-invalid' : ''"
                       x-model="unit[1]">
                   </div>
 
@@ -1107,7 +1120,7 @@
                     <button
                       type="button"
                       class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
-                      x-on:click="unitConvTable = unitConvTable.filter((e) => e[0] !== unit[0])">✗</button>
+                      x-on:click="$store.barkeeper.data.settings.unitConvTable = $store.barkeeper.data.settings.unitConvTable.filter((e) => e !== unit)">✗</button>
                   </div>
 
                 </div>
@@ -1117,7 +1130,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-success btn-xs col-1 m-1 p-0"
-                  x-on:click="unitConvTable.push(['', '', 0])">✚</button>
+                  x-on:click="$store.barkeeper.data.settings.unitConvTable.push(['', '', 0])">✚</button>
               </div>
 
             </div>
@@ -1187,7 +1200,7 @@
                             :class="c_ingredient.unit === '' ? 'is-invalid' : ''"
                             x-model="c_ingredient.unit">
                             <option></option>
-                            <template x-for="unit in $store.barkeeper.getIngredientUnits(c_ingredient.id)">
+                            <template x-for="unit in $store.barkeeper.getIngredientAllowedUnits(c_ingredient.id)">
                               <option
                                   x-bind:selected="c_ingredient.unit === unit"
                                   x-text="unit"/>
@@ -1262,7 +1275,7 @@
                             :class="c_garnish.unit === '' ? 'is-invalid' : ''"
                             x-model="c_garnish.unit">
                             <option></option>
-                            <template x-for="unit in $store.barkeeper.getIngredientUnits(c_garnish.id)">
+                            <template x-for="unit in $store.barkeeper.getIngredientAllowedUnits(c_garnish.id)">
                               <option
                                   x-bind:selected="c_garnish.unit === unit"
                                   x-text="unit" 
@@ -1927,6 +1940,42 @@
                 <label for="units"><h5>Conversion table</h5></label>
                 <div id="units" class="row">
 
+                  <!-- standard units -->
+                  <template x-for="unit in $store.barkeeper.getIngredientStandardUnits(ingredient.id)">
+                    <div class="input-group mb-1">
+                      <div class="col-6">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">1</span>
+                          </div>
+                          <div
+                            class="form-control"
+                            style="background-color: #e9ecef !important;"
+                            x-text="unit[0]"></div>
+                          <div class="input-group-append">
+                            <span class="input-group-text">=</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-5">
+                        <div class="input-group">
+                          <div
+                            class="form-control text-end"
+                            style="background-color: #e9ecef !important;"
+                            x-text="$store.barkeeper.formatNumber(unit[1])"></div>
+                          <div class="input-group-append">
+                            <span class="input-group-text" x-text="ingredient.baseUnit"></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-1">
+                      </div>
+                    </div>
+                  </template>
+
+                  <!-- ingredient specific units -->
                   <template x-for="unit in ingredient.units">
                     <div class="input-group mb-1">
                       <div class="col-6">
@@ -1936,7 +1985,7 @@
                           </div>
                           <input
                             type="text"
-                            class="form-control text-center"
+                            class="form-control"
                             :class="(ingredient.units.filter((e) => e[0] === unit[0]).length !== 1 || unit[0] === '' || unit[0] === ingredient.baseUnit) ? 'is-invalid' : ''"
                             x-model="unit[0]">
                           <div class="input-group-append">
@@ -2068,7 +2117,7 @@
                                 :class="i_ingredient.unit === '' ? 'is-invalid' : ''"
                                 x-model="i_ingredient.unit">
                                 <option></option>
-                                <template x-for="unit in $store.barkeeper.getIngredientUnits(i_ingredient.id)">
+                                <template x-for="unit in $store.barkeeper.getIngredientAllowedUnits(i_ingredient.id)">
                                   <option
                                       x-bind:selected="i_ingredient.unit === unit"
                                       x-text="unit"/>
