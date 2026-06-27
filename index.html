@@ -123,7 +123,7 @@
         get getNumCubes() {
           const id = this.activeTab;
 
-          const cocktails = this.data.cocktails.filter((c) => c.event = id);
+          const cocktails = this.data.cocktails.filter((c) => c.event === id);
           if (!cocktails) {return 0};
 
           return cocktails.reduce((sum, c) => sum + +c.cubes * +c.numToPrep, 0 );
@@ -142,7 +142,7 @@
         get getNumScoops() {
           const id = this.activeTab;
 
-          const cocktails = this.data.cocktails.filter((c) => c.event = id);
+          const cocktails = this.data.cocktails.filter((c) => c.event === id);
           if (!cocktails) {return 0};
 
           return cocktails.reduce((sum, c) => sum + c.crushed * c.numToPrep, 0 );
@@ -160,7 +160,7 @@
         get getNumLargeCubes() {
           const id = this.activeTab;
 
-          const cocktails = this.data.cocktails.filter((c) => c.event = id);
+          const cocktails = this.data.cocktails.filter((c) => c.event === id);
           if (!cocktails) {return 0};
 
           return cocktails.reduce((sum, c) => sum + c.largeCubes * c.numToPrep, 0 );
@@ -1395,7 +1395,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">Event:</span>
                   </div>
-                  <!--<select class="form-select" x-model="cocktail.event">
+                  <select class="form-select" x-model="cocktail.event">
                     <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)">
                         <option
                             x-bind:selected="cocktail.event === event.id"
@@ -1403,7 +1403,7 @@
                             x-text="event.name" 
                         />
                     </template>
-                  </select>-->
+                  </select>
                 </div>
 
                 <div class="input-group mt-3">
