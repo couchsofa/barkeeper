@@ -26,8 +26,8 @@
           }
         },
 
+        activeTab: 'null',
         charts: {},
-
         palette: {
           'Neutral':          'e9ecef',
           'Forest Moss':      '669900',
@@ -105,8 +105,11 @@
           });
         },
 
-        getEvent(id) {
-          return this.data.events.find((e) => e.id === id);
+        get getEvent() {
+          const id = this.activeTab;
+
+          console.log(this.activeTab);
+          return this.data.events.find((e) => e.id === this.activeTab);
         },
 
         removeEvent(id) {
@@ -117,50 +120,56 @@
         },
 
         // bar program
-        getNumCubes(id) {
+        get getNumCubes() {
+          const id = this.activeTab;
+
           const cocktails = this.data.cocktails.filter((c) => c.event = id);
           if (!cocktails) {return 0};
 
           return cocktails.reduce((sum, c) => sum + +c.cubes * +c.numToPrep, 0 );
         },
 
-        getCubeWeight(id) {
-          const event = this.getEvent(id);
+        get getCubeWeight() {
+          const event = this.getEvent;
 
-          const numCubes = this.getNumCubes(id);
+          const numCubes = this.getNumCubes;
           const cubeSize = event.barProgram.ice.cubeSize;
           const density = 0.917;
 
           return numCubes*(cubeSize/10)**3*density/1000;
         },
 
-        getNumScoops(id) {
+        get getNumScoops() {
+          const id = this.activeTab;
+
           const cocktails = this.data.cocktails.filter((c) => c.event = id);
           if (!cocktails) {return 0};
 
           return cocktails.reduce((sum, c) => sum + c.crushed * c.numToPrep, 0 );
         },
 
-        getCrushedWeight(id) {
-          const event = this.getEvent(id);
+        get getCrushedWeight () {
+          const event = this.getEvent;
 
-          const numScoops = this.getNumScoops(id);
+          const numScoops = this.getNumScoops;
           const scoopSize = event.barProgram.ice.scoopSize;
 
           return numScoops*scoopSize/1000;
         },
 
-        getNumLargeCubes(id) {
+        get getNumLargeCubes() {
+          const id = this.activeTab;
+
           const cocktails = this.data.cocktails.filter((c) => c.event = id);
           if (!cocktails) {return 0};
 
           return cocktails.reduce((sum, c) => sum + c.largeCubes * c.numToPrep, 0 );
         },
 
-        getLargeCubeWeight(id) {
-          const event = this.getEvent(id);
+        get getLargeCubeWeight() {
+          const event = this.getEvent;
 
-          const numCubes = this.getNumLargeCubes(id);
+          const numCubes = this.getNumLargeCubes;
           const cubeSize = event.barProgram.ice.largeCubeSize;
           const density = 0.917;
 
@@ -876,7 +885,6 @@
   <div
     x-data="{
       tabs: ['Ingredients', '⚙', ],
-      activeTab: 'null',
       ideaTabStub: [{id: 'null', name: 'Ideas'}],
     }">
 
@@ -886,22 +894,22 @@
       <ul class="nav nav-tabs">
         <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)" :key="event.id">
           <li
-            @click="activeTab = event.id"
+            @click="$store.barkeeper.activeTab = event.id"
             class="nav-item">
             <a
               class="nav-link"
-              :class="{ 'active': activeTab === event.id }"
+              :class="{ 'active': $store.barkeeper.activeTab === event.id }"
               href="#"
               x-text="event.name"></a>
           </li>
         </template>
         <template x-for="tab in tabs">
           <li
-            @click="activeTab = tab"
+            @click="$store.barkeeper.activeTab = tab"
             class="nav-item">
             <a
               class="nav-link"
-              :class="{ 'active': activeTab === tab }"
+              :class="{ 'active': $store.barkeeper.activeTab === tab }"
               href="#"
               x-text="tab"></a>
           </li>
@@ -910,7 +918,7 @@
     </div>
 
 <!-- Settings -->
-  <template x-if="activeTab === '⚙'">
+  <template x-if="$store.barkeeper.activeTab === '⚙'">
     <div class="container p-3">
 
       <div class="container mb-3">
@@ -920,80 +928,84 @@
       </div>
         
       <section>
-        <div class="card">
-          <div class="card-header card-title">
-            Events
-          </div>
-          <div class="alert alert-warning m-3" role="alert">
-            Warning: removing an event will move cocktails associated with that event to 'Ideas'!
-          </div>
-          <ul class="list-group list-group-flush">
+        <div>
+          <div class="card">
+            <div class="card-header card-title">
+              Events
+            </div>
+            <div class="alert alert-warning m-3" role="alert">
+              Warning: removing an event will move cocktails associated with that event to 'Ideas'!
+            </div>
+            <ul class="list-group list-group-flush">
 
-            <template x-for="event in $store.barkeeper.data.events" :key="event.id">
-              <li class="list-group-item">
+              <template x-for="event in $store.barkeeper.data.events" :key="event.id">
+                <li class="list-group-item">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control p-1 m-0"
+                      x-model="event.name">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-xs m-0 p-1"
+                      x-on:click="$store.barkeeper.removeEvent(event.id)">✗</button>
+                  </div>
+                </li>
+              </template>
+
+              <li class="list-group-item" x-data="{newEvent: ''}">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control p-1 m-0"
-                    x-model="event.name">
+                    x-model="newEvent"
+                    x-on:keyup.enter="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-xs m-0 p-1"
-                    x-on:click="$store.barkeeper.removeEvent(event.id)">✗</button>
+                    class="btn btn-outline-success btn-xs m-0 p-1"
+                    x-on:click="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">✚</button>
                 </div>
               </li>
-            </template>
-
-            <li class="list-group-item" x-data="{newEvent: ''}">
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control p-1 m-0"
-                  x-model="newEvent"
-                  x-on:keyup.enter="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">
-                <button
-                  type="button"
-                  class="btn btn-outline-success btn-xs m-0 p-1"
-                  x-on:click="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">✚</button>
-              </div>
-            </li>
-          </ul>
+            </ul>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header card-title">
-            Prep Methods
-          </div>
-          <ul class="list-group list-group-flush">
-            <template x-for="method in $store.barkeeper.data.prepMethods">
-              <li class="list-group-item">
+        <div>
+          <div class="card">
+            <div class="card-header card-title">
+              Prep methods
+            </div>
+            <ul class="list-group list-group-flush">
+              <template x-for="method in $store.barkeeper.data.prepMethods">
+                <li class="list-group-item">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control p-1 m-0"
+                      x-model="method">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-xs m-0 p-1"
+                      x-on:click="$store.barkeeper.removePrepMethod(method)">✗</button>
+                  </div>
+                </li>
+              </template>
+
+              <li class="list-group-item" x-data="{newMethod: ''}">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control p-1 m-0"
-                    x-model="method">
+                    x-model="newMethod"
+                    x-on:keyup.enter="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-xs m-0 p-1"
-                    x-on:click="$store.barkeeper.removePrepMethod(method)">✗</button>
+                    class="btn btn-outline-success btn-xs m-0 p-1"
+                    x-on:click="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">✚</button>
                 </div>
               </li>
-            </template>
-
-            <li class="list-group-item" x-data="{newMethod: ''}">
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control p-1 m-0"
-                  x-model="newMethod"
-                  x-on:keyup.enter="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">
-                <button
-                  type="button"
-                  class="btn btn-outline-success btn-xs m-0 p-1"
-                  x-on:click="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">✚</button>
-              </div>
-            </li>
-          </ul>
+            </ul>
+          </div>
         </div>
 
         <div class="card">
@@ -1032,7 +1044,6 @@
             </div>
 
           </div>
-          
         </div>
 
       </section>
@@ -1040,7 +1051,7 @@
   </template>
 
 <!-- Cocktails -->
-  <template x-if="$store.barkeeper.data.events.concat(ideaTabStub).some((e) => e.id === activeTab)">
+  <template x-if="$store.barkeeper.data.events.concat(ideaTabStub).some((e) => e.id === $store.barkeeper.activeTab)">
     
     <div class="container p-3" x-data="{searchCocktails: ''}">
 
@@ -1048,7 +1059,7 @@
         <button
           type="button"
           class="btn btn-success"
-          x-on:click="$store.barkeeper.addCocktail(searchCocktails, activeTab)">New Cocktail</button>
+          x-on:click="$store.barkeeper.addCocktail(searchCocktails, $store.barkeeper.activeTab)">New Cocktail</button>
         <input 
           type="text"
           class="form-control"
@@ -1059,10 +1070,10 @@
       <section>
         <template
           x-for="cocktail in $store.barkeeper.data.cocktails
-          .filter((e) => e.event === activeTab)
+          .filter((e) => e.event === $store.barkeeper.activeTab)
           .filter((e) => e.name.toLowerCase().includes(searchCocktails.toLowerCase()))"
           :class="'cards-' + $store.barkeeper.data.cocktails
-          .filter((e) => e.event === activeTab)
+          .filter((e) => e.event === $store.barkeeper.activeTab)
           .filter((e) => e.name.toLowerCase().includes(searchCocktails.toLowerCase())).length"
           :key="cocktail.id">
           <div>
@@ -1310,15 +1321,15 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">Event:</span>
                   </div>
-                  <select class="form-select" x-model="cocktail.event">
-                    <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)" :key="event.id">
+                  <!--<select class="form-select" x-model="cocktail.event">
+                    <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)">
                         <option
                             x-bind:selected="cocktail.event === event.id"
                             x-bind:value="event.id"
                             x-text="event.name" 
                         />
                     </template>
-                  </select>
+                  </select>-->
                 </div>
 
                 <div class="input-group mt-3">
@@ -1339,12 +1350,12 @@
 
 <!-- Barprogram -->
   <template
-    x-if="$store.barkeeper.data.events.some((e) => e.id === activeTab)">
-    <div class="container p-3" x-data="{barProgram: $store.barkeeper.getEvent(activeTab).barProgram}">
+    x-if="$store.barkeeper.data.events.some((e) => e.id === $store.barkeeper.activeTab)">
+    <div class="container p-3">
       <section class="mt-3">
         <template
-          x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === activeTab)"
-          :class="'cards-' + $store.barkeeper.data.cocktails.filter((e) => e.event === activeTab).length"
+          x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === $store.barkeeper.activeTab)"
+          :class="'cards-' + $store.barkeeper.data.cocktails.filter((e) => e.event === $store.barkeeper.activeTab).length"
           :key="cocktail.id">
 
           <div class="card shadow-sm rounded">
@@ -1408,8 +1419,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.cubeSize"
-                    :class="(isNaN(barProgram.ice.cubeSize) || barProgram.ice.cubeSize === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.cubeSize"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeSize) || $store.barkeeper.getEvent.barProgram.ice.cubeSize === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">mm</span>
                   </div>
@@ -1420,8 +1431,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.cubeBagWeight"
-                    :class="(isNaN(barProgram.ice.cubeBagWeight) || barProgram.ice.cubeBagWeight === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) || $store.barkeeper.getEvent.barProgram.ice.cubeBagWeight === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">kg/bag</span>
                   </div>
@@ -1432,8 +1443,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.cubeBagCost"
-                    :class="(isNaN(barProgram.ice.cubeBagCost) || barProgram.ice.cubeBagCost === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.cubeBagCost"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagCost) || $store.barkeeper.getEvent.barProgram.ice.cubeBagCost === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">€/bag</span>
                   </div>
@@ -1441,14 +1452,14 @@
               </div>
 
               <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.getNumCubes(activeTab) + ' cubes'"></span>
+                <span x-text="$store.barkeeper.getNumCubes + ' cubes'"></span>
               </div>
               <div class="col-1 text-end" style="padding: .375rem .75rem;">
-                <span x-text="Math.ceil($store.barkeeper.getCubeWeight(activeTab)/barProgram.ice.cubeBagWeight) + ' bags'"></span>
+                <span x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) + ' bags'"></span>
               </div>
               <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCubeWeight(activeTab)) + ' kg'"></span>
-                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCubeWeight(activeTab)/barProgram.ice.cubeBagWeight)*barProgram.ice.cubeBagWeight + ' kg'"></span>
+                <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCubeWeight) + ' kg'"></span>
+                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight)*$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight + ' kg'"></span>
               </div>
             </div>
 
@@ -1461,8 +1472,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.scoopSize"
-                    :class="(isNaN(barProgram.ice.scoopSize) || barProgram.ice.scoopSize === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.scoopSize"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.scoopSize) || $store.barkeeper.getEvent.barProgram.ice.scoopSize === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">g</span>
                   </div>
@@ -1473,8 +1484,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.crushedBagWeight"
-                    :class="(isNaN(barProgram.ice.crushedBagWeight) || barProgram.ice.crushedBagWeight === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) || $store.barkeeper.getEvent.barProgram.ice.crushedBagWeight === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">kg/bag</span>
                   </div>
@@ -1485,8 +1496,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.crushedBagCost"
-                    :class="(isNaN(barProgram.ice.crushedBagCost) || barProgram.ice.crushedBagCost === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.crushedBagCost"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagCost) || $store.barkeeper.getEvent.barProgram.ice.crushedBagCost === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">€/bag</span>
                   </div>
@@ -1494,14 +1505,14 @@
               </div>
 
               <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.getNumScoops(activeTab) + ' scoops'"></span>
+                <span x-text="$store.barkeeper.getNumScoops + ' scoops'"></span>
               </div>
               <div class="col-1 text-end" style="padding: .375rem .75rem;">
-                <span x-text="Math.ceil($store.barkeeper.getCrushedWeight(activeTab)/barProgram.ice.crushedBagWeight) + ' bags'"></span>
+                <span x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) + ' bags'"></span>
               </div>
               <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCrushedWeight(activeTab)) + ' kg'"></span>
-                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCrushedWeight(activeTab)/barProgram.ice.crushedBagWeight)*barProgram.ice.crushedBagWeight + ' kg'"></span>
+                <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCrushedWeight) + ' kg'"></span>
+                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight)*$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight + ' kg'"></span>
               </div>
             </div>
 
@@ -1514,8 +1525,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.largeCubeSize"
-                    :class="(isNaN(barProgram.ice.largeCubeSize) || barProgram.ice.largeCubeSize === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.largeCubeSize"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) || $store.barkeeper.getEvent.barProgram.ice.largeCubeSize === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">mm</span>
                   </div>
@@ -1526,8 +1537,8 @@
                   <input
                     type="text"
                     class="form-control text-end"
-                    x-model="barProgram.ice.largeCubeCost"
-                    :class="(isNaN(barProgram.ice.largeCubeCost) || barProgram.ice.largeCubeCost === '') ? 'is-invalid' : ''">
+                    x-model="$store.barkeeper.getEvent.barProgram.ice.largeCubeCost"
+                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeCost) || $store.barkeeper.getEvent.barProgram.ice.largeCubeCost === '') ? 'is-invalid' : ''">
                   <div class="input-group-append">
                     <span class="input-group-text">€/pc</span>
                   </div>
@@ -1535,8 +1546,8 @@
               </div>
 
               <div class="col-7 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.getNumLargeCubes(activeTab) + ' pcs'"></span>
-                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getLargeCubeWeight(activeTab)) + ' kg'"></span>
+                <span x-text="$store.barkeeper.getNumLargeCubes + ' pcs'"></span>
+                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getLargeCubeWeight) + ' kg'"></span>
               </div>
             </div>
 
@@ -1564,7 +1575,7 @@
                   <div class="col-4">Comment</div>
                 </div>
 
-                <template x-for="item in barProgram.equipment">
+                <template x-for="item in $store.barkeeper.getEvent.barProgram.equipment">
                   <div class="row">
                     <div class="col-3 p-1">
                       <input
@@ -1610,7 +1621,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-danger btn-xs m-1 p-0"
-                          x-on:click="barProgram.equipment = barProgram.equipment.filter((e) => JSON.stringify(e) !== JSON.stringify(item))">✗</button>
+                          x-on:click="$store.barkeeper.getEvent.barProgram.equipment = $store.barkeeper.getEvent.barProgram.equipment.filter((e) => JSON.stringify(e) !== JSON.stringify(item))">✗</button>
                       </div>
                     </div>
                   </div>
@@ -1624,7 +1635,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-success btn-xs m-0 p-1 w-100"
-                  x-on:click="barProgram.equipment.push({
+                  x-on:click="$store.barkeeper.getEvent.barProgram.equipment.push({
                     name: '',
                     num: 0,
                     price: 0,
@@ -1649,14 +1660,14 @@
           <div class="card-body">
             
             <div class="container grid-table grid-table-striped">
-              <template x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === activeTab)" :key="cocktail.id">
+              <template x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === $store.barkeeper.activeTab)" :key="cocktail.id">
                 <div>
                   <div class="row grid-table-heading">
                     <div class="col-12" x-text="cocktail.name">
                     </div>
                   </div>
 
-                  <template x-for="ingredient in $store.barkeeper.getEvent(activeTab).barProgram.recipes.cocktails[cocktail.id]" :key="ingredient.id">
+                  <template x-for="ingredient in $store.barkeeper.getEvent.barProgram.recipes.cocktails[cocktail.id]" :key="ingredient.id">
                     <div class="row">
                       <div
                         class="col-7"
@@ -1686,7 +1697,7 @@
           <div class="card-body">
             
             <div class="container grid-table grid-table-striped">
-              <template x-for="recipe in $store.barkeeper.getEvent(activeTab).barProgram.recipes.recipes">
+              <template x-for="recipe in $store.barkeeper.getEvent.barProgram.recipes.recipes">
                 <div>
                   <div class="row grid-table-heading" :style="'background-color: #' + $store.barkeeper.palette[recipe.color] + ';'">
                     <div
@@ -1736,7 +1747,7 @@
   </template>
 
 <!-- Ingredients -->
-  <template x-if="activeTab === 'Ingredients'">
+  <template x-if="$store.barkeeper.activeTab === 'Ingredients'">
 
     <div class="container p-3" x-data="{searchIngredients: ''}">
 
