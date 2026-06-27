@@ -21,6 +21,9 @@
           ingredients: [],
           events: [],
           prepMethods: [],
+          settings: {
+            costDistRange: [50, 200],
+          }
         },
 
         charts: {},
@@ -311,7 +314,10 @@
           return recipe;
         },
 
-        calcCocktailCost(id, min_n = 50, max_n = 200) {
+        calcCocktailCost(id, min_n = false, max_n = false) {
+          if (!min_n) { min_n = this.data.settings.costDistRange[0] };
+          if (!max_n) { max_n = this.data.settings.costDistRange[1] };
+
           let cocktail = this.data.cocktails.find((e) => e.id === id);
           if (!cocktail) {return};
 
@@ -912,83 +918,124 @@
         <button type="button" class="btn btn-primary" @click="$store.barkeeper.import()">↺ import bar</button>
         <input type="file" id="import" style="display: none;">
       </div>
-      
-      <div class="card mb-3">
-        <div class="card-header">
-          Events
-        </div>
-        <div class="alert alert-warning m-3" role="alert">
-          Warning: removing an event will move cocktails associated with that event to 'Ideas'!
-        </div>
-        <ul class="list-group list-group-flush">
+        
+      <section>
+        <div class="card">
+          <div class="card-header card-title">
+            Events
+          </div>
+          <div class="alert alert-warning m-3" role="alert">
+            Warning: removing an event will move cocktails associated with that event to 'Ideas'!
+          </div>
+          <ul class="list-group list-group-flush">
 
-          <template x-for="event in $store.barkeeper.data.events" :key="event.id">
-            <li class="list-group-item">
+            <template x-for="event in $store.barkeeper.data.events" :key="event.id">
+              <li class="list-group-item">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control p-1 m-0"
+                    x-model="event.name">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-xs m-0 p-1"
+                    x-on:click="$store.barkeeper.removeEvent(event.id)">✗</button>
+                </div>
+              </li>
+            </template>
+
+            <li class="list-group-item" x-data="{newEvent: ''}">
               <div class="input-group">
                 <input
                   type="text"
                   class="form-control p-1 m-0"
-                  x-model="event.name">
+                  x-model="newEvent"
+                  x-on:keyup.enter="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">
                 <button
                   type="button"
-                  class="btn btn-outline-danger btn-xs m-0 p-1"
-                  x-on:click="$store.barkeeper.removeEvent(event.id)">✗</button>
+                  class="btn btn-outline-success btn-xs m-0 p-1"
+                  x-on:click="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">✚</button>
               </div>
             </li>
-          </template>
-
-          <li class="list-group-item" x-data="{newEvent: ''}">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control p-1 m-0"
-                x-model="newEvent"
-                x-on:keyup.enter="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">
-              <button
-                type="button"
-                class="btn btn-outline-success btn-xs m-0 p-1"
-                x-on:click="if (newEvent !== '') {$store.barkeeper.addEvent(newEvent); newEvent = ''}">✚</button>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          Prep Methods
+          </ul>
         </div>
-        <ul class="list-group list-group-flush">
-          <template x-for="method in $store.barkeeper.data.prepMethods">
-            <li class="list-group-item">
+
+        <div class="card">
+          <div class="card-header card-title">
+            Prep Methods
+          </div>
+          <ul class="list-group list-group-flush">
+            <template x-for="method in $store.barkeeper.data.prepMethods">
+              <li class="list-group-item">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control p-1 m-0"
+                    x-model="method">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-xs m-0 p-1"
+                    x-on:click="$store.barkeeper.removePrepMethod(method)">✗</button>
+                </div>
+              </li>
+            </template>
+
+            <li class="list-group-item" x-data="{newMethod: ''}">
               <div class="input-group">
                 <input
                   type="text"
                   class="form-control p-1 m-0"
-                  x-model="method">
+                  x-model="newMethod"
+                  x-on:keyup.enter="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">
                 <button
                   type="button"
-                  class="btn btn-outline-danger btn-xs m-0 p-1"
-                  x-on:click="$store.barkeeper.removePrepMethod(method)">✗</button>
+                  class="btn btn-outline-success btn-xs m-0 p-1"
+                  x-on:click="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">✚</button>
               </div>
             </li>
-          </template>
+          </ul>
+        </div>
 
-          <li class="list-group-item" x-data="{newMethod: ''}">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control p-1 m-0"
-                x-model="newMethod"
-                x-on:keyup.enter="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">
-              <button
-                type="button"
-                class="btn btn-outline-success btn-xs m-0 p-1"
-                x-on:click="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">✚</button>
+        <div class="card">
+          <div class="card-header card-title">
+            Cost distribution
+          </div>
+          <div class="alert alert-secondary m-3" role="alert">
+            Set the range for which to calculate ingredient costs.
+          </div>
+
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Min</span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control text-end"
+                    x-model="$store.barkeeper.data.settings.costDistRange[0]">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Max</span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control text-end"
+                    x-model="$store.barkeeper.data.settings.costDistRange[1]">
+                </div>
+              </div>
             </div>
-          </li>
-        </ul>
-      </div>
 
+          </div>
+          
+        </div>
+
+      </section>
     </div>
   </template>
 
@@ -1254,7 +1301,7 @@
 
                 <h5>Cost distribution</h5>
                 <div
-                  class="costDistChart"
+                  class="costDistChart mb-3"
                   style="width: 100%; height: 350px;"
                   x-render="() => { $store.barkeeper.createCocktailCostChart($el, $store.barkeeper.calcCocktailCost(cocktail.id)); $store.barkeeper.charts[cocktail.id] = $el; }"
                   x-destroy="() => { delete $store.barkeeper.charts[cocktail.id] }"></div>
