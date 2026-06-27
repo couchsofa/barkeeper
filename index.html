@@ -109,7 +109,6 @@
         get getEvent() {
           const id = this.activeTab;
 
-          console.log(this.activeTab);
           return this.data.events.find((e) => e.id === this.activeTab);
         },
 
@@ -254,6 +253,15 @@
             numToPrep: 0,
             price: 0,
           });
+        },
+
+        getCocktails(searchString = false) {
+          const cocktails = this.data.cocktails.filter((e) => e.event === this.activeTab);
+
+          if (searchString !== false) {
+            return cocktails.filter((e) => e.name.toLowerCase().includes(searchString.toLowerCase()));
+          };
+          return cocktails;
         },
 
         // accepts a recipe entry
@@ -1139,12 +1147,8 @@
 
       <section>
         <template
-          x-for="cocktail in $store.barkeeper.data.cocktails
-          .filter((e) => e.event === $store.barkeeper.activeTab)
-          .filter((e) => e.name.toLowerCase().includes(searchCocktails.toLowerCase()))"
-          :class="'cards-' + $store.barkeeper.data.cocktails
-          .filter((e) => e.event === $store.barkeeper.activeTab)
-          .filter((e) => e.name.toLowerCase().includes(searchCocktails.toLowerCase())).length"
+          x-for="cocktail in $store.barkeeper.getCocktails(searchCocktails)"
+          :class="'cards-' + $store.barkeeper.getCocktails(searchCocktails).length"
           :key="cocktail.id">
           <div>
             <div class="card shadow-sm rounded mt-3">
@@ -1424,8 +1428,8 @@
     <div class="container p-3">
       <section class="mt-3">
         <template
-          x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === $store.barkeeper.activeTab)"
-          :class="'cards-' + $store.barkeeper.data.cocktails.filter((e) => e.event === $store.barkeeper.activeTab).length"
+          x-for="cocktail in $store.barkeeper.getCocktails()"
+          :class="'cards-' + $store.barkeeper.getCocktails().length"
           :key="cocktail.id">
 
           <div class="card shadow-sm rounded">
@@ -1730,7 +1734,7 @@
           <div class="card-body">
             
             <div class="container grid-table grid-table-striped">
-              <template x-for="cocktail in $store.barkeeper.data.cocktails.filter((e) => e.event === $store.barkeeper.activeTab)" :key="cocktail.id">
+              <template x-for="cocktail in $store.barkeeper.getCocktails()" :key="cocktail.id">
                 <div>
                   <div class="row grid-table-heading">
                     <div class="col-12" x-text="cocktail.name">
