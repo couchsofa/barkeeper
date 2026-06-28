@@ -431,7 +431,6 @@
 
           // find largest y-value in dataset
           const digits = DE.format('$.2f')(Math.max(...dataset.map((e) => e[1]))).length;
-          console.log(digits);
 
           // layout
           const width = container.offsetWidth;
@@ -448,6 +447,25 @@
           // find min and max y (cost) value
           const max_cost = dataset.reduce((prev, cur) => (cur[1] > prev[1] ? cur : prev))[1] + +0.05;
           const min_cost = dataset.reduce((prev, cur) => (cur[1] < prev[1] ? cur : prev))[1] - +0.05;
+
+          // find the lowest values to highlight
+
+          // sort
+          let dataset_sorted = dataset.toSorted((a, b) => a[1] - b[1]);
+          let minima = [];
+          const threshold = 7;
+          const n = 4;
+
+          // find local minima
+          minima.push(dataset_sorted.shift());
+
+          while (minima.length < n && dataset_sorted.length > 0) {
+            const a = dataset_sorted.shift();
+
+            if (minima.every((e) => Math.abs(e[0] - a[0]) > threshold)) {
+              minima.push(a);
+            };
+          };
 
           // line generator
           const line = d3.line()
@@ -507,6 +525,20 @@
             .attr('cx', d => x(d[0]))
             .attr('cy', d => y(d[1]));
 
+          // highlight minima
+          minima.forEach((m) => {
+            svg.append("line")
+              .attr("x1", x(m[0]))
+              .attr("y1", marginTop)
+              .attr("x2", x(m[0]))
+              .attr("y2", height - marginBottom)
+              .style("stroke-width", 2)
+              .style("stroke", "red")
+              .style("fill", "none")
+              .style("opacity", "0.5")
+              .style("stroke-dasharray", ("3, 3"));
+          });
+
           // tooltip
           const dot = svg.append('g')
             .attr('display', 'none');
@@ -528,7 +560,8 @@
             .attr("x", text_x - box_w + box_margin)
             .attr("y", text_y - box_h + box_margin)
             .attr("width", box_w)
-            .attr("height", box_h);
+            .attr("height", box_h)
+            .attr('display', 'none');
             //.attr('transform', 'translate(' + (text_x) + ',' + (text_y) + ')');
 
           const text = svg.append('text')
