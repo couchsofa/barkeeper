@@ -230,7 +230,7 @@
 
           // build array and deduplicate
           const uniqueUnits = [ ...new Set([...i.units.flatMap((e) => e[0]), ...standardUnits, i.baseUnit]) ];
-          
+
           return uniqueUnits;
         },
 
@@ -329,7 +329,7 @@
             });
           };
 
-          return { entry: recipe_entry, recipe: ingredient };_
+          return { entry: recipe_entry, recipe: ingredient };
         },
 
         // flatten the recipe array, apply unit conversion and safety factor to make a shallow recipe
