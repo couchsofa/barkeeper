@@ -429,13 +429,17 @@
           // reset
           container.innerHTML = '';
 
+          // find largest y-value in dataset
+          const digits = DE.format('$.2f')(Math.max(...dataset.map((e) => e[1]))).length;
+          console.log(digits);
+
           // layout
           const width = container.offsetWidth;
           const height = container.offsetHeight;
           const marginTop = 20;
-          const marginRight = 40;
+          const marginRight = 20;
           const marginBottom = 20;
-          const marginLeft = 50;
+          const marginLeft = digits*9;
 
           // data range
           const min_n = dataset[0][0];
