@@ -248,14 +248,19 @@
         },
 
         // return a full (standard and ingredient specific) units with conversion factors
-        getIngredientUnits(id) {
+        // if flag is set, don't deduplicate entries (usefull for finding out if an entry in the ingredient specific unit conversion table is valid)
+        getIngredientUnits(id, dedupe = true) {
           const i = this.getIngredient(id);
           const standardUnits = this.getIngredientStandardUnits(id);
 
-          // build array and deduplicate
-          const uniqueUnits = [ ...new Map([...i.units, ...standardUnits]) ];
+          // build array
+          let units = [...i.units, ...standardUnits];
 
-          return uniqueUnits;
+          if (dedupe) {
+            return [ ...new Map(units) ];
+          } else {
+            return units;
+          };
         },
 
         getIngredient(id) {
@@ -2003,7 +2008,7 @@
                           <input
                             type="text"
                             class="form-control"
-                            :class="(ingredient.units.filter((e) => e[0] === unit[0]).length !== 1 || unit[0] === '' || unit[0] === ingredient.baseUnit) ? 'is-invalid' : ''"
+                            :class="($store.barkeeper.getIngredientUnits(ingredient.id, dedupe = false).filter((e) => e[0] === unit[0]).length !== 1 || unit[0] === '' || unit[0] === ingredient.baseUnit) ? 'is-invalid' : ''"
                             x-model="unit[0]">
                           <div class="input-group-append">
                             <span class="input-group-text">=</span>
