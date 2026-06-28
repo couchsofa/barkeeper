@@ -226,7 +226,12 @@
         // return an array of allowed units for an ingredient (including the base unit)
         getIngredientAllowedUnits(id) {
           const i = this.getIngredient(id);
-          return [...i.units.flatMap((e) => e[0]), i.baseUnit];
+          const standardUnits = this.getIngredientStandardUnits(id).map(e => e[0]);
+
+          // build array and deduplicate
+          const uniqueUnits = [ ...new Set([...i.units.flatMap((e) => e[0]), ...standardUnits, i.baseUnit]) ];
+          
+          return uniqueUnits;
         },
 
         // return all global conversions from the global table that match
@@ -240,6 +245,17 @@
           });
 
           return units;
+        },
+
+        // return a full (standard and ingredient specific) units with conversion factors
+        getIngredientUnits(id) {
+          const i = this.getIngredient(id);
+          const standardUnits = this.getIngredientStandardUnits(id);
+
+          // build array and deduplicate
+          const uniqueUnits = [ ...new Map([...i.units, ...standardUnits]) ];
+
+          return uniqueUnits;
         },
 
         getIngredient(id) {
@@ -292,7 +308,8 @@
           let safetyFactor     = ingredient.safetyFactor;
 
           if (recipe_entry.unit !== ingredient.baseUnit) {
-            const unitConvTableEntry = ingredient.units.find((e) => e[0] === recipe_entry.unit);
+            const units = this.getIngredientUnits(ingredient.id);
+            const unitConvTableEntry = units.find((e) => e[0] === recipe_entry.unit);
             if(unitConvTableEntry) {
               conversionFactor = unitConvTableEntry[1];
             }
