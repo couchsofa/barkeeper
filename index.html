@@ -728,6 +728,94 @@
           return recipes;
         },
 
+        get shoppingList () {
+          if (this.getEvent === undefined) {return};
+
+          let list = [];
+          let barProgram = this.getEvent.barProgram;
+
+          //
+          // ingredients
+          //
+          let ingredients = [];
+          Object.values(barProgram.recipes.cocktails).forEach((l) => {
+            ingredients.push( ...l.filter( r => r.type !== 'recipe' ) );
+          });
+
+          barProgram.recipes.recipes.forEach((r) => {
+            ingredients.push( ...r.ingredients.filter( e => e.type !== 'recipe' ) );
+          });
+
+          // dedupe and sum
+          let summedIngredients = [];
+          ingredients = Object.values(Object.groupBy(Alpine.raw(ingredients), ({id}) => id));
+
+          ingredients.forEach((ingredient) => {
+            let summedIngredient = { ...ingredient[0] };
+            summedIngredient.amount = ingredient.reduce((acc, {amount}) => acc + +amount, 0);
+            summedIngredients.push(summedIngredient);
+          });
+          ingredients = summedIngredients;
+          
+          ingredients.forEach((ingredient) => {
+            const i = this.getIngredient(ingredient.id);
+
+            // find cheapest source
+            const calcCost = s => Math.ceil((ingredient.amount)/s.size)*s.price;
+            const source = i.sources.reduce((cheapest, current) => 
+              calcCost(current) < calcCost(cheapest) ? current : cheapest
+            );
+
+            ingredient.comment  = i.notes;
+            ingredient.size     = source.size;
+            ingredient.num      = Math.ceil((ingredient.amount)/source.size);
+            ingredient.shopLink = source.shopLink;
+            ingredient.price    = source.price;
+          });
+
+          list.push(...ingredients);
+
+          //
+          // equipment
+          //
+          list.push(...Alpine.raw(barProgram.equipment));
+
+          //
+          // ice
+          //
+          let ice = [
+            {
+              name:       'Ice cubes',
+              comment:    barProgram.ice.cubeSize + ' mm cubes',
+              size:       barProgram.ice.cubeBagWeight,
+              unit:       'kg',
+              num:        Math.ceil(this.getCubeWeight/barProgram.ice.cubeBagWeight),
+              amount:     this.getCubeWeight,
+              price:      barProgram.ice.cubeBagCost,
+            },
+            {
+              name:       'Crushed ice',
+              size:       barProgram.ice.crushedBagWeight,
+              unit:       'kg',
+              num:        Math.ceil(this.getCrushedWeight/barProgram.ice.crushedBagWeight),
+              amount:     this.getCrushedWeight,
+              price:      barProgram.ice.crushedBagCost,
+            },
+            {
+              name:       'Big ice cubes',
+              size:       1,
+              comment:    this.formatNumber(barProgram.ice.largeCubeSize) + ' mm cubes',
+              unit:       'pcs',
+              num:        this.getNumLargeCubes,
+              price:      barProgram.ice.largeCubeCost,
+            }
+          ];
+
+          list.push(...ice);
+
+          return list;
+        },
+
         init() {
           const stored = localStorage.getItem('barkeeper');
 
@@ -950,6 +1038,14 @@
 
     .grid-table-muted:after {
       content: ")";
+    }
+
+    .grid-table-scroll {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      width: 100%;
+      max-width: 100rem;
     }
 
     .pill {
@@ -1754,7 +1850,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        x-model="item.source"
+                        x-model="item.shopLink"
                       >
                     </div>
                     <div class="col-4 p-1">
@@ -1785,7 +1881,7 @@
                     name: '',
                     num: 0,
                     price: 0,
-                    source: '',
+                    shopLink: '',
                     comment: '',
                   })"
                 >✚</button>
@@ -1889,6 +1985,67 @@
         </div>
 
       </section>
+
+<!-- shopping list -->
+      <div class="card shadow-sm rounded mt-5">
+        <div class="card-header card-title">Shopping List</div>
+        <div class="card-body">
+          
+          <div class="container grid-table grid-table-striped grid-table-scroll">
+
+            <div class="row grid-table-heading">
+              <div class="col">Name</div>
+              <div class="col">Quant.</div>
+              <div class="col">Unit Size</div>
+              <div class="col">Unit</div>
+              <div class="col">Unit Price</div>
+              <div class="col">Amount</div>
+              <div class="col">Amount (calc)</div>
+              <div class="col">Cost</div>
+              <div class="col">Source</div>
+              <div class="col">Comment</div>
+            </div>
+
+            <template x-for="item in $store.barkeeper.shoppingList.sort((a, b) => a.shopLink?.localeCompare(b.shopLink) || -1)" :key="item.name">
+              <div class="row">
+                <div class="col">
+                  <span x-text="item.name"></span>
+                </div>
+                <div class="col text-end">
+                  <span x-text="item.num"></span>
+                </div>
+                <div class="col text-end">
+                  <span x-text="item.hasOwnProperty('size') ? item.size : '-'"></span>
+                </div>
+                <div class="col">
+                  <span x-text="item.hasOwnProperty('unit') ? item.unit : '-'"></span>
+                </div>
+                <div class="col text-end">
+                  <span x-text="item.price !== 0 ? $store.barkeeper.formatCurrency(item.price) : '-'"></span>
+                </div>
+                <div class="col text-end">
+                  <span x-text="item.hasOwnProperty('size') ? $store.barkeeper.formatNumber(+item.num * +item.size) : '-'"></span>
+                </div>
+                <div class="col text-end">
+                  <span x-text="item.hasOwnProperty('amount') ? $store.barkeeper.formatNumber(item.amount) : '-'" class="grid-table-muted"></span>
+                </div>
+                <div class="col text-end">
+                  <span x-text="$store.barkeeper.formatCurrency(+item.num * +item.price)"></span>
+                </div>
+                <div class="col">
+                  <span x-text="item.hasOwnProperty('shopLink') ? item.shopLink : '-'"></span>
+                </div>
+                <div class="col">
+                  <span x-text="item.comment"></span>
+                </div>
+              </div>
+            </template>
+
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </template>
 
