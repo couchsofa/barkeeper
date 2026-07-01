@@ -1733,249 +1733,249 @@
 
 <!-- ice management -->
       <section class="double-width mt-3">
+        <div>
+          <div class="card shadow-sm rounded">
+            <div class="card-header card-title">Ice</div>
 
-        <div class="card shadow-sm rounded">
-          <div class="card-header card-title">Ice</div>
+            <div class="card-body">
+              
+              <div class="row">
+                <div class="col-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">cube size</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.cubeSize"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeSize) || $store.barkeeper.getEvent.barProgram.ice.cubeSize === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) || $store.barkeeper.getEvent.barProgram.ice.cubeBagWeight === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">kg/bag</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.cubeBagCost"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagCost) || $store.barkeeper.getEvent.barProgram.ice.cubeBagCost === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">€/bag</span>
+                    </div>
+                  </div>
+                </div>
 
-          <div class="card-body">
-            
-            <div class="row">
-              <div class="col-3">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">cube size</span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.cubeSize"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeSize) || $store.barkeeper.getEvent.barProgram.ice.cubeSize === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">mm</span>
-                  </div>
+                <div class="col-2 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="$store.barkeeper.getNumCubes + ' cubes'"></span>
                 </div>
-              </div>
-              <div class="col-2">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) || $store.barkeeper.getEvent.barProgram.ice.cubeBagWeight === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">kg/bag</span>
-                  </div>
+                <div class="col-1 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) + ' bags'"></span>
                 </div>
-              </div>
-              <div class="col-2">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.cubeBagCost"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagCost) || $store.barkeeper.getEvent.barProgram.ice.cubeBagCost === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">€/bag</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.getNumCubes + ' cubes'"></span>
-              </div>
-              <div class="col-1 text-end" style="padding: .375rem .75rem;">
-                <span x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) + ' bags'"></span>
-              </div>
-              <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCubeWeight) + ' kg'"></span>
-                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight)*$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight + ' kg'"></span>
-              </div>
-            </div>
-
-            <div class="row mt-3">
-              <div class="col-3">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">scoop size</span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.scoopSize"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.scoopSize) || $store.barkeeper.getEvent.barProgram.ice.scoopSize === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">g</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) || $store.barkeeper.getEvent.barProgram.ice.crushedBagWeight === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">kg/bag</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.crushedBagCost"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagCost) || $store.barkeeper.getEvent.barProgram.ice.crushedBagCost === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">€/bag</span>
-                  </div>
+                <div class="col-2 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCubeWeight) + ' kg'"></span>
+                  <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight)*$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight + ' kg'"></span>
                 </div>
               </div>
 
-              <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.getNumScoops + ' scoops'"></span>
-              </div>
-              <div class="col-1 text-end" style="padding: .375rem .75rem;">
-                <span x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) + ' bags'"></span>
-              </div>
-              <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCrushedWeight) + ' kg'"></span>
-                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight)*$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight + ' kg'"></span>
-              </div>
-            </div>
-
-            <div class="row mt-3">
-              <div class="col-3">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">cube size</span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.largeCubeSize"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) || $store.barkeeper.getEvent.barProgram.ice.largeCubeSize === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">mm</span>
+              <div class="row mt-3">
+                <div class="col-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">scoop size</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.scoopSize"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.scoopSize) || $store.barkeeper.getEvent.barProgram.ice.scoopSize === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">g</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-2">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control text-end"
-                    x-model="$store.barkeeper.getEvent.barProgram.ice.largeCubeCost"
-                    :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeCost) || $store.barkeeper.getEvent.barProgram.ice.largeCubeCost === '') ? 'is-invalid' : ''">
-                  <div class="input-group-append">
-                    <span class="input-group-text">€/pc</span>
+                <div class="col-2">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) || $store.barkeeper.getEvent.barProgram.ice.crushedBagWeight === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">kg/bag</span>
+                    </div>
                   </div>
+                </div>
+                <div class="col-2">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.crushedBagCost"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagCost) || $store.barkeeper.getEvent.barProgram.ice.crushedBagCost === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">€/bag</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-2 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="$store.barkeeper.getNumScoops + ' scoops'"></span>
+                </div>
+                <div class="col-1 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) + ' bags'"></span>
+                </div>
+                <div class="col-2 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCrushedWeight) + ' kg'"></span>
+                  <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight)*$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight + ' kg'"></span>
                 </div>
               </div>
 
-              <div class="col-7 text-end" style="padding: .375rem .75rem;">
-                <span x-text="$store.barkeeper.getNumLargeCubes + ' pcs'"></span>
-                <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getLargeCubeWeight) + ' kg'"></span>
+              <div class="row mt-3">
+                <div class="col-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">cube size</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.largeCubeSize"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) || $store.barkeeper.getEvent.barProgram.ice.largeCubeSize === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.getEvent.barProgram.ice.largeCubeCost"
+                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeCost) || $store.barkeeper.getEvent.barProgram.ice.largeCubeCost === '') ? 'is-invalid' : ''">
+                    <div class="input-group-append">
+                      <span class="input-group-text">€/pc</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-7 text-end" style="padding: .375rem .75rem;">
+                  <span x-text="$store.barkeeper.getNumLargeCubes + ' pcs'"></span>
+                  <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getLargeCubeWeight) + ' kg'"></span>
+                </div>
               </div>
-            </div>
 
-          </div><!-- /card body -->
+            </div><!-- /card body -->
 
-        </div><!-- /card -->
-
-      </section>
+          </div><!-- /card -->
+        </div>
 
 <!-- equipmentlist -->
-      <section class="double-width mt-3">
+        <div>
+          <div class="card shadow-sm rounded">
+            <div class="card-header card-title">Equipment</div>
 
-        <div class="card shadow-sm rounded">
-          <div class="card-header card-title">Equipment</div>
+            <div class="card-body">
 
-          <div class="card-body">
+              <div class="container grid-table grid-table-striped">
+                <div>
+                  <div class="row grid-table-heading">
+                    <div class="col-3">Name</div>
+                    <div class="col-1">Quant.</div>
+                    <div class="col-1">Price</div>
+                    <div class="col-3">Source</div>
+                    <div class="col-4">Comment</div>
+                  </div>
 
-            <div class="container grid-table grid-table-striped">
-              <div>
-                <div class="row grid-table-heading">
-                  <div class="col-3">Name</div>
-                  <div class="col-1">Quant.</div>
-                  <div class="col-1">Price</div>
-                  <div class="col-3">Source</div>
-                  <div class="col-4">Comment</div>
-                </div>
-
-                <template x-for="item in $store.barkeeper.getEvent.barProgram.equipment">
-                  <div class="row">
-                    <div class="col-3 p-1">
-                      <input
-                        type="text"
-                        class="form-control"
-                        :class="(item.name === '') ? 'is-invalid' : ''"
-                        x-model="item.name"
-                      >
-                    </div>
-                    <div class="col-1 p-1">
-                      <input
-                        type="text"
-                        class="form-control text-end"
-                        :class="(isNaN(item.num) || item.num === '') ? 'is-invalid' : ''"
-                        x-model="item.num"
-                      >
-                    </div>
-                    <div class="col-1 p-1">
-                      <div class="input-group">
-                        <input
-                          type="text"
-                          class="form-control text-end input-group"
-                          :class="(isNaN(item.price) || item.price === '') ? 'is-invalid' : ''"
-                          x-model="item.price"
-                        >
-                        <span class="input-group-text">€</span>
-                      </div>
-                    </div>
-                    <div class="col-3 p-1">
-                      <input
-                        type="text"
-                        class="form-control"
-                        x-model="item.shopLink"
-                      >
-                    </div>
-                    <div class="col-4 p-1">
-                      <div class="input-group">
+                  <template x-for="item in $store.barkeeper.getEvent.barProgram.equipment">
+                    <div class="row">
+                      <div class="col-3 p-1">
                         <input
                           type="text"
                           class="form-control"
-                          x-model="item.comment"
+                          :class="(item.name === '') ? 'is-invalid' : ''"
+                          x-model="item.name"
                         >
-                        <button
-                          type="button"
-                          class="btn btn-outline-danger btn-xs m-1 p-0"
-                          x-on:click="$store.barkeeper.getEvent.barProgram.equipment = $store.barkeeper.getEvent.barProgram.equipment.filter((e) => JSON.stringify(e) !== JSON.stringify(item))">✗</button>
+                      </div>
+                      <div class="col-1 p-1">
+                        <input
+                          type="text"
+                          class="form-control text-end"
+                          :class="(isNaN(item.num) || item.num === '') ? 'is-invalid' : ''"
+                          x-model="item.num"
+                        >
+                      </div>
+                      <div class="col-1 p-1">
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control text-end input-group"
+                            :class="(isNaN(item.price) || item.price === '') ? 'is-invalid' : ''"
+                            x-model="item.price"
+                          >
+                          <span class="input-group-text">€</span>
+                        </div>
+                      </div>
+                      <div class="col-3 p-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          x-model="item.shopLink"
+                        >
+                      </div>
+                      <div class="col-4 p-1">
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            x-model="item.comment"
+                          >
+                          <button
+                            type="button"
+                            class="btn btn-outline-danger btn-xs m-1 p-0"
+                            x-on:click="$store.barkeeper.getEvent.barProgram.equipment = $store.barkeeper.getEvent.barProgram.equipment.filter((e) => JSON.stringify(e) !== JSON.stringify(item))">✗</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </template>
+                  </template>
 
+                </div>
               </div>
+
+              <div class="row mt-3">
+                <div class="col-12">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-xs m-0 p-1 w-100"
+                    x-on:click="$store.barkeeper.getEvent.barProgram.equipment.push({
+                      name: '',
+                      num: 0,
+                      price: 0,
+                      shopLink: '',
+                      comment: '',
+                    })"
+                  >✚</button>
+                </div>
+              </div>
+
             </div>
 
-            <div class="row mt-3">
-              <div class="col-12">
-                <button
-                  type="button"
-                  class="btn btn-outline-success btn-xs m-0 p-1 w-100"
-                  x-on:click="$store.barkeeper.getEvent.barProgram.equipment.push({
-                    name: '',
-                    num: 0,
-                    price: 0,
-                    shopLink: '',
-                    comment: '',
-                  })"
-                >✚</button>
-              </div>
-            </div>
-
-          </div>
+          </div><!-- /card -->
 
         </div>
 
@@ -1983,92 +1983,95 @@
 
 <!-- recipes -->
       <section class="double-width mt-5">
-
-        <div class="card shadow-sm rounded">
-          <div class="card-header card-title">Cocktails</div>
-          <div class="card-body">
-            
-            <div class="container grid-table grid-table-striped">
-              <template x-for="cocktail in $store.barkeeper.getCocktails()" :key="cocktail.id">
-                <div>
-                  <div class="row grid-table-heading">
-                    <div class="col-12" x-text="cocktail.name">
-                    </div>
-                  </div>
-
-                  <template x-for="(ingredient, index) in $store.barkeeper.getEvent.barProgram.recipes.cocktails[cocktail.id]" :key="index">
-                    <div class="row">
-                      <div
-                        class="col-7"
-                        :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''"
-                        >
-                        <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
+        <div>
+          <div class="card shadow-sm rounded">
+            <div class="card-header card-title">Cocktails</div>
+            <div class="card-body">
+              
+              <div class="container grid-table grid-table-striped">
+                <template x-for="cocktail in $store.barkeeper.getCocktails()" :key="cocktail.id">
+                  <div>
+                    <div class="row grid-table-heading">
+                      <div class="col-12" x-text="cocktail.name">
                       </div>
-                      <div class="col-4 text-end">
-                        <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
-                      </div>
-                      <div
-                        class="col-1"
-                        x-text="ingredient.unit"
-                        ></div>
                     </div>
-                  </template>
 
-                </div>
-              </template>
-            </div>
-
-          </div>
-        </div>
-        
-        <div class="card shadow-sm rounded">
-          <div class="card-header card-title">Recipes</div>
-          <div class="card-body">
-            
-            <div class="container grid-table grid-table-striped">
-              <template x-for="(recipe, index) in $store.barkeeper.getEvent.barProgram.recipes.recipes" :key="index">
-                <div>
-                  <div class="row grid-table-heading" :style="'background-color: #' + $store.barkeeper.palette[recipe.color] + ';'">
-                    <div
-                      class="col-7"
-                      x-text="recipe.name"
-                      ></div>
-                    <div class="col-4 text-end">
-                      <span x-text="$store.barkeeper.formatNumber(recipe.amount)"></span>
-                    </div>
-                    <div
-                      class="col-1"
-                      x-text="recipe.unit"
-                      ></div>
-                  </div>
-                  <div class="row grid-table-block">
-                    <div
-                      class="col-12"
-                      x-text="recipe.notes"
-                      ></div>
-                  </div>
-
-                  <template x-for="(ingredient, index) in recipe.ingredients" :key="index">
-                    <div class="row">
-                      <div
-                        class="col-7" :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''">
+                    <template x-for="(ingredient, index) in $store.barkeeper.getEvent.barProgram.recipes.cocktails[cocktail.id]" :key="index">
+                      <div class="row">
+                        <div
+                          class="col-7"
+                          :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''"
+                          >
                           <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
                         </div>
+                        <div class="col-4 text-end">
+                          <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
+                        </div>
+                        <div
+                          class="col-1"
+                          x-text="ingredient.unit"
+                          ></div>
+                      </div>
+                    </template>
+
+                  </div>
+                </template>
+              </div>
+
+            </div>
+          </div><!-- /card -->
+        </div>
+        
+        <div>
+          <div class="card shadow-sm rounded">
+            <div class="card-header card-title">Recipes</div>
+            <div class="card-body">
+              
+              <div class="container grid-table grid-table-striped">
+                <template x-for="(recipe, index) in $store.barkeeper.getEvent.barProgram.recipes.recipes" :key="index">
+                  <div>
+                    <div class="row grid-table-heading" :style="'background-color: #' + $store.barkeeper.palette[recipe.color] + ';'">
+                      <div
+                        class="col-7"
+                        x-text="recipe.name"
+                        ></div>
                       <div class="col-4 text-end">
-                        <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
+                        <span x-text="$store.barkeeper.formatNumber(recipe.amount)"></span>
                       </div>
                       <div
                         class="col-1"
-                        x-text="ingredient.unit"
+                        x-text="recipe.unit"
                         ></div>
                     </div>
-                  </template>
+                    <div class="row grid-table-block">
+                      <div
+                        class="col-12"
+                        x-text="recipe.notes"
+                        ></div>
+                    </div>
 
-                </div>
-              </template>
+                    <template x-for="(ingredient, index) in recipe.ingredients" :key="index">
+                      <div class="row">
+                        <div
+                          class="col-7" :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''">
+                            <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
+                          </div>
+                        <div class="col-4 text-end">
+                          <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
+                        </div>
+                        <div
+                          class="col-1"
+                          x-text="ingredient.unit"
+                          ></div>
+                      </div>
+                    </template>
+
+                  </div>
+                </template>
+              </div>
+
             </div>
-
-          </div>
+          </div><!-- /card -->
         </div>
 
       </section>
