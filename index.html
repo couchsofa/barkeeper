@@ -1996,7 +1996,7 @@
                     </div>
                   </div>
 
-                  <template x-for="ingredient in $store.barkeeper.getEvent.barProgram.recipes.cocktails[cocktail.id]" :key="ingredient.id">
+                  <template x-for="(ingredient, index) in $store.barkeeper.getEvent.barProgram.recipes.cocktails[cocktail.id]" :key="index">
                     <div class="row">
                       <div
                         class="col-7"
@@ -2026,7 +2026,7 @@
           <div class="card-body">
             
             <div class="container grid-table grid-table-striped">
-              <template x-for="recipe in $store.barkeeper.getEvent.barProgram.recipes.recipes">
+              <template x-for="(recipe, index) in $store.barkeeper.getEvent.barProgram.recipes.recipes" :key="index">
                 <div>
                   <div class="row grid-table-heading" :style="'background-color: #' + $store.barkeeper.palette[recipe.color] + ';'">
                     <div
@@ -2048,7 +2048,7 @@
                       ></div>
                   </div>
 
-                  <template x-for="ingredient in recipe.ingredients">
+                  <template x-for="(ingredient, index) in recipe.ingredients" :key="index">
                     <div class="row">
                       <div
                         class="col-7" :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''">
