@@ -65,15 +65,60 @@
           return text.replace(/(http|https):\/\/([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?/g, (e) => '<a href="' + e + '">' + e + '</a>');
         },
 
-        // Persistence
-        export() {
-          var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.data));
+        download(dataAttr, dataString, fileName) {
+          var dataStr = dataAttr + dataString;
           var downloadAnchorNode = document.createElement('a');
-          downloadAnchorNode.setAttribute("href",     dataStr);
-          downloadAnchorNode.setAttribute("download", "barkeeper.json");
+          downloadAnchorNode.setAttribute('href',     dataStr);
+          downloadAnchorNode.setAttribute('download', fileName);
           document.body.appendChild(downloadAnchorNode); // required for firefox
           downloadAnchorNode.click();
           downloadAnchorNode.remove();
+        },
+
+        exportShoppingListCSV(list) {
+          let csv = '';
+          const seperator = ';';
+          const quot = '"';
+          const formatText = (text) => {return text.replace('"', "'");};
+
+          const head = ['Quant.', 'Unit size', '', 'Name', 'Unit Price' , 'Total Amount', '', '' , 'Cost', 'Source', 'Comment'];
+          let body = [];
+
+          list.sort((a, b) => a.shopLink?.localeCompare(b.shopLink) || -1).forEach((item) => {
+            body.push([
+              item.num,
+              item.hasOwnProperty('size') ? item.size : '-',
+              item.hasOwnProperty('unit') ? item.unit : '-',
+              formatText(item.name),
+              item.price !== 0 ? this.formatCurrency(item.price) : '-',
+              item.hasOwnProperty('size') ? this.formatNumber(+item.num * +item.size) : '-',
+              item.hasOwnProperty('amount') ? this.formatNumber(item.amount) : '-',
+              item.hasOwnProperty('unit') ? item.unit : '-',
+              this.formatCurrency(+item.num * +item.price),
+              formatText(item.hasOwnProperty('shopLink') ? item.shopLink : '-'),
+              formatText(item.hasOwnProperty('comment') ? item.comment : '')
+            ]);
+          });
+
+          [head, ...body].forEach((row) => {
+            csv += quot + row.join(quot + seperator + quot) + quot;
+            csv += '\n'
+          });
+
+          this.download(
+            'data:text/csv;charset=utf-8,',
+            encodeURIComponent(csv),
+            this.getEvent.name + '_shopping_list.csv'
+          );
+        },
+
+        // Persistence
+        export() {
+          this.download(
+            'data:text/json;charset=utf-8,',
+            encodeURIComponent(JSON.stringify(this.data)),
+            'barkeeper.json'
+          );
         },
 
         import() {
@@ -2030,7 +2075,10 @@
 
 <!-- shopping list -->
       <div class="card shadow-sm rounded mt-5" style="max-width: 140rem; margin-inline: auto;">
-        <div class="card-header card-title">Shopping List</div>
+        <div class="card-header card-title">
+          Shopping List
+          <button type="button" class="btn btn-primary" @click="$store.barkeeper.exportShoppingListCSV($store.barkeeper.shoppingList)">⇩ export csv</button>
+        </div> 
         <div class="card-body">
           
           <div class="container table-scroll table-scroll-striped">
