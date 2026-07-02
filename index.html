@@ -467,6 +467,7 @@
           return costDistribution;
         },
 
+        // Charts
         createCocktailCostChart(container, dataset) {
           if (!dataset) {return};
 
@@ -485,10 +486,12 @@
           // layout
           const width = container.offsetWidth;
           const height = container.offsetHeight;
-          const marginTop = 20;
-          const marginRight = 20;
-          const marginBottom = 20;
-          const marginLeft = digits*9;
+          const margin = {
+            top:    20,
+            right:  20,
+            bottom: 20,
+            left:   digits*9
+          };
 
           // data range
           const min_n = dataset[0][0];
@@ -525,12 +528,12 @@
           // x (horizontal) scale
           const x = d3.scaleLinear()
               .domain([min_n, max_n])
-              .range([marginLeft, width - marginRight]);
+              .range([margin.left, width - margin.right]);
 
           // y (vertical) scale
           const y = d3.scaleLinear()
               .domain([min_cost, max_cost])
-              .range([height - marginBottom, marginTop]);
+              .range([height - margin.bottom, margin.top]);
           
           // create svg container
           //var svg = d3.create("svg")
@@ -543,17 +546,17 @@
           // add x-axis
           svg.append('g')
             .attr('class', 'axis')
-            .attr('transform', 'translate(0,' + (height - marginBottom) + ')')
+            .attr('transform', 'translate(0,' + (height - margin.bottom) + ')')
             .call(d3.axisBottom(x));
 
           // add the y-axis, remove domain line, add grid lines
           svg.append('g')
             .attr('class', 'axis')
-            .attr('transform', 'translate('+ marginLeft + ',0)')
+            .attr('transform', 'translate('+ margin.left + ',0)')
             .call(d3.axisLeft(y).tickFormat(DE.format('$.2f')))
             .call(g => g.select('.domain').remove())
             .call(g => g.selectAll('.tick line').clone()
-            .attr('x2', width - marginLeft - marginRight)
+            .attr('x2', width - margin.left - margin.right)
             .attr('stroke-opacity', 0.3));
 
           // add data line
@@ -579,9 +582,9 @@
           minima.forEach((m) => {
             svg.append("line")
               .attr("x1", x(m[0]))
-              .attr("y1", marginTop)
+              .attr("y1", margin.top)
               .attr("x2", x(m[0]))
-              .attr("y2", height - marginBottom)
+              .attr("y2", height - margin.bottom)
               .style("stroke-width", 2)
               .style("stroke", "red")
               .style("fill", "none")
@@ -597,8 +600,8 @@
             .attr('stroke', 'steelblue')
             .attr('r', 5);
 
-          const text_x = width - marginRight*2;
-          const text_y = marginTop*2;
+          const text_x = width - margin.right*2;
+          const text_y = margin.top*2;
 
           const box_w = 140;
           const box_h = 50;
