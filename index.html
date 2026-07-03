@@ -29,6 +29,7 @@
 
         activeTab: 'null',
         charts: {},
+        barChart: null,
         palette: {
           'Neutral':          'e9ecef',
           'Forest Moss':      '669900',
@@ -142,12 +143,15 @@
             name: name,
             barProgram: {
               ice: {
+                cubeID: self.crypto.randomUUID(),
                 cubeSize: 25,
                 cubeBagWeight: 4,
                 cubeBagCost: 0,
+                crushedID: self.crypto.randomUUID(),
                 scoopSize: 150,
                 crushedBagWeight: 4,
                 crushedBagCost: 0,
+                largeCubeID: self.crypto.randomUUID(),
                 largeCubeSize: 50,
                 largeCubeCost: 0,
               },
@@ -657,6 +661,257 @@
           //return svg.node();
         },
 
+        createBarChart(container) {
+          const DE = d3.formatDefaultLocale({
+            thousands: '.',
+            decimal: ',',
+            currency: ['', ' €'],
+          });
+
+          // palette
+          const palette = [
+            '8AC926',
+            '780000',
+            '457B9D'
+          ];
+
+          // reset
+          container.innerHTML = '';
+
+          // build dataset
+          const dataset       = [];
+          const barProgram    = this.getEvent.barProgram;
+          const shoppingList  = this.shoppingList;
+          const cocktails     = Object.values(this.getCocktails());
+
+          cocktails.forEach((c) => {
+            dataset.push({
+              id:           c.id,
+              name:         c.name,
+              revenue:      c.numToPrep * c.price,
+              Ingredients:  0
+            });
+          });
+
+          // proportional equipment expense (distribute per amount)
+          const num_cocktails = cocktails.reduce((acc, c) => {return acc + +c.numToPrep}, 0);
+          const equipment_cost = barProgram.equipment.reduce((acc, e) => {return acc + (+e.num * +e.price)}, 0);
+
+          cocktails.forEach((c) => {
+            dataset.find((e) => e.id === c.id).Equipment = equipment_cost / num_cocktails * c.numToPrep;
+          });
+
+          // proportional ice expense (distribute by num cubes, crushed scoops and num of large cubes)
+          let total_cubes       = this.getNumCubes;
+          let total_scoops      = this.getNumScoops;
+          let total_largeCubes  = this.getNumLargeCubes;
+
+          cocktails.forEach((c) => {
+            // cubes
+            let cube_expense = 0;
+            const cube_item = shoppingList.find((i) => i.id === barProgram.ice.cubeID);
+            
+            if ( total_cubes !== 0 && (+c.cubes * +c.numToPrep) !== 0 ) {
+              cube_expense = (+cube_item.num * +cube_item.price) / total_cubes * (+c.cubes * +c.numToPrep);
+            };
+            
+            // crushed
+            let crushed_expense = 0;
+            const crushed_item = shoppingList.find((i) => i.id === barProgram.ice.crushedID);
+
+            if ( total_scoops !== 0 && (+c.crushed * +c.numToPrep) !== 0 ) {
+              crushed_expense = (+crushed_item.num * +crushed_item.price) / total_scoops * (+c.crushed * +c.numToPrep);
+            }
+
+            // large cubes
+            let largeCube_expense = 0;
+            const largeCube_item = shoppingList.find((i) => i.id === barProgram.ice.largeCubeID);
+            
+            if ( total_largeCubes !== 0 && (+c.largeCubes * +c.numToPrep) !== 0 ) {
+              largeCube_expense = (+largeCube_item.num * +largeCube_item.price) / total_largeCubes * (+c.largeCubes * +c.numToPrep);
+            }
+
+            dataset.find((e) => e.id === c.id).Ice = cube_expense + crushed_expense + largeCube_expense;
+          });
+
+
+          // proportional ingredient expense (distriubte by amount)
+          let recipes = {};
+          let totals  = {};
+          cocktails.forEach((c) => {
+            let ingredients = JSON.parse(JSON.stringify(c.ingredients.concat(c.garnishes)));
+
+            if (ingredients.length === 0) { return };
+            
+            // build recipe
+            recipe = this.assembleRecipe(ingredients);
+
+            // flatten, deduplicate and sum
+            let summedRecipe = [];
+            recipe = Object.groupBy(recipe.flat(Infinity), ({id}) => id);
+            Object.entries(recipe).forEach((e) => {
+              summedRecipe.push(
+                {
+                  id:     e[0],
+                  unit:   e[1][0].unit,
+                  amount: e[1].reduce((acc, {amount}) => acc + +amount, 0) * c.numToPrep,
+                }
+              );
+            });
+
+            recipes[c.id] = summedRecipe;
+          });
+
+          Object.entries(recipes).forEach((e) => {
+            e[1].forEach((i) => {
+              if ( totals.hasOwnProperty(i.id) ) {
+                totals[i.id] += i.amount;
+              } else {
+                totals[i.id] = i.amount;
+              };
+            });
+          });          
+
+          cocktails.forEach((c) => {
+            recipes[c.id].forEach((i) => {
+              const item = shoppingList.find((item) => item.id === i.id);
+              dataset.find((e) => e.id === c.id).Ingredients += (+item.num * +item.price) / totals[i.id] * i.amount;
+            });
+            
+          });
+
+          const parts = [
+            'Ingredients',
+            'Equipment',
+            'Ice'
+          ];
+
+          const max = Math.max(...dataset.map(e => e.Ingredients + e.Ice + e.Equipment), ...dataset.map(e => e.revenue));
+          const digits = DE.format('$.2f')(max).length;
+
+          // layout
+          const width = container.offsetWidth;
+          const height = container.offsetHeight;
+          const margin = {
+            top:    20,
+            right:  20,
+            bottom: 50,
+            left:   digits*9
+          };
+
+          // x (horizontal) scale
+          const x = d3.scaleBand()
+              .domain(dataset.map(e => e.name))
+              .range([margin.left, width - margin.right])
+              .padding([0.2]);
+
+          // y (vertical) scale
+          const y = d3.scaleLinear()
+              .domain([0, Math.ceil(max/100)*100 + 150])
+              .range([height - margin.bottom, margin.top]);
+          
+          // create svg container
+          //var svg = d3.create("svg")
+          var svg = d3.select(container).append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox','0 0 ' + width + ' ' + height)
+            .attr('preserveAspectRatio','xMinYMin');
+
+          // add x-axis
+          svg.append('g')
+            .attr('class', 'axis')
+            .attr('transform', 'translate(0,' + (height - margin.bottom) + ')')
+            .call(d3.axisBottom(x).tickSizeOuter(0));
+
+          // add the y-axis, remove domain line, add grid lines
+          svg.append('g')
+            .attr('class', 'axis')
+            .attr('transform', 'translate('+ margin.left + ',0)')
+            .call(d3.axisLeft(y).tickFormat(DE.format('$.2f')))
+            .call(g => g.select('.domain').remove())
+            .call(g => g.selectAll('.tick line').clone()
+            .attr('x2', width - margin.left - margin.right)
+            .attr('stroke-opacity', 0.3));
+
+          // color palette
+          var color = d3.scaleOrdinal()
+            .domain(parts)
+            .range(palette);
+
+          // stack
+          var stackedData = d3.stack()
+            .keys(parts)
+            .order(d3.stackOrderNone)
+            .offset(d3.stackOffsetNone)(dataset);
+
+          // render bars
+          svg.append("g")
+            .selectAll("g")
+            .data(stackedData)
+            .enter().append("g")
+              .attr("fill", (d) => { return '#' + color(d.key); })
+              .selectAll("rect")
+              .data((d) => { return d; })
+              .enter().append("rect")
+                .attr("x", (d) => { return x(d.data.name); })
+                .attr("y", (d) => { return y(d[1]); })
+                .attr("height", (d) => { return y(d[0]) - y(d[1]); })
+                .attr("width",x.bandwidth());
+
+          // render revenue lines and text
+          dataset.forEach((c) => {
+            svg.append("line")
+              .attr("x1", x(c.name))
+              .attr("y1", y(c.revenue))
+              .attr("x2", x(c.name) + x.bandwidth())
+              .attr("y2", y(c.revenue))
+              .style("stroke-width", 2)
+              .style("stroke", "black")
+              .style("fill", "none")
+              .style("opacity", "0.5");
+
+            svg.append('text')
+              .text(DE.format('$.2f')(c.revenue))
+              .attr("fill", "currentColor")
+              .attr("text-anchor", "middle")
+              .attr("font-size", "1rem")
+              .style("stroke", "#ffffff")
+              .style("stroke-width", ".3rem")
+              .style("stroke-opacity", "0.7")
+              .style("stroke-linecap", "butt")
+              .style("stroke-linejoin", "round")
+              .style("paint-order", "stroke fill")
+              .attr('transform', 'translate(' + (x(c.name) + x.bandwidth()/2) + ',' + (y(c.revenue) - 7) + ')');
+          });
+
+          // render legend
+          var legend = svg.append('g')
+            .attr('class', 'legend')
+            .attr('transform', 'translate(' + (width/2 - (3*150)/2 + margin.left) + ', ' + (height - 20) + ')');
+
+          legend.selectAll('rect')
+            .data(parts)
+            .enter()
+            .append('rect')
+            .attr('x', (d, i) => { return i * 150; })
+            .attr('y', 2)
+            .attr('width', 12)
+            .attr('height', 12)
+            .attr('fill', (d, i) => { return '#' + color(d); });
+          
+          legend.selectAll('text')
+            .data(parts)
+            .enter()
+            .append('text')
+            .text((d) => { return d; })
+            .attr('x', (d, i) => { return i * 150 + 18; })
+            .attr('y', 0)
+            .attr('text-anchor', 'start')
+            .attr('alignment-baseline', 'hanging');
+
+        },
+
         assembleEventProgram(event_id) {
           let cocktails = this.data.cocktails.filter((e) => e.event === event_id);
           let recipes = {
@@ -838,6 +1093,7 @@
           //
           let ice = [
             {
+              id:         barProgram.ice.cubeID,
               name:       'Ice cubes',
               comment:    barProgram.ice.cubeSize + ' mm cubes',
               size:       barProgram.ice.cubeBagWeight,
@@ -847,6 +1103,7 @@
               price:      barProgram.ice.cubeBagCost,
             },
             {
+              id:         barProgram.ice.crushedID,
               name:       'Crushed ice',
               size:       barProgram.ice.crushedBagWeight,
               unit:       'kg',
@@ -855,6 +1112,7 @@
               price:      barProgram.ice.crushedBagCost,
             },
             {
+              id:         barProgram.ice.largeCubeID,
               name:       'Big ice cubes',
               size:       1,
               comment:    this.formatNumber(barProgram.ice.largeCubeSize) + ' mm cubes',
@@ -864,7 +1122,7 @@
             }
           ];
 
-          list.push(...ice);
+          list.push(...ice.filter((e) => e.num !== 0));
 
           return list;
         },
@@ -904,6 +1162,9 @@
             Object.entries(this.charts).forEach(( [id, el]) => {
               this.createCocktailCostChart(el, this.calcCocktailCost(id));
             });
+            if(this.barChart) {
+              this.createBarChart(this.barChart);
+            }
           })
         },
       });
@@ -923,6 +1184,7 @@
     body {
       background: #CCE7ED;
       background-image: linear-gradient(135deg, hsla(191, 48%, 86%, 1) 36%, hsla(288, 85%, 84%, 1) 96%);
+      min-width: 64rem;
     }
 
     canvas {
@@ -1900,12 +2162,12 @@
                   <div class="row grid-table-heading">
                     <div class="col-3">Name</div>
                     <div class="col-1">Quant.</div>
-                    <div class="col-1">Price</div>
+                    <div class="col-2">Price</div>
                     <div class="col-3">Source</div>
-                    <div class="col-4">Comment</div>
+                    <div class="col-3">Comment</div>
                   </div>
 
-                  <template x-for="item in $store.barkeeper.getEvent.barProgram.equipment">
+                  <template x-for="item in $store.barkeeper.getEvent.barProgram.equipment" :key="item.id">
                     <div class="row">
                       <div class="col-3 p-1">
                         <input
@@ -1923,7 +2185,7 @@
                           x-model="item.num"
                         >
                       </div>
-                      <div class="col-1 p-1">
+                      <div class="col-2 p-1">
                         <div class="input-group">
                           <input
                             type="text"
@@ -1941,7 +2203,7 @@
                           x-model="item.shopLink"
                         >
                       </div>
-                      <div class="col-4 p-1">
+                      <div class="col-3 p-1">
                         <div class="input-group">
                           <input
                             type="text"
@@ -1951,7 +2213,7 @@
                           <button
                             type="button"
                             class="btn btn-outline-danger btn-xs m-1 p-0"
-                            x-on:click="$store.barkeeper.getEvent.barProgram.equipment = $store.barkeeper.getEvent.barProgram.equipment.filter((e) => JSON.stringify(e) !== JSON.stringify(item))">✗</button>
+                            x-on:click="$store.barkeeper.getEvent.barProgram.equipment = $store.barkeeper.getEvent.barProgram.equipment.filter((e) => e.id !== item.id)">✗</button>
                         </div>
                       </div>
                     </div>
@@ -1966,6 +2228,7 @@
                     type="button"
                     class="btn btn-outline-success btn-xs m-0 p-1 w-100"
                     x-on:click="$store.barkeeper.getEvent.barProgram.equipment.push({
+                      id: self.crypto.randomUUID(),
                       name: '',
                       num: 0,
                       price: 0,
@@ -1983,6 +2246,15 @@
         </div>
 
       </section>
+
+<!-- cocktail cost bar plot -->
+      <div class="card shadow-sm rounded mt-5" style="max-width: 140rem; margin-inline: auto;">
+        <div
+          class="costBarChart mb-3"
+          style="width: 100%; height: 450px;"
+          x-render="() => { $store.barkeeper.createBarChart($el); $store.barkeeper.barChart = $el }"
+          x-destroy="() => { $store.barkeeper.barChart = null }"></div>
+      </div>
 
 <!-- recipes -->
       <section class="double-width mt-5">
