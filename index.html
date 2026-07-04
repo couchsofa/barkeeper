@@ -1163,6 +1163,14 @@
             }
           );
 
+          // custom magics
+          Alpine.magic(
+            "isValidNumber",
+            () => {
+              return number => (isNaN(number) || number === 0 || number === null);
+            }
+          );
+
           // bruteforce reactivity
           Alpine.effect(() => {
             // Persist to local storage
@@ -1656,7 +1664,7 @@
                     <input
                       type="text"
                       class="form-control text-center"
-                      :class="(isNaN(unit[2]) || unit[2] === 0) ? 'is-invalid' : ''"
+                      :class="$isValidNumber(unit[2]) ? 'is-invalid' : ''"
                       x-number.3.unsigned
                       x-model.number="unit[2]">
                   </div>
@@ -1741,7 +1749,7 @@
                           <input
                             type="text"
                             class="form-control text-end"
-                            :class="(isNaN(c_ingredient.amount) || c_ingredient.amount === 0) ? 'is-invalid' : ''"
+                            :class="$isValidNumber(c_ingredient.amount) ? 'is-invalid' : ''"
                             x-number.unsigned
                             x-model.number="c_ingredient.amount">
                         </template>
@@ -1817,7 +1825,7 @@
                           <input
                             type="text"
                             class="form-control text-end"
-                            :class="(isNaN(c_garnish.amount) || c_garnish.amount === 0) ? 'is-invalid' : ''"
+                            :class="$isValidNumber(c_garnish.amount) ? 'is-invalid' : ''"
                             x-number.unsigned
                             x-model.number="c_garnish.amount">
                         </template>
@@ -1916,7 +1924,7 @@
                           class="form-control text-end"
                           x-number.0.unsigned
                           x-model.number="cocktail.cubes"
-                          :class="(isNaN(cocktail.cubes) || cocktail.cubes === 0) ? 'is-invalid' : ''">
+                          :class="$isValidNumber(cocktail.cubes) ? 'is-invalid' : ''">
                         <div class="input-group-append">
                           <span class="input-group-text">cubes</span>
                         </div>
@@ -1931,7 +1939,7 @@
                           class="form-control text-end"
                           x-number.0.unsigned
                           x-model.number="cocktail.largeCubes"
-                          :class="(isNaN(cocktail.largeCubes) || cocktail.largeCubes === 0) ? 'is-invalid' : ''">
+                          :class="$isValidNumber(cocktail.largeCubes) ? 'is-invalid' : ''">
                         <div class="input-group-append">
                           <span class="input-group-text">big cubes</span>
                         </div>
@@ -1946,7 +1954,7 @@
                           class="form-control text-end"
                           x-number.0.unsigned
                           x-model.number="cocktail.crushed"
-                          :class="(isNaN(cocktail.crushed) || cocktail.crushed === 0) ? 'is-invalid' : ''">
+                          :class="$isValidNumber(cocktail.crushed) ? 'is-invalid' : ''">
                         <div class="input-group-append">
                           <span class="input-group-text">scoops crushed</span>
                         </div>
@@ -2017,7 +2025,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="cocktail.numToPrep"
-                      :class="(isNaN(cocktail.numToPrep) || cocktail.numToPrep === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber(cocktail.numToPrep) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">pcs</span>
                     </div>
@@ -2030,7 +2038,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="cocktail.price"
-                      :class="(isNaN(cocktail.price) || cocktail.price === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber(cocktail.price) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span
                         class="input-group-text"
@@ -2068,7 +2076,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.cubeSize"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeSize) || $store.barkeeper.getEvent.barProgram.ice.cubeSize === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.cubeSize) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">mm</span>
                     </div>
@@ -2081,7 +2089,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) || $store.barkeeper.getEvent.barProgram.ice.cubeBagWeight === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">kg/bag</span>
                     </div>
@@ -2094,7 +2102,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.cubeBagCost"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.cubeBagCost) || $store.barkeeper.getEvent.barProgram.ice.cubeBagCost === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.cubeBagCost) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">€/bag</span>
                     </div>
@@ -2124,7 +2132,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.scoopSize"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.scoopSize) || $store.barkeeper.getEvent.barProgram.ice.scoopSize === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.scoopSize) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">g</span>
                     </div>
@@ -2137,7 +2145,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) || $store.barkeeper.getEvent.barProgram.ice.crushedBagWeight === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">kg/bag</span>
                     </div>
@@ -2150,7 +2158,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.crushedBagCost"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.crushedBagCost) || $store.barkeeper.getEvent.barProgram.ice.crushedBagCost === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.crushedBagCost) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">€/bag</span>
                     </div>
@@ -2180,7 +2188,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.largeCubeSize"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) || $store.barkeeper.getEvent.barProgram.ice.largeCubeSize === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">mm</span>
                     </div>
@@ -2193,7 +2201,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.largeCubeCost"
-                      :class="(isNaN($store.barkeeper.getEvent.barProgram.ice.largeCubeCost) || $store.barkeeper.getEvent.barProgram.ice.largeCubeCost === 0) ? 'is-invalid' : ''">
+                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.largeCubeCost) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">€/pc</span>
                     </div>
@@ -2242,7 +2250,7 @@
                         <input
                           type="text"
                           class="form-control text-end"
-                          :class="(isNaN(item.num) || item.num === 0) ? 'is-invalid' : ''"
+                          :class="$isValidNumber(item.num) ? 'is-invalid' : ''"
                           x-number.0.unsigned
                           x-model.number="item.num"
                         >
@@ -2252,7 +2260,7 @@
                           <input
                             type="text"
                             class="form-control text-end input-group"
-                            :class="(isNaN(item.price) || item.price === 0) ? 'is-invalid' : ''"
+                            :class="$isValidNumber(item.price) ? 'is-invalid' : ''"
                             x-number.2.unsigned
                             x-model.number="item.price"
                           >
@@ -2655,7 +2663,7 @@
                           <input
                               type="text"
                               class="form-control text-end"
-                              :class="(isNaN(unit[1]) || unit[1] === 0) ? 'is-invalid' : ''"
+                              :class="$isValidNumber(unit[1]) ? 'is-invalid' : ''"
                               x-number.3.unsigned
                               x-model.number="unit[1]">
                           <div class="input-group-append">
@@ -2713,7 +2721,7 @@
                                 <input
                                   type="text"
                                   class="form-control text-center"
-                                  :class="(isNaN(source.size) || source.size === 0) ? 'is-invalid' : ''"
+                                  :class="$isValidNumber(source.size) ? 'is-invalid' : ''"
                                   x-number.3.unsigned
                                   x-model.number="source.size">
                                 <div class="input-group-append">
@@ -2727,7 +2735,7 @@
                                 <input
                                     type="text"
                                     class="form-control text-end"
-                                    :class="(isNaN(source.price) || source.price === 0) ? 'is-invalid' : ''"
+                                    :class="$isValidNumber(source.price) ? 'is-invalid' : ''"
                                     x-number.2.unsigned
                                     x-model.number="source.price">
                                 <div class="input-group-append">
@@ -2764,7 +2772,7 @@
                               <input
                                 type="text"
                                 class="form-control text-end"
-                                :class="(isNaN(i_ingredient.amount) || i_ingredient.amount === 0) ? 'is-invalid' : ''"
+                                :class="$isValidNumber(i_ingredient.amount) ? 'is-invalid' : ''"
                                 x-number.3.unsigned
                                 x-model.number="i_ingredient.amount">
                             </template>
