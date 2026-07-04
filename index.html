@@ -684,6 +684,8 @@
           const shoppingList  = this.shoppingList;
           const cocktails     = Object.values(this.getCocktails());
 
+          if (cocktails.length === 0) { return }
+
           cocktails.forEach((c) => {
             dataset.push({
               id:           c.id,
@@ -741,7 +743,10 @@
           cocktails.forEach((c) => {
             let ingredients = JSON.parse(JSON.stringify(c.ingredients.concat(c.garnishes)));
 
-            if (ingredients.length === 0) { return };
+            if (ingredients.length === 0) { 
+              recipes[c.id] = [];
+              return;
+            };
             
             // build recipe
             recipe = this.assembleRecipe(ingredients);
@@ -765,16 +770,18 @@
           Object.entries(recipes).forEach((e) => {
             e[1].forEach((i) => {
               if ( totals.hasOwnProperty(i.id) ) {
-                totals[i.id] += i.amount;
+                totals[i.id] += +i.amount;
               } else {
-                totals[i.id] = i.amount;
+                totals[i.id] = +i.amount;
               };
             });
-          });          
+          });
 
           cocktails.forEach((c) => {
             recipes[c.id].forEach((i) => {
               const item = shoppingList.find((item) => item.id === i.id);
+              if (item === undefined) { return };
+
               dataset.find((e) => e.id === c.id).Ingredients += (+item.num * +item.price) / totals[i.id] * i.amount;
             });
             
@@ -1067,6 +1074,7 @@
           
           ingredients.forEach((ingredient) => {
             const i = this.getIngredient(ingredient.id);
+            if (i === undefined) { return };
 
             // find cheapest source
             const calcCost = s => Math.ceil((ingredient.amount)/s.size)*s.price;
