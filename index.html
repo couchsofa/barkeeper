@@ -259,6 +259,7 @@
             safetyFactor: 0.1,
             abv: 0,
             color: 'Neutral',
+            hideInShoppingList: false
           });
         },
 
@@ -1092,6 +1093,7 @@
             ingredient.num      = Math.ceil((ingredient.amount)/source.size);
             ingredient.shopLink = source.shopLink;
             ingredient.price    = source.price;
+            ingredient.hideInShoppingList  = i.hideInShoppingList;
           });
 
           list.push(...ingredients);
@@ -2448,7 +2450,7 @@
       <div class="card shadow-sm rounded mt-5" style="max-width: 140rem; margin-inline: auto;">
         <div class="card-header card-title">
           Shopping List
-          <button type="button" class="btn btn-primary" @click="$store.barkeeper.exportShoppingListCSV($store.barkeeper.shoppingList)">⇩ export csv</button>
+          <button type="button" class="btn btn-primary" @click="$store.barkeeper.exportShoppingListCSV($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ))">⇩ export csv</button>
         </div> 
         <div class="card-body">
           
@@ -2468,7 +2470,7 @@
                 </tr>
               </thead>
               <tbody>
-                <template x-for="item in $store.barkeeper.shoppingList.sort((a, b) => a.shopLink?.localeCompare(b.shopLink) || -1)" :key="item.name">
+                <template x-for="item in $store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ).sort((a, b) => a.shopLink?.localeCompare(b.shopLink) || -1)" :key="item.name">
                   <tr>
                     <td class="text-end no-wrap" style="width: 4rem;">
                       <span x-text="item.num"></span>
@@ -2866,7 +2868,7 @@
                         class="form-control text-center"
                         x-model="ingredient.yield">
                       <div class="input-group-append">
-                        <span class="input-group-text" x-text="ingredient.baseUnit"></span>
+                        <span  x-text="ingredient.baseUnit"></span>
                       </div>
                     </div>
                   </div>
@@ -2895,11 +2897,28 @@
                   rows="1"
                   x-model="ingredient.vegan"></textarea>
 
-                <div class="input-group mt-3">
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    x-on:click="$store.barkeeper.removeIngredient(ingredient.id)">Remove</button>
+                  <div class="alert alert-danger mt-3">
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        :id="'hideInShoppingList-' + ingredient.id"
+                        type="checkbox"
+                        x-model.boolean="ingredient.hideInShoppingList">
+                      <label
+                        class="form-check-label"
+                        :for="'hideInShoppingList-' + ingredient.id">
+                        Hide ingredient in shopping list. Item will still be considered in calculations!
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="input-group">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      x-on:click="$store.barkeeper.removeIngredient(ingredient.id)">Remove</button>
+                  </div>
+
                 </div>
 
               </div>
