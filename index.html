@@ -23,6 +23,8 @@
           prepMethods: [],
           settings: {
             costDistRange: [50, 200],
+            costDistMinimaNum: 5,
+            costDistMinimaThreshold: 7,
             unitConvTable: [],
           }
         },
@@ -510,8 +512,8 @@
           // sort
           let dataset_sorted = dataset.toSorted((a, b) => a[1] - b[1]);
           let minima = [];
-          const threshold = 7;
-          const n = 5;
+          const threshold = this.data.settings.costDistMinimaThreshold;
+          const n = this.data.settings.costDistMinimaNum;
 
           // find local minima
           minima.push(dataset_sorted.shift());
@@ -1577,6 +1579,31 @@
                       type="text"
                       class="form-control text-end"
                       x-model="$store.barkeeper.data.settings.costDistRange[1]">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-6">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Number of Minima</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.data.settings.costDistMinimaNum">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Minima Threshold</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control text-end"
+                      x-model="$store.barkeeper.data.settings.costDistMinimaThreshold">
                   </div>
                 </div>
               </div>
