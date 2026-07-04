@@ -1165,9 +1165,23 @@
 
           // custom magics
           Alpine.magic(
-            "isValidNumber",
+            "isValidNumberNotZero",
             () => {
               return number => (isNaN(number) || number === 0 || number === null);
+            }
+          );
+
+          Alpine.magic(
+            "isValidNumber",
+            () => {
+              return number => (isNaN(number) || number === null);
+            }
+          );
+
+          Alpine.magic(
+            "formatNumber",
+            () => {
+              return number => (number).toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2});;
             }
           );
 
@@ -1664,7 +1678,7 @@
                     <input
                       type="text"
                       class="form-control text-center"
-                      :class="$isValidNumber(unit[2]) ? 'is-invalid' : ''"
+                      :class="$isValidNumberNotZero(unit[2]) ? 'is-invalid' : ''"
                       x-number.3.unsigned
                       x-model.number="unit[2]">
                   </div>
@@ -1749,7 +1763,7 @@
                           <input
                             type="text"
                             class="form-control text-end"
-                            :class="$isValidNumber(c_ingredient.amount) ? 'is-invalid' : ''"
+                            :class="$isValidNumberNotZero(c_ingredient.amount) ? 'is-invalid' : ''"
                             x-number.unsigned
                             x-model.number="c_ingredient.amount">
                         </template>
@@ -1825,7 +1839,7 @@
                           <input
                             type="text"
                             class="form-control text-end"
-                            :class="$isValidNumber(c_garnish.amount) ? 'is-invalid' : ''"
+                            :class="$isValidNumberNotZero(c_garnish.amount) ? 'is-invalid' : ''"
                             x-number.unsigned
                             x-model.number="c_garnish.amount">
                         </template>
@@ -2076,7 +2090,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.cubeSize"
-                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.cubeSize) ? 'is-invalid' : ''">
+                      :class="$isValidNumberNotZero($store.barkeeper.getEvent.barProgram.ice.cubeSize) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">mm</span>
                     </div>
@@ -2089,7 +2103,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight"
-                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) ? 'is-invalid' : ''">
+                      :class="$isValidNumberNotZero($store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">kg/bag</span>
                     </div>
@@ -2116,7 +2130,7 @@
                   <span x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight) + ' bags'"></span>
                 </div>
                 <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                  <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCubeWeight) + ' kg'"></span>
+                  <span x-text="$formatNumber($store.barkeeper.getCubeWeight) + ' kg'"></span>
                   <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCubeWeight/$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight)*$store.barkeeper.getEvent.barProgram.ice.cubeBagWeight + ' kg'"></span>
                 </div>
               </div>
@@ -2132,7 +2146,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.scoopSize"
-                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.scoopSize) ? 'is-invalid' : ''">
+                      :class="$isValidNumberNotZero($store.barkeeper.getEvent.barProgram.ice.scoopSize) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">g</span>
                     </div>
@@ -2145,7 +2159,7 @@
                       class="form-control text-end"
                       x-number.2.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight"
-                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) ? 'is-invalid' : ''">
+                      :class="$isValidNumberNotZero($store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">kg/bag</span>
                     </div>
@@ -2172,7 +2186,7 @@
                   <span x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight) + ' bags'"></span>
                 </div>
                 <div class="col-2 text-end" style="padding: .375rem .75rem;">
-                  <span x-text="$store.barkeeper.formatNumber($store.barkeeper.getCrushedWeight) + ' kg'"></span>
+                  <span x-text="$formatNumber($store.barkeeper.getCrushedWeight) + ' kg'"></span>
                   <span class="grid-table-muted" x-text="Math.ceil($store.barkeeper.getCrushedWeight/$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight)*$store.barkeeper.getEvent.barProgram.ice.crushedBagWeight + ' kg'"></span>
                 </div>
               </div>
@@ -2188,7 +2202,7 @@
                       class="form-control text-end"
                       x-number.0.unsigned
                       x-model.number="$store.barkeeper.getEvent.barProgram.ice.largeCubeSize"
-                      :class="$isValidNumber($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) ? 'is-invalid' : ''">
+                      :class="$isValidNumberNotZero($store.barkeeper.getEvent.barProgram.ice.largeCubeSize) ? 'is-invalid' : ''">
                     <div class="input-group-append">
                       <span class="input-group-text">mm</span>
                     </div>
@@ -2250,7 +2264,7 @@
                         <input
                           type="text"
                           class="form-control text-end"
-                          :class="$isValidNumber(item.num) ? 'is-invalid' : ''"
+                          :class="$isValidNumberNotZero(item.num) ? 'is-invalid' : ''"
                           x-number.0.unsigned
                           x-model.number="item.num"
                         >
@@ -2351,7 +2365,7 @@
                           <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
                         </div>
                         <div class="col-4 text-end">
-                          <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
+                          <span x-text="$formatNumber(ingredient.amount)"></span>
                         </div>
                         <div
                           class="col-1"
@@ -2382,7 +2396,7 @@
                         x-text="recipe.name"
                         ></div>
                       <div class="col-4 text-end">
-                        <span x-text="$store.barkeeper.formatNumber(recipe.amount)"></span>
+                        <span x-text="$formatNumber(recipe.amount)"></span>
                       </div>
                       <div
                         class="col-1"
@@ -2403,7 +2417,7 @@
                             <span class="pill" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'" x-text="ingredient.name"></span>
                           </div>
                         <div class="col-4 text-end">
-                          <span x-text="$store.barkeeper.formatNumber(ingredient.amount)"></span>
+                          <span x-text="$formatNumber(ingredient.amount)"></span>
                         </div>
                         <div
                           class="col-1"
@@ -2464,10 +2478,10 @@
                       <span x-text="item.price !== 0 ? $store.barkeeper.formatCurrency(item.price) : '-'"></span>
                     </td>
                     <td class="text-end no-wrap" style="width: 6rem;">
-                      <span x-text="item.hasOwnProperty('size') ? $store.barkeeper.formatNumber(+item.num * +item.size) : '-'"></span>
+                      <span x-text="item.hasOwnProperty('size') ? $formatNumber(+item.num * +item.size) : '-'"></span>
                     </td>
                     <td class="text-end no-wrap" style="width: 6rem;">
-                      <span x-text="item.hasOwnProperty('amount') ? $store.barkeeper.formatNumber(item.amount) : '-'" class="grid-table-muted"></span>
+                      <span x-text="item.hasOwnProperty('amount') ? $formatNumber(item.amount) : '-'" class="grid-table-muted"></span>
                     </td>
                     <td style="width: 5rem;" class="no-wrap">
                       <span x-text="item.hasOwnProperty('unit') ? item.unit : '-'"></span>
@@ -2627,7 +2641,7 @@
                           <div
                             class="form-control text-end"
                             style="background-color: #e9ecef !important;"
-                            x-text="$store.barkeeper.formatNumber(unit[1])"></div>
+                            x-text="$formatNumber(unit[1])"></div>
                           <div class="input-group-append">
                             <span class="input-group-text" x-text="ingredient.baseUnit"></span>
                           </div>
@@ -2663,7 +2677,7 @@
                           <input
                               type="text"
                               class="form-control text-end"
-                              :class="$isValidNumber(unit[1]) ? 'is-invalid' : ''"
+                              :class="$isValidNumberNotZero(unit[1]) ? 'is-invalid' : ''"
                               x-number.3.unsigned
                               x-model.number="unit[1]">
                           <div class="input-group-append">
@@ -2721,7 +2735,7 @@
                                 <input
                                   type="text"
                                   class="form-control text-center"
-                                  :class="$isValidNumber(source.size) ? 'is-invalid' : ''"
+                                  :class="$isValidNumberNotZero(source.size) ? 'is-invalid' : ''"
                                   x-number.3.unsigned
                                   x-model.number="source.size">
                                 <div class="input-group-append">
@@ -2772,7 +2786,7 @@
                               <input
                                 type="text"
                                 class="form-control text-end"
-                                :class="$isValidNumber(i_ingredient.amount) ? 'is-invalid' : ''"
+                                :class="$isValidNumberNotZero(i_ingredient.amount) ? 'is-invalid' : ''"
                                 x-number.3.unsigned
                                 x-model.number="i_ingredient.amount">
                             </template>
