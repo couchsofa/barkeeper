@@ -484,6 +484,7 @@
           const DE = d3.formatDefaultLocale({
             thousands: '.',
             decimal: ',',
+            grouping: [3],
             currency: ['', ' €'],
           });
 
@@ -491,7 +492,7 @@
           container.innerHTML = '';
 
           // find largest y-value in dataset
-          const digits = DE.format('$.2f')(Math.max(...dataset.map((e) => e[1]))).length;
+          const digits = DE.format('$,.2f')(Math.max(...dataset.map((e) => e[1]))).length;
 
           // layout
           const width = container.offsetWidth;
@@ -563,7 +564,7 @@
           svg.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate('+ margin.left + ',0)')
-            .call(d3.axisLeft(y).tickFormat(DE.format('$.2f')))
+            .call(d3.axisLeft(y).tickFormat(DE.format('$,.2f')))
             .call(g => g.select('.domain').remove())
             .call(g => g.selectAll('.tick line').clone()
             .attr('x2', width - margin.left - margin.right)
@@ -647,7 +648,7 @@
             const [_x, _y] = dataset[i];
 
             dot.attr('transform', 'translate(' + x(_x) + ',' + y(_y) + ')');
-            text.text(_x + ': ' + DE.format('$.2f')(_y) );
+            text.text(_x + ': ' + DE.format('$,.2f')(_y) );
             //svg.property('value', dataset[i]).dispatch('input', {bubbles: true});
           };
 
@@ -671,6 +672,7 @@
           const DE = d3.formatDefaultLocale({
             thousands: '.',
             decimal: ',',
+            grouping: [3],
             currency: ['', ' €'],
           });
 
@@ -710,33 +712,36 @@
           });
 
           // proportional ice expense (distribute by num cubes, crushed scoops and num of large cubes)
-          let total_cubes       = this.getNumCubes;
-          let total_scoops      = this.getNumScoops;
-          let total_largeCubes  = this.getNumLargeCubes;
+          const total_cubes       = this.getNumCubes;
+          const total_scoops      = this.getNumScoops;
+          const total_largeCubes  = this.getNumLargeCubes;
+
+          const cube_item = shoppingList.find((i) => i.id === barProgram.ice.cubeID);
+          const total_cubes_expense = +cube_item.num * +cube_item.price;
+
+          const crushed_item = shoppingList.find((i) => i.id === barProgram.ice.crushedID);
+          const total_scoops_expense = +crushed_item.num * +crushed_item.price;
+
+          const largeCube_item = shoppingList.find((i) => i.id === barProgram.ice.largeCubeID);
+          const total_largeCubes_expense = +largeCube_item.num * +largeCube_item.price;
 
           cocktails.forEach((c) => {
             // cubes
             let cube_expense = 0;
-            const cube_item = shoppingList.find((i) => i.id === barProgram.ice.cubeID);
-            
             if ( total_cubes !== 0 && (+c.cubes * +c.numToPrep) !== 0 ) {
-              cube_expense = (+cube_item.num * +cube_item.price) / total_cubes * (+c.cubes * +c.numToPrep);
+              cube_expense = total_cubes_expense / total_cubes * (+c.cubes * +c.numToPrep);
             };
             
             // crushed
             let crushed_expense = 0;
-            const crushed_item = shoppingList.find((i) => i.id === barProgram.ice.crushedID);
-
             if ( total_scoops !== 0 && (+c.crushed * +c.numToPrep) !== 0 ) {
-              crushed_expense = (+crushed_item.num * +crushed_item.price) / total_scoops * (+c.crushed * +c.numToPrep);
+              crushed_expense = total_scoops_expense / total_scoops * (+c.crushed * +c.numToPrep);
             }
 
             // large cubes
             let largeCube_expense = 0;
-            const largeCube_item = shoppingList.find((i) => i.id === barProgram.ice.largeCubeID);
-            
             if ( total_largeCubes !== 0 && (+c.largeCubes * +c.numToPrep) !== 0 ) {
-              largeCube_expense = (+largeCube_item.num * +largeCube_item.price) / total_largeCubes * (+c.largeCubes * +c.numToPrep);
+              largeCube_expense = total_largeCubes_expense / total_largeCubes * (+c.largeCubes * +c.numToPrep);
             }
 
             dataset.find((e) => e.id === c.id).Ice = cube_expense + crushed_expense + largeCube_expense;
@@ -745,7 +750,7 @@
 
           // proportional ingredient expense (distriubte by amount)
           let recipes = {};
-          let totals  = {};
+          let r_totals  = {};
           cocktails.forEach((c) => {
             let ingredients = JSON.parse(JSON.stringify(c.ingredients.concat(c.garnishes)));
 
@@ -775,10 +780,10 @@
 
           Object.entries(recipes).forEach((e) => {
             e[1].forEach((i) => {
-              if ( totals.hasOwnProperty(i.id) ) {
-                totals[i.id] += +i.amount;
+              if ( r_totals.hasOwnProperty(i.id) ) {
+                r_totals[i.id] += +i.amount;
               } else {
-                totals[i.id] = +i.amount;
+                r_totals[i.id] = +i.amount;
               };
             });
           });
@@ -788,7 +793,7 @@
               const item = shoppingList.find((item) => item.id === i.id);
               if (item === undefined) { return };
 
-              dataset.find((e) => e.id === c.id).Ingredients += (+item.num * +item.price) / totals[i.id] * i.amount;
+              dataset.find((e) => e.id === c.id).Ingredients += (+item.num * +item.price) / r_totals[i.id] * i.amount;
             });
             
           });
@@ -799,8 +804,14 @@
             'Ice'
           ];
 
+          const totals = {
+            Ingredients: Object.values(r_totals).reduce((acc, cur) => {return acc += cur }, 0),
+            Equipment:   equipment_cost,
+            Ice:         total_cubes_expense + total_scoops_expense + total_largeCubes_expense,
+          };
+
           const max = Math.max(...dataset.map(e => e.Ingredients + e.Ice + e.Equipment), ...dataset.map(e => e.revenue));
-          const digits = DE.format('$.2f')(max).length;
+          const digits = DE.format('$,.2f')(max).length;
 
           // layout
           const width = container.offsetWidth;
@@ -808,7 +819,7 @@
           const margin = {
             top:    20,
             right:  20,
-            bottom: 50,
+            bottom: 80,
             left:   digits*9
           };
 
@@ -841,7 +852,7 @@
           svg.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate('+ margin.left + ',0)')
-            .call(d3.axisLeft(y).tickFormat(DE.format('$.2f')))
+            .call(d3.axisLeft(y).tickFormat(DE.format('$,.2f')))
             .call(g => g.select('.domain').remove())
             .call(g => g.selectAll('.tick line').clone()
             .attr('x2', width - margin.left - margin.right)
@@ -879,13 +890,14 @@
               .attr("y1", y(c.revenue))
               .attr("x2", x(c.name) + x.bandwidth())
               .attr("y2", y(c.revenue))
-              .style("stroke-width", 2)
+              .style("stroke-width", 3)
+              .style("stroke-dasharray", "15, 5")
               .style("stroke", "black")
               .style("fill", "none")
               .style("opacity", "0.5");
 
             svg.append('text')
-              .text(DE.format('$.2f')(c.revenue))
+              .text(DE.format('$,.2f')(c.revenue))
               .attr("fill", "currentColor")
               .attr("text-anchor", "middle")
               .attr("font-size", "1rem")
@@ -901,7 +913,7 @@
           // render legend
           var legend = svg.append('g')
             .attr('class', 'legend')
-            .attr('transform', 'translate(' + (width/2 - (3*150)/2 + margin.left) + ', ' + (height - 20) + ')');
+            .attr('transform', 'translate(' + (width/2 - (3*150)/2 + margin.left) + ', ' + (height - 40) + ')');
 
           legend.selectAll('rect')
             .data(parts)
@@ -921,7 +933,11 @@
             .attr('x', (d, i) => { return i * 150 + 18; })
             .attr('y', 0)
             .attr('text-anchor', 'start')
-            .attr('alignment-baseline', 'hanging');
+            .attr('alignment-baseline', 'hanging')
+            .append('tspan')
+            .text((d) => { return DE.format('$,.2f')(totals[d]); })
+            .attr('x', (d, i) => { return i * 150 + 18; })
+            .attr('y', "2.2rem");
 
         },
 
