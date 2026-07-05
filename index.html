@@ -42,6 +42,7 @@
         activeTab: 'null',
         charts: {},
         barChart: null,
+        revenueChart: null,
         palette: {
           'Neutral':          'e9ecef',
           'Forest Moss':      '669900',
@@ -680,128 +681,10 @@
           container.innerHTML = '';
 
           // build dataset
-          const dataset       = [];
-          const barProgram    = this.getEvent.barProgram;
-          const shoppingList  = this.shoppingList;
-          const cocktails     = Object.values(this.getCocktails());
-
-          if (cocktails.length === 0) { return }
-
-          cocktails.forEach((c) => {
-            dataset.push({
-              id:           c.id,
-              name:         c.name,
-              revenue:      c.numToPrep * c.price,
-              Ingredients:  0
-            });
-          });
-
-          // proportional equipment expense (distribute per amount)
-          const num_cocktails = cocktails.reduce((acc, c) => {return acc + +c.numToPrep}, 0);
-          const equipment_cost = barProgram.equipment.reduce((acc, e) => {return acc + (+e.num * +e.price)}, 0);
-
-          cocktails.forEach((c) => {
-            dataset.find((e) => e.id === c.id).Equipment = equipment_cost / num_cocktails * c.numToPrep;
-          });
-
-          // proportional ice expense (distribute by num cubes, crushed scoops and num of large cubes)
-          const total_cubes       = this.getNumCubes;
-          const total_scoops      = this.getNumScoops;
-          const total_largeCubes  = this.getNumLargeCubes;
-
-          const cube_item = shoppingList.find((i) => i.id === barProgram.ice.cubeID);
-          const total_cubes_expense = +cube_item.num * +cube_item.price;
-
-          const crushed_item = shoppingList.find((i) => i.id === barProgram.ice.crushedID);
-          const total_scoops_expense = +crushed_item.num * +crushed_item.price;
-
-          const largeCube_item = shoppingList.find((i) => i.id === barProgram.ice.largeCubeID);
-          const total_largeCubes_expense = +largeCube_item.num * +largeCube_item.price;
-
-          cocktails.forEach((c) => {
-            // cubes
-            let cube_expense = 0;
-            if ( total_cubes !== 0 && (+c.cubes * +c.numToPrep) !== 0 ) {
-              cube_expense = total_cubes_expense / total_cubes * (+c.cubes * +c.numToPrep);
-            };
-            
-            // crushed
-            let crushed_expense = 0;
-            if ( total_scoops !== 0 && (+c.crushed * +c.numToPrep) !== 0 ) {
-              crushed_expense = total_scoops_expense / total_scoops * (+c.crushed * +c.numToPrep);
-            }
-
-            // large cubes
-            let largeCube_expense = 0;
-            if ( total_largeCubes !== 0 && (+c.largeCubes * +c.numToPrep) !== 0 ) {
-              largeCube_expense = total_largeCubes_expense / total_largeCubes * (+c.largeCubes * +c.numToPrep);
-            }
-
-            dataset.find((e) => e.id === c.id).Ice = cube_expense + crushed_expense + largeCube_expense;
-          });
-
-
-          // proportional ingredient expense (distriubte by amount)
-          let recipes = {};
-          let r_totals  = {};
-          cocktails.forEach((c) => {
-            let ingredients = JSON.parse(JSON.stringify(c.ingredients.concat(c.garnishes)));
-
-            if (ingredients.length === 0) { 
-              recipes[c.id] = [];
-              return;
-            };
-            
-            // build recipe
-            recipe = this.assembleRecipe(ingredients);
-
-            // flatten, deduplicate and sum
-            let summedRecipe = [];
-            recipe = Object.groupBy(recipe.flat(Infinity), ({id}) => id);
-            Object.entries(recipe).forEach((e) => {
-              summedRecipe.push(
-                {
-                  id:     e[0],
-                  unit:   e[1][0].unit,
-                  amount: e[1].reduce((acc, {amount}) => acc + +amount, 0) * c.numToPrep,
-                }
-              );
-            });
-
-            recipes[c.id] = summedRecipe;
-          });
-
-          Object.entries(recipes).forEach((e) => {
-            e[1].forEach((i) => {
-              if ( r_totals.hasOwnProperty(i.id) ) {
-                r_totals[i.id] += +i.amount;
-              } else {
-                r_totals[i.id] = +i.amount;
-              };
-            });
-          });
-
-          cocktails.forEach((c) => {
-            recipes[c.id].forEach((i) => {
-              const item = shoppingList.find((item) => item.id === i.id);
-              if (item === undefined) { return };
-
-              dataset.find((e) => e.id === c.id).Ingredients += (+item.num * +item.price) / r_totals[i.id] * i.amount;
-            });
-            
-          });
-
-          const parts = [
-            'Ingredients',
-            'Equipment',
-            'Ice'
-          ];
-
-          const totals = {
-            Ingredients: Object.values(r_totals).reduce((acc, cur) => {return acc += cur }, 0),
-            Equipment:   equipment_cost,
-            Ice:         total_cubes_expense + total_scoops_expense + total_largeCubes_expense,
-          };
+          let dataset = [];
+          let totals = {};
+          let parts = [];
+          [dataset, totals, parts] = this.finances;
 
           const max = Math.max(...dataset.map(e => e.Ingredients + e.Ice + e.Equipment), ...dataset.map(e => e.revenue));
           const digits = chartCurrencyFormatDE.format('$,.2f')(max).length;
@@ -812,17 +695,17 @@
           const margin = {
             top:    20,
             right:  20,
-            bottom: 80,
+            bottom: 20,
             left:   digits*9
           };
 
-          // x (horizontal) scale
+          // x scale
           const x = d3.scaleBand()
               .domain(dataset.map(e => e.name))
               .range([margin.left, width - margin.right])
               .padding([0.2]);
 
-          // y (vertical) scale
+          // y scale
           const y = d3.scaleLinear()
               .domain([0, Math.ceil(max/100)*100 + 150])
               .range([height - margin.bottom, margin.top]);
@@ -839,6 +722,7 @@
           svg.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate(0,' + (height - margin.bottom) + ')')
+            .style("font-size", "1rem")
             .call(d3.axisBottom(x).tickSizeOuter(0));
 
           // add the y-axis, remove domain line, add grid lines
@@ -883,11 +767,10 @@
               .attr("y1", y(c.revenue))
               .attr("x2", x(c.name) + x.bandwidth())
               .attr("y2", y(c.revenue))
-              .style("stroke-width", 3)
+              .style("stroke-width", 2)
               .style("stroke-dasharray", "15, 5")
               .style("stroke", "black")
-              .style("fill", "none")
-              .style("opacity", "0.5");
+              .style("fill", "none");
 
             svg.append('text')
               .text(chartCurrencyFormatDE.format('$,.2f')(c.revenue))
@@ -904,6 +787,177 @@
           });
 
           // render legend
+          /*var legend = svg.append('g')
+            .attr('class', 'legend')
+            .attr('transform', 'translate(' + (width/2 - (3*150)/2 + margin.left) + ', ' + (height - 40) + ')');
+
+          legend.selectAll('rect')
+            .data(parts)
+            .enter()
+            .append('rect')
+            .attr('x', (d, i) => { return i * 150; })
+            .attr('y', '0.8rem')
+            .attr('width', 16)
+            .attr('height', 16)
+            .attr('fill', (d, i) => { return '#' + color(d); });
+          
+          legend.selectAll('text')
+            .data(parts)
+            .enter()
+            .append('text')
+            .text((d) => { return d; })
+            .attr('x', (d, i) => { return i * 150 + 26; })
+            .attr('y', 0)
+            .attr('text-anchor', 'start')
+            .attr('alignment-baseline', 'hanging')
+            .append('tspan')
+            .text((d) => { return chartCurrencyFormatDE.format('$,.2f')(totals[d]); })
+            .attr('x', (d, i) => { return i * 150 + 26; })
+            .attr('y', "2.2rem");*/
+        },
+
+        createRevenueChart(container) {
+          // palette
+          const palette = [
+            '8AC926',
+            '823131',
+            '457B9D'
+          ];
+
+          // reset
+          container.innerHTML = '';
+
+          // build dataset
+          let totals = {};
+          let parts = [];
+          let dataset = [];
+          [dataset, totals, parts] = this.finances;
+
+          const total_revenue = dataset.reduce((acc, {revenue}) => acc + revenue, 0);
+          const total_expense = Object.values(totals).reduce((acc, cur) => acc + cur, 0);
+          const max = Math.max(total_expense, total_revenue);
+          const digits = chartCurrencyFormatDE.format('$,.2f')(max).length;
+
+          // layout
+          const width = container.offsetWidth;
+          const height = container.offsetHeight;
+          const margin = {
+            top:    20,
+            right:  20,
+            bottom: 80,
+            left:   digits*9/2
+          };
+
+          // x scale
+          const x = d3.scaleLinear()
+              .domain([0, Math.ceil(max/100)*100])
+              .range([margin.left, width - margin.right]);
+
+          // y scale
+          const y = d3.scaleBand()
+              .domain(['_'])
+              .range([margin.top, height - margin.bottom])
+              .padding([0.4]);
+
+          // create svg container
+          //var svg = d3.create("svg")
+          var svg = d3.select(container).append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox','0 0 ' + width + ' ' + height)
+            .attr('preserveAspectRatio','xMinYMin');
+
+          // add x-axis
+          svg.append('g')
+            .attr('class', 'axis')
+            .attr('transform', 'translate(0,' + ( height - margin.bottom) + ')')
+            .call(d3.axisBottom(x).tickFormat(chartCurrencyFormatDE.format('$,.2f')))
+            .call(g => g.select('.domain').remove())
+            .call(g => g.selectAll('.tick line').clone()
+            .attr('y2', -height + margin.top + margin.bottom)
+            .attr('stroke-opacity', 0.3));
+
+          // add the y-axis, remove domain line, add grid lines
+          svg.append('g')
+            .attr('class', 'axis')
+            .attr('transform', 'translate(' + (margin.left) + ', 0)')
+            .call(d3.axisLeft(y).tickSizeOuter(0))
+            .call(g => g.select('.domain').remove())
+            .call(g => g.select('.tick').remove());
+
+          // color palette
+          var color = d3.scaleOrdinal()
+            .domain(parts)
+            .range(palette);
+
+          // stack
+          var stackedData = d3.stack()
+            .keys(parts)
+            .order(d3.stackOrderNone)
+            .offset(d3.stackOffsetNone)([totals]);
+
+          // render bars
+          svg.append("g")
+            .selectAll("g")
+            .data(stackedData)
+            .enter().append("g")
+              .attr("fill", (d) => { return '#' + color(d.key); })
+              .selectAll("rect")
+              .data((d) => { return d; })
+              .enter().append("rect")
+                .attr("x", (d) => { return x(d[0]); })
+                .attr("y", (d) => { return y('_'); })
+                .attr("height",y.bandwidth())
+                .attr("width", (d) => { return x(d[1]) - x(d[0]); });
+
+          // render revenue and expense lines
+          svg.append("line")
+            .attr("x1", x(total_revenue))
+            .attr("y1", y('_'))
+            .attr("x2", x(total_revenue))
+            .attr("y2", y('_') + y.bandwidth())
+            .style("stroke-width", 2)
+            .style("stroke-dasharray", "15, 5")
+            .style("stroke", "black")
+            .style("fill", "none");
+
+          svg.append("line")
+            .attr("x1", x(total_expense))
+            .attr("y1", y('_'))
+            .attr("x2", x(total_expense))
+            .attr("y2", y('_') + y.bandwidth())
+            .style("stroke-width", 2)
+            .style("stroke", "black")
+            .style("fill", "none");
+
+          // render revenue and expense text
+          svg.append('text')
+            .text(chartCurrencyFormatDE.format('$,.2f')(total_revenue))
+            .attr("fill", "green")
+            .attr("text-anchor", "end")
+            .attr("font-size", "1rem")
+            .style("stroke", "#ffffff")
+            .style("stroke-width", ".3rem")
+            .style("stroke-opacity", "0.7")
+            .style("stroke-linecap", "butt")
+            .style("stroke-linejoin", "round")
+            .style("paint-order", "stroke fill")
+            .attr('transform', 'translate(' + (x(total_revenue) + ',' + (y('_') + y.bandwidth() * 1.5)) + ')');
+
+          svg.append('text')
+            .text(chartCurrencyFormatDE.format('$,.2f')(total_expense))
+            .attr("fill", "red")
+            .attr("text-anchor", "end")
+            .attr("font-size", "1rem")
+            .style("stroke", "#ffffff")
+            .style("stroke-width", ".3rem")
+            .style("stroke-opacity", "0.7")
+            .style("stroke-linecap", "butt")
+            .style("stroke-linejoin", "round")
+            .style("paint-order", "stroke fill")
+            .attr('transform', 'translate(' + (x(total_expense) + ',' + (y('_') - y.bandwidth()*0.3)) + ')');
+
+          // render legend
           var legend = svg.append('g')
             .attr('class', 'legend')
             .attr('transform', 'translate(' + (width/2 - (3*150)/2 + margin.left) + ', ' + (height - 40) + ')');
@@ -913,9 +967,9 @@
             .enter()
             .append('rect')
             .attr('x', (d, i) => { return i * 150; })
-            .attr('y', 2)
-            .attr('width', 12)
-            .attr('height', 12)
+            .attr('y', '0.8rem')
+            .attr('width', 16)
+            .attr('height', 16)
             .attr('fill', (d, i) => { return '#' + color(d); });
           
           legend.selectAll('text')
@@ -923,15 +977,14 @@
             .enter()
             .append('text')
             .text((d) => { return d; })
-            .attr('x', (d, i) => { return i * 150 + 18; })
+            .attr('x', (d, i) => { return i * 150 + 26; })
             .attr('y', 0)
             .attr('text-anchor', 'start')
             .attr('alignment-baseline', 'hanging')
             .append('tspan')
             .text((d) => { return chartCurrencyFormatDE.format('$,.2f')(totals[d]); })
-            .attr('x', (d, i) => { return i * 150 + 18; })
+            .attr('x', (d, i) => { return i * 150 + 26; })
             .attr('y', "2.2rem");
-
         },
 
         assembleEventProgram(event_id) {
@@ -1056,6 +1109,133 @@
           recipes.recipes = summedRecipes;
 
           return recipes;
+        },
+
+        get finances() {
+          const barProgram    = this.getEvent.barProgram;
+          const shoppingList  = this.shoppingList;
+          const cocktails     = Object.values(this.getCocktails());
+          let dataset         = [];
+
+          const parts = [
+            'Ingredients',
+            'Equipment',
+            'Ice'
+          ];
+
+          if (cocktails.length === 0) { return []}
+
+          cocktails.forEach((c) => {
+            dataset.push({
+              id:           c.id,
+              name:         c.name,
+              revenue:      c.numToPrep * c.price,
+              Ingredients:  0
+            });
+          });
+
+          // proportional equipment expense (distribute per amount)
+          const num_cocktails = cocktails.reduce((acc, c) => {return acc + +c.numToPrep}, 0);
+          const equipment_cost = barProgram.equipment.reduce((acc, e) => {return acc + (+e.num * +e.price)}, 0);
+
+          cocktails.forEach((c) => {
+            dataset.find((e) => e.id === c.id).Equipment = equipment_cost / num_cocktails * c.numToPrep;
+          });
+
+          // proportional ice expense (distribute by num cubes, crushed scoops and num of large cubes)
+          const total_cubes       = this.getNumCubes;
+          const total_scoops      = this.getNumScoops;
+          const total_largeCubes  = this.getNumLargeCubes;
+
+          const cube_item = shoppingList.find((i) => i.id === barProgram.ice.cubeID);
+          const total_cubes_expense = +cube_item.num * +cube_item.price;
+
+          const crushed_item = shoppingList.find((i) => i.id === barProgram.ice.crushedID);
+          const total_scoops_expense = +crushed_item.num * +crushed_item.price;
+
+          const largeCube_item = shoppingList.find((i) => i.id === barProgram.ice.largeCubeID);
+          const total_largeCubes_expense = +largeCube_item.num * +largeCube_item.price;
+
+          cocktails.forEach((c) => {
+            // cubes
+            let cube_expense = 0;
+            if ( total_cubes !== 0 && (+c.cubes * +c.numToPrep) !== 0 ) {
+              cube_expense = total_cubes_expense / total_cubes * (+c.cubes * +c.numToPrep);
+            };
+            
+            // crushed
+            let crushed_expense = 0;
+            if ( total_scoops !== 0 && (+c.crushed * +c.numToPrep) !== 0 ) {
+              crushed_expense = total_scoops_expense / total_scoops * (+c.crushed * +c.numToPrep);
+            }
+
+            // large cubes
+            let largeCube_expense = 0;
+            if ( total_largeCubes !== 0 && (+c.largeCubes * +c.numToPrep) !== 0 ) {
+              largeCube_expense = total_largeCubes_expense / total_largeCubes * (+c.largeCubes * +c.numToPrep);
+            }
+
+            dataset.find((e) => e.id === c.id).Ice = cube_expense + crushed_expense + largeCube_expense;
+          });
+
+
+          // proportional ingredient expense (distriubte by amount)
+          let recipes = {};
+          let r_totals  = {};
+          cocktails.forEach((c) => {
+            let ingredients = JSON.parse(JSON.stringify(c.ingredients.concat(c.garnishes)));
+
+            if (ingredients.length === 0) { 
+              recipes[c.id] = [];
+              return;
+            };
+            
+            // build recipe
+            recipe = this.assembleRecipe(ingredients);
+
+            // flatten, deduplicate and sum
+            let summedRecipe = [];
+            recipe = Object.groupBy(recipe.flat(Infinity), ({id}) => id);
+            Object.entries(recipe).forEach((e) => {
+              summedRecipe.push(
+                {
+                  id:     e[0],
+                  unit:   e[1][0].unit,
+                  amount: e[1].reduce((acc, {amount}) => acc + +amount, 0) * c.numToPrep,
+                }
+              );
+            });
+
+            recipes[c.id] = summedRecipe;
+          });
+
+          Object.entries(recipes).forEach((e) => {
+            e[1].forEach((i) => {
+              if ( r_totals.hasOwnProperty(i.id) ) {
+                r_totals[i.id] += +i.amount;
+              } else {
+                r_totals[i.id] = +i.amount;
+              };
+            });
+          });
+
+          cocktails.forEach((c) => {
+            recipes[c.id].forEach((i) => {
+              const item = shoppingList.find((item) => item.id === i.id);
+              if (item === undefined) { return };
+
+              dataset.find((e) => e.id === c.id).Ingredients += (+item.num * +item.price) / r_totals[i.id] * i.amount;
+            });
+            
+          });
+
+          const totals = {
+            Ingredients: Object.values(dataset).reduce((acc, {Ingredients}) => {return acc + Ingredients }, 0),
+            Equipment:   equipment_cost,
+            Ice:         total_cubes_expense + total_scoops_expense + total_largeCubes_expense,
+          };
+
+          return [dataset, totals, parts];
         },
 
         get shoppingList () {
@@ -1221,6 +1401,10 @@
 
             if(this.barChart) {
               this.createBarChart(this.barChart);
+            };
+
+            if(this.revenueChart) {
+              this.createRevenueChart(this.revenueChart);
             };
           })
         },
@@ -2354,10 +2538,15 @@
 <!-- cocktail cost bar plot -->
       <div class="card shadow-sm rounded mt-5" style="max-width: 140rem; margin-inline: auto;">
         <div
-          class="costBarChart mb-3"
-          style="width: 100%; height: 450px;"
+          class="costBarChart"
+          style="width: 100%; height: 400px;"
           x-render="() => { $store.barkeeper.createBarChart($el); $store.barkeeper.barChart = $el }"
           x-destroy="() => { $store.barkeeper.barChart = null }"></div>
+        <div
+          class="revenueChart mb-3"
+          style="width: 100%; height: 200px;"
+          x-render="() => { $store.barkeeper.createRevenueChart($el); $store.barkeeper.revenueChart = $el }"
+          x-destroy="() => { $store.barkeeper.revenueChart = null }"></div>
       </div>
 
 <!-- recipes -->
