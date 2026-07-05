@@ -17,6 +17,13 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
+    chartCurrencyFormatDE = d3.formatDefaultLocale({
+      thousands: '.',
+      decimal: ',',
+      grouping: [3],
+      currency: ['', ' €'],
+    });
+
     document.addEventListener('alpine:init', () => {
       Alpine.store('barkeeper', {
         data: {
@@ -481,18 +488,11 @@
         createCocktailCostChart(container, dataset) {
           if (!dataset) {return};
 
-          const DE = d3.formatDefaultLocale({
-            thousands: '.',
-            decimal: ',',
-            grouping: [3],
-            currency: ['', ' €'],
-          });
-
           // reset
           container.innerHTML = '';
 
           // find largest y-value in dataset
-          const digits = DE.format('$,.2f')(Math.max(...dataset.map((e) => e[1]))).length;
+          const digits = chartCurrencyFormatDE.format('$,.2f')(Math.max(...dataset.map((e) => e[1]))).length;
 
           // layout
           const width = container.offsetWidth;
@@ -564,7 +564,7 @@
           svg.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate('+ margin.left + ',0)')
-            .call(d3.axisLeft(y).tickFormat(DE.format('$,.2f')))
+            .call(d3.axisLeft(y).tickFormat(chartCurrencyFormatDE.format('$,.2f')))
             .call(g => g.select('.domain').remove())
             .call(g => g.selectAll('.tick line').clone()
             .attr('x2', width - margin.left - margin.right)
@@ -648,7 +648,7 @@
             const [_x, _y] = dataset[i];
 
             dot.attr('transform', 'translate(' + x(_x) + ',' + y(_y) + ')');
-            text.text(_x + ': ' + DE.format('$,.2f')(_y) );
+            text.text(_x + ': ' + chartCurrencyFormatDE.format('$,.2f')(_y) );
             //svg.property('value', dataset[i]).dispatch('input', {bubbles: true});
           };
 
@@ -669,13 +669,6 @@
         },
 
         createBarChart(container) {
-          const DE = d3.formatDefaultLocale({
-            thousands: '.',
-            decimal: ',',
-            grouping: [3],
-            currency: ['', ' €'],
-          });
-
           // palette
           const palette = [
             '8AC926',
@@ -811,7 +804,7 @@
           };
 
           const max = Math.max(...dataset.map(e => e.Ingredients + e.Ice + e.Equipment), ...dataset.map(e => e.revenue));
-          const digits = DE.format('$,.2f')(max).length;
+          const digits = chartCurrencyFormatDE.format('$,.2f')(max).length;
 
           // layout
           const width = container.offsetWidth;
@@ -852,7 +845,7 @@
           svg.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate('+ margin.left + ',0)')
-            .call(d3.axisLeft(y).tickFormat(DE.format('$,.2f')))
+            .call(d3.axisLeft(y).tickFormat(chartCurrencyFormatDE.format('$,.2f')))
             .call(g => g.select('.domain').remove())
             .call(g => g.selectAll('.tick line').clone()
             .attr('x2', width - margin.left - margin.right)
@@ -897,7 +890,7 @@
               .style("opacity", "0.5");
 
             svg.append('text')
-              .text(DE.format('$,.2f')(c.revenue))
+              .text(chartCurrencyFormatDE.format('$,.2f')(c.revenue))
               .attr("fill", "currentColor")
               .attr("text-anchor", "middle")
               .attr("font-size", "1rem")
@@ -935,7 +928,7 @@
             .attr('text-anchor', 'start')
             .attr('alignment-baseline', 'hanging')
             .append('tspan')
-            .text((d) => { return DE.format('$,.2f')(totals[d]); })
+            .text((d) => { return chartCurrencyFormatDE.format('$,.2f')(totals[d]); })
             .attr('x', (d, i) => { return i * 150 + 18; })
             .attr('y', "2.2rem");
 
