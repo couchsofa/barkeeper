@@ -2449,12 +2449,13 @@
                     <div class="col-3">Name</div>
                     <div class="col-1">Quant.</div>
                     <div class="col-2">Price</div>
-                    <div class="col-3">Source</div>
+                    <div class="col-2">Source</div>
                     <div class="col-3">Comment</div>
+                    <div class="col-1">Hide</div>
                   </div>
 
                   <template x-for="item in $store.barkeeper.getEvent.barProgram.equipment" :key="item.id">
-                    <div class="row">
+                    <div class="input-group">
                       <div class="col-3 p-1">
                         <input
                           type="text"
@@ -2484,23 +2485,31 @@
                           <span class="input-group-text">€</span>
                         </div>
                       </div>
-                      <div class="col-3 p-1">
+                      <div class="col-2 p-1">
                         <input
                           type="text"
                           class="form-control"
-                          x-model="item.shopLink"
-                        >
+                          x-model="item.shopLink">
                       </div>
                       <div class="col-3 p-1">
                         <div class="input-group">
                           <input
                             type="text"
                             class="form-control"
-                            x-model="item.comment"
-                          >
+                            x-model="item.comment">
+                        </div>
+                      </div>
+                      <div class="col-1 p-1">
+                        <div class="d-flex flex-nowrap">
+                          <div class="form-check form-switch mt-1">
+                            <input
+                              class="form-check-input form-check-reverse"
+                              type="checkbox"
+                              x-model.boolean="item.hideInShoppingList">
+                          </div>
                           <button
                             type="button"
-                            class="btn btn-outline-danger btn-xs m-1 p-0"
+                            class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
                             x-on:click="$store.barkeeper.getEvent.barProgram.equipment = $store.barkeeper.getEvent.barProgram.equipment.filter((e) => e.id !== item.id)">✗</button>
                         </div>
                       </div>
@@ -2522,6 +2531,7 @@
                       price: 0,
                       shopLink: '',
                       comment: '',
+                      hideInShoppingList: false,
                     })"
                   >✚</button>
                 </div>
