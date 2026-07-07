@@ -126,6 +126,26 @@
           );
         },
 
+        collectPropFromIngredients(id, propName) {
+          let item = this.data.cocktails.find((i) => i.id === id);
+          if (!item) {
+            item = this.data.ingredients.find((i) => i.id === id);
+          } else if(!item) {
+            return [];
+          };
+
+          let collection = [];
+
+          if (item.ingredients.length !== 0) {
+            item.ingredients.forEach((i) => {
+              collection.push(...this.collectPropFromIngredients(i.id, propName));  
+            });
+          };
+
+          collection.push(...item[propName]);
+          return collection;
+        },
+
         // Persistence
         export() {
           this.download(
@@ -261,8 +281,8 @@
             ingredients: [],
             yield: 0,
             sources: [],
-            allergens: '',
-            vegan: '',
+            allergens: [],
+            nonVeganIngredients: [],
             notes: '',
             safetyFactor: 0.1,
             abv: 0,
@@ -364,6 +384,27 @@
             return cocktails.filter((e) => e.name.toLowerCase().includes(searchString.toLowerCase()));
           };
           return cocktails;
+        },
+
+        getTags(id, type) {
+          let item = this.data.cocktails.find((i) => i.id === id);
+          if (!item) {
+            item = this.data.ingredients.find((i) => i.id === id);
+          } else if(!item) {
+            return [];
+          };
+
+          let tags = [];
+
+          item.ingredients.forEach((i) => {
+            tags.push(...this.collectPropFromIngredients(i.id, type));
+          });
+
+          item.garnishes?.forEach((i) => {
+            tags.push(...this.collectPropFromIngredients(i.id, type));
+          });
+
+          return [...new Set(tags)];
         },
 
         // accepts a recipe entry
@@ -1648,6 +1689,73 @@
       padding: .1rem .35rem .1rem .35rem;
     }
 
+    .tags-input {
+      display: flex;
+      flex-wrap: wrap;
+      background-color: #fff;
+      border-width: 1px;
+      border-radius: .25rem;
+      padding-left: .5rem;
+      padding-right: 1rem;
+      padding-top: .5rem;
+      padding-bottom: .25rem;
+      min-height: 3.25rem;
+    }
+
+    .tags-input-tag {
+      display: inline-flex;
+      line-height: 1.5;
+      align-items: center;
+      font-size: .875rem;
+      background-color: #e2e3e5;
+      border-radius: .25rem;
+      border: 1px solid transparent;
+      border-color: #cfcfcf;
+      user-select: none;
+      padding-inline: .5rem;
+      margin-right: .5rem;
+      margin-bottom: .25rem;
+    }
+
+    .tags-input-tag:last-of-type {
+      margin-right: 0;
+    }
+
+    .tags-input-tag:has(.tags-input-remove:hover) {
+      border-color: #dc3545;
+    }
+
+    .tags-input-remove:hover {
+      color: #dc3545;
+    }
+
+    .tags-input-remove {
+      color: #842029;
+      font-size: 1.125rem;
+      line-height: 1.5;
+      border: 0;
+      background-color: transparent;
+      padding: 0;
+      margin-bottom: .25rem;
+    }
+
+    .tags-input-remove:first-child {
+      margin-right: .25rem;
+    }
+
+    .tags-input-remove:last-child {
+      margin-left: .25rem;
+    }
+
+    .tags-input-text {
+      flex: 1;
+      padding-top: .25rem;
+      padding-bottom: .25rem;
+      margin-left: .5rem;
+      margin-bottom: .25rem;
+      min-width: 10rem;
+    }
+
   </style>
 
 </head>
@@ -2105,6 +2213,27 @@
                         class="btn btn-outline-success btn-xs col-1 m-1 p-0"
                     x-on:click="cocktail.garnishes.push({unit: '', amount: 0, id: undefined})">✚</button>
                   </div>
+                </div>
+  <!-- Cocktails / allergens -->
+                <label for="allergens"><h5>Allergens</h5></label>
+
+                <div class="tags-input" id="allergens">
+                  <template x-for="(allergen, index) in $store.barkeeper.getTags(cocktail.id, 'allergens')" :key="index">
+                    <span class="tags-input-tag">
+                      <span x-text="allergen"></span>
+                    </span>
+                  </template>
+                </div>
+                
+  <!-- Cocktails / vegan -->
+                <label for="nonVeganIngredients"><h5>Non-vegan ingredients</h5></label>
+
+                <div class="tags-input" id="nonVeganIngredients">
+                  <template x-for="(v_ingredient, index) in $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')" :key="index">
+                    <span class="tags-input-tag">
+                      <span x-text="v_ingredient"></span>
+                    </span>
+                  </template>
                 </div>
 
   <!-- Cocktails / Notes -->
@@ -3092,19 +3221,67 @@
 
     <!-- Ingredients / allergens -->
                 <label for="allergens"><h5>Allergens</h5></label>
-                <textarea
-                  id="allergens"
-                  class="form-control mt-1 mb-1"
-                  rows="1"
-                  x-model="ingredient.allergens"></textarea>
 
+                <template x-if="$store.barkeeper.getTags(ingredient.id, 'allergens').length !== 0">
+
+                  <div class="tags-input">
+                    <template x-for="(allergen, index) in $store.barkeeper.getTags(ingredient.id, 'allergens')" :key="index">
+                      <span class="tags-input-tag">
+                        <span x-text="allergen"></span>
+                      </span>
+                    </template>
+                  </div>
+
+                </template>
+
+                <div class="tags-input" id="allergens" x-data="{ newAllergen: '' }">
+                  <template x-for="(allergen, index) in ingredient.allergens" :key="index">
+                    <span class="tags-input-tag">
+                      <span x-text="allergen"></span>
+                      <button type="button" class="tags-input-remove" @click="ingredient.allergens = ingredient.allergens.filter((e) => e !== allergen)">✗</button>
+                    </span>
+                  </template>
+
+                  <input
+                    type="text"
+                    placeholder="..."
+                    class="tags-input-text form-control"
+                    @keydown.enter.prevent="if (newAllergen.trim() !== '') { ingredient.allergens.push(newAllergen.trim()); newAllergen = '' }"
+                    x-model="newAllergen">
+                </div>
+                
     <!-- Ingredients / vegan -->
-                <label for="notes"><h5>Vegan</h5></label>
-                <textarea
-                  class="form-control mt-1 mb-1"
-                  rows="1"
-                  x-model="ingredient.vegan"></textarea>
+                <label for="nonVeganIngredients"><h5>Non-vegan ingredients</h5></label>
 
+                <template x-if="$store.barkeeper.getTags(ingredient.id, 'nonVeganIngredients').length !== 0">
+                  
+                  <div class="tags-input">
+                    <template x-for="(allergen, index) in $store.barkeeper.getTags(ingredient.id, 'nonVeganIngredients')" :key="index">
+                      <span class="tags-input-tag">
+                        <span x-text="allergen"></span>
+                      </span>
+                    </template>
+                  </div>
+
+                </template>
+
+                <div class="tags-input" id="nonVeganIngredients" x-data="{ newIngredient: '' }">
+                  <template x-for="(v_ingredient, index) in ingredient.nonVeganIngredients" :key="index">
+                    <span class="tags-input-tag">
+                      <span x-text="v_ingredient"></span>
+                      <button type="button" class="tags-input-remove" @click="ingredient.nonVeganIngredients = ingredient.nonVeganIngredients.filter((e) => e !== v_ingredient)">✗</button>
+                    </span>
+                  </template>
+
+                  <input
+                    type="text"
+                    placeholder="..."
+                    class="tags-input-text form-control"
+                    @keydown.enter.prevent="if (newIngredient.trim() !== '') { ingredient.nonVeganIngredients.push(newIngredient.trim()); newIngredient = '' }"
+                    x-model="newIngredient">
+                </div>
+
+    <!-- Ingredeints / Shopping list settings -->
                   <div class="alert alert-danger mt-3">
                     <div class="form-check form-switch">
                       <input
@@ -3139,5 +3316,7 @@
   </template>
 
   </div>
+
+
 </body>
 </html>
