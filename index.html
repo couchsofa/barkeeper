@@ -138,11 +138,21 @@
 
           if (item.ingredients.length !== 0) {
             item.ingredients.forEach((i) => {
-              collection.push(...this.collectPropFromIngredients(i.id, propName));  
+              const _ = this.collectPropFromIngredients(i.id, propName);
+              if (Array.isArray(_)) {
+                collection.push(..._);
+              } else {
+                collection.push(_);
+              }  
             });
           };
 
-          collection.push(...item[propName]);
+          if (Array.isArray(item[propName])) {
+            collection.push(...item[propName]);  
+          } else {
+            collection.push(item[propName]);
+          }
+
           return collection;
         },
 
@@ -405,6 +415,36 @@
           });
 
           return [...new Set(tags)];
+        },
+
+        getCocktailIngredientNames(cocktail_id) {
+          const cocktail = this.data.cocktails.find((c) => c.id === cocktail_id);
+          if(!cocktail) { return []; };
+
+          const collectNames = (id) => {
+            const ingredient = this.data.ingredients.find((i) => i.id === id);
+            if (!ingredient) { return []; };
+
+            let collection = [];
+
+            if (ingredient.ingredients.length !== 0) {
+              ingredient.ingredients.forEach((i) => {
+                collection.push(...collectNames(i.id));
+              });
+            } else {
+              collection.push(ingredient.name);
+            }
+
+            return collection;
+          };
+
+          let ingredients = [];
+
+          cocktail.ingredients.forEach((i) => {
+            ingredients.push(...collectNames(i.id));
+          });
+
+          return [...new Set(ingredients)];
         },
 
         // accepts a recipe entry
@@ -1756,6 +1796,36 @@
       min-width: 10rem;
     }
 
+    .menu-minimal {
+      font-family: "Arial" sans-serif;
+      font-size: 1.85rem;
+      line-height: 1;
+      margin-top: 1rem;
+    }
+
+    .menu-minimal:first-child {
+      margin-top: 0;
+    }
+
+    .menu-minimal .price {
+      font-size: 6rem;
+      text-align: right;
+      padding-right: 1.5rem;
+      width: 18rem;
+    }
+
+    .menu-minimal .name {
+      padding-top: .5rem;
+      font-weight: bold;
+    }
+
+    .menu-minimal .ingredients {
+      font-size: 1rem;
+    }
+
+    .menu-minimal .info {
+      font-size: .8rem;
+    }
   </style>
 
 </head>
@@ -2688,8 +2758,8 @@
           x-destroy="() => { $store.barkeeper.revenueChart = null }"></div>
       </div>
 
-<!-- recipes -->
-      <section class="double-width mt-5">
+<!-- recipes / menu / bar sheet -->
+      <section class="double-width cards-4 mt-5">
         <div>
           <div class="card shadow-sm rounded">
             <div class="card-header card-title">Cocktails</div>
@@ -2777,6 +2847,41 @@
                 </template>
               </div>
 
+            </div>
+          </div><!-- /card -->
+        </div>
+
+        <div>
+          <div class="card shadow-sm rounded">
+            <div class="card-header card-title">
+              Menu
+            </div> 
+            <div class="card-body">
+              <template x-for="(cocktail, index) in $store.barkeeper.getCocktails()">
+                <div
+                  class="mb-3"
+                  x-data="{
+                    allergens: $store.barkeeper.getTags(cocktail.id, 'allergens'),
+                    nonVeganIngredients: $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')
+                  }">
+
+                  <table class="menu-minimal">
+                    <tr>
+                      <td class="price" rowspan="3" x-text="$formatNumber(cocktail.price).replace(',','.')"></td>
+                      <td class="name" x-text="cocktail.name"></td>
+                    </tr>
+                    <tr>
+                      <td class="ingredients" x-text="$store.barkeeper.getCocktailIngredientNames(cocktail.id).join(', ')"></td>
+                    </tr>
+                    <tr>
+                      <td class="info">
+                        <span x-text="nonVeganIngredients.length ? Alpine.raw(nonVeganIngredients).join(', ') : 'vegan'"></span>
+                        <span x-text="allergens.length ? ' | ' + Alpine.raw(allergens).join(', ') : ''"></span>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </template>
             </div>
           </div><!-- /card -->
         </div>
