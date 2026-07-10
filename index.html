@@ -31,6 +31,7 @@
           ingredients: [],
           events: [],
           prepMethods: [],
+          glassTypes: [],
           settings: {
             costDistRange: [50, 200],
             costDistMinimaNum: 5,
@@ -281,6 +282,14 @@
           });
         },
 
+        // Glass types
+        removeGlassType(glass) {
+          this.data.glassTypes = this.data.glassTypes.filter((e) => e !== glass);
+          this.data.cocktails.forEach((c) => {
+            if (c.glass === glass) { c.glass = '' }
+          });
+        },
+
         // Ingredients
         addIngredient(name) {
           this.data.ingredients.unshift({
@@ -381,6 +390,7 @@
             crushed: 0,
             largeCubes: 0,
             method: '',
+            glass: '',
             event: event,
             numToPrep: 0,
             price: 0,
@@ -1729,6 +1739,7 @@
       padding: .1rem .35rem .1rem .35rem;
     }
 
+    /* tag input */
     .tags-input {
       display: flex;
       flex-wrap: wrap;
@@ -1796,35 +1807,93 @@
       min-width: 10rem;
     }
 
+    /* menu */
     .menu-minimal {
-      font-family: "Arial" sans-serif;
+      font-family: "Arial", sans-serif;
       font-size: 1.85rem;
-      line-height: 1;
-      margin-top: 1rem;
-    }
-
-    .menu-minimal:first-child {
-      margin-top: 0;
+      line-height: 1.2;
     }
 
     .menu-minimal .price {
-      font-size: 6rem;
       text-align: right;
+      vertical-align: top;
+      padding-top: 1rem;
       padding-right: 1.5rem;
-      width: 18rem;
+      width: 5ch;
     }
 
     .menu-minimal .name {
-      padding-top: .5rem;
+      padding-top: 1rem;
       font-weight: bold;
     }
 
     .menu-minimal .ingredients {
+      padding-top: .25rem;
       font-size: 1rem;
     }
 
     .menu-minimal .info {
+      padding-top: .25rem;
       font-size: .8rem;
+    }
+
+    /* bar sheet  */
+    .bar-sheet-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .bar-sheet {
+      font-family: "Arial", sans-serif;
+      font-size: 1rem;
+      line-height: 1;
+      padding-bottom: 1rem;
+      padding-inline: 1rem;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .bar-sheet .name {
+      font-family: "Arial", sans-serif;
+      font-size: 1.85rem;
+      padding: .5rem 0;
+      font-weight: bold;
+      flex: 0 0 100%;
+    }
+
+    .bar-sheet .prep {
+      margin-inline: .5rem;
+    }
+
+    .bar-sheet .prep div {
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+    }
+
+    .bar-sheet .recipe .ingredients {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .bar-sheet .recipe .garnishes {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .bar-sheet .recipe .recipe-col {
+      display: flex;
+      flex-direction: column;
+      margin-inline: .5rem;
+    }
+
+    .bar-sheet .recipe .recipe-col div {
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+    }
+
+    .bar-sheet .recipe .garnishes {
+      border-top: 2px solid black;
     }
   </style>
 
@@ -1950,6 +2019,44 @@
                     type="button"
                     class="btn btn-outline-success btn-xs m-0 p-1"
                     x-on:click="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">✚</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header card-title">
+              Glass types
+            </div>
+            <ul class="list-group list-group-flush">
+              <template x-for="glass in $store.barkeeper.data.glassTypes">
+                <li class="list-group-item">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control p-1 m-0"
+                      x-model="glass">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-xs m-0 p-1"
+                      x-on:click="$store.barkeeper.removeGlassType(glass)">✗</button>
+                  </div>
+                </li>
+              </template>
+
+              <li class="list-group-item" x-data="{newGlass: ''}">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control p-1 m-0"
+                    x-model="newGlass"
+                    x-on:keyup.enter="if (newGlass !== '') {$store.barkeeper.data.glassTypes.push(newGlass); newGlass = ''}">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-xs m-0 p-1"
+                    x-on:click="if (newGlass !== '') {$store.barkeeper.data.glassTypes.push(newGlass); newGlass = ''}">✚</button>
                 </div>
               </li>
             </ul>
@@ -2318,12 +2425,22 @@
                 <div id="prep-method">
 
                   <div class="row mb-3">
-                    <div class="col-12">  
+                    <div class="col-6">  
                       <select class="form-select" x-model="cocktail.method">
                         <template x-for="method in $store.barkeeper.data.prepMethods">
                             <option
                                 x-bind:selected="cocktail.method === method"
                                 x-text="method" 
+                            />
+                        </template>
+                      </select>
+                    </div>
+                    <div class="col-6">  
+                      <select class="form-select" x-model="cocktail.glass">
+                        <template x-for="glass in $store.barkeeper.data.glassTypes">
+                            <option
+                                x-bind:selected="cocktail.glass === glass"
+                                x-text="glass" 
                             />
                         </template>
                       </select>
@@ -2857,15 +2974,14 @@
               Menu
             </div> 
             <div class="card-body">
-              <template x-for="(cocktail, index) in $store.barkeeper.getCocktails()">
-                <div
-                  class="mb-3"
-                  x-data="{
-                    allergens: $store.barkeeper.getTags(cocktail.id, 'allergens'),
-                    nonVeganIngredients: $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')
-                  }">
 
-                  <table class="menu-minimal">
+              <table class="menu-minimal">
+
+                <template x-for="(cocktail, index) in $store.barkeeper.getCocktails()">
+                  <tbody x-data="{
+                      allergens: $store.barkeeper.getTags(cocktail.id, 'allergens'),
+                      nonVeganIngredients: $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')
+                    }">
                     <tr>
                       <td class="price" rowspan="3" x-text="$formatNumber(cocktail.price).replace(',','.')"></td>
                       <td class="name" x-text="cocktail.name"></td>
@@ -2879,9 +2995,92 @@
                         <span x-text="allergens.length ? ' | ' + Alpine.raw(allergens).join(', ') : ''"></span>
                       </td>
                     </tr>
-                  </table>
-                </div>
-              </template>
+                  </tbody>
+                </template>
+
+              </table>
+
+            </div>
+          </div><!-- /card -->
+        </div>
+
+        <div>
+          <div class="card shadow-sm rounded">
+            <div class="card-header card-title">
+              Bar sheet
+            </div> 
+            <div class="card-body">
+              <div class="bar-sheet-container"
+                x-data="{
+                  prepWidth: Math.max(...$store.barkeeper.getCocktails().map((c) => ['Cubes', 'Crushed ice', 'Big cube', c.glass]).flat().map((e) => e.toString().length)),
+                  amountWidth: Math.max(...$store.barkeeper.getCocktails().map((c) => c.ingredients).flat().map((i) => i.amount).map((e) => e.toString().length)),
+                  unitWidth: Math.max(...$store.barkeeper.getCocktails().map((c) => c.ingredients).flat().map((i) => i.unit).map((e) => e.toString().length))
+                }">
+                <template x-for="(cocktail, index) in $store.barkeeper.getCocktails()">
+                  <div class="bar-sheet" x-data="{ ice: [ cocktail.cubes ? 'Cubes' : '', cocktail.crushed ? 'Crushed ice' : '', cocktail.largeCubes ? 'Big cube' : '' ] }">
+                    <div class="name" x-text="cocktail.name"></div>
+
+                    <div class="prep" :style="'width: ' + prepWidth + 'ch;'">
+
+                      <div x-text="cocktail.glass" style="font-style: italic;"></div>
+                      <template x-for="i in ice.filter((e) => e !== '')">
+                        <div x-text="i"></div>
+                      </template>
+
+                    </div>
+
+                    <div class="recipe">
+
+                      <div class="ingredients">
+                        <div class="recipe-col" :style="'width: ' + amountWidth + 'ch;'">
+                          <template x-for="ingredient in cocktail.ingredients">
+                            <div x-text="ingredient.amount" class="text-end"></div>
+                          </template>
+                        </div>
+
+                        <div class="recipe-col" :style="'width: ' + unitWidth + 'ch;'">
+                          <template x-for="ingredient in cocktail.ingredients">
+                            <div x-text="ingredient.unit"></div>
+                          </template>
+                        </div>
+
+                        <div class="recipe-col">
+                          <template x-for="ingredient in cocktail.ingredients">
+                            <div x-text="$store.barkeeper.data.ingredients.find((e) => e.id === ingredient.id).name"></div>
+                          </template>
+                        </div>
+                      </div>
+
+                      <template x-if="cocktail.garnishes.length !== 0">
+                        <div class="garnishes">
+
+                          <div class="recipe-col" :style="'width: ' + amountWidth + 'ch;'">
+                            <template x-for="ingredient in cocktail.garnishes">
+                              <div x-text="ingredient.amount" class="text-end"></div>
+                            </template>
+                          </div>
+
+                          <div class="recipe-col" :style="'width: ' + unitWidth + 'ch;'">
+                            <template x-for="ingredient in cocktail.garnishes">
+                              <div x-text="ingredient.unit"></div>
+                            </template>
+                          </div>
+                          
+                          <div class="recipe-col">
+                            <template x-for="ingredient in cocktail.garnishes">
+                              <div x-text="$store.barkeeper.data.ingredients.find((e) => e.id === ingredient.id).name"></div>
+                            </template>
+                          </div>
+
+                        </div>
+                      </template>
+
+                    </div>
+
+                  </div>
+
+                </template>
+              </div>
             </div>
           </div><!-- /card -->
         </div>
