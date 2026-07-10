@@ -2500,6 +2500,7 @@
                 <div
                   class="costDistChart mb-3"
                   style="width: 100%; height: 350px;"
+                  x-on:resize.window.debounce="$store.barkeeper.createCocktailCostChart($el, $store.barkeeper.calcCocktailCost(cocktail.id))"
                   x-render="() => { $store.barkeeper.createCocktailCostChart($el, $store.barkeeper.calcCocktailCost(cocktail.id)); $store.barkeeper.charts[cocktail.id] = $el; }"
                   x-destroy="() => { delete $store.barkeeper.charts[cocktail.id] }"></div>
 
@@ -2866,11 +2867,13 @@
         <div
           class="costBarChart"
           style="width: 100%; height: 400px;"
+          x-on:resize.window.debounce="$store.barkeeper.createBarChart($el)"
           x-render="() => { $store.barkeeper.createBarChart($el); $store.barkeeper.barChart = $el }"
           x-destroy="() => { $store.barkeeper.barChart = null }"></div>
         <div
           class="revenueChart mb-3"
           style="width: 100%; height: 200px;"
+          x-on:resize.window.debounce="$store.barkeeper.createRevenueChart($el)"
           x-render="() => { $store.barkeeper.createRevenueChart($el); $store.barkeeper.revenueChart = $el }"
           x-destroy="() => { $store.barkeeper.revenueChart = null }"></div>
       </div>
