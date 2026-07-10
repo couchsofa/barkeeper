@@ -201,6 +201,7 @@
                 largeCubeCost: 0,
               },
               equipment: [],
+              purchases: {}
             },
           });
         },
@@ -1420,6 +1421,15 @@
           ];
 
           list.push(...ice.filter((e) => e.num !== 0));
+
+          list.forEach((item) => {
+            if (!this.getEvent.barProgram.purchases.hasOwnProperty(item.id) ) {
+              this.getEvent.barProgram.purchases[item.id] = {
+                comment: '',
+                expense: 0,
+              };
+            }
+          });
 
           return list;
         },
@@ -3093,7 +3103,7 @@
       </section>
 
 <!-- shopping list -->
-      <div class="card shadow-sm rounded mt-5" style="max-width: 140rem; margin-inline: auto;">
+      <div class="card shadow-sm rounded mt-5" style="max-width: 160rem; margin-inline: auto;">
         <div class="card-header card-title">
           Shopping List
           <button type="button" class="btn btn-primary" @click="$store.barkeeper.exportShoppingListCSV($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ))">⇩ export csv</button>
@@ -3109,10 +3119,13 @@
                   <th scope="col" colspan="2" class="text-center" style="width: 9rem;">Unit Size</th>
                   <th scope="col" style="width: 15rem;">Name</th>
                   <th scope="col" class="text-center" style="width: 4rem;">Unit Price</th>
-                  <th scope="col" colspan="3" class="text-center" style="width: 17rem;">Total amount</th>
+                  <th scope="col" colspan="3" class="text-center" style="width: 19rem;">Total amount</th>
                   <th scope="col" class="text-center" style="width: 6rem;">Cost</th>
                   <th scope="col">Source</th>
                   <th scope="col">Comment</th>
+                  <th scope="col" style="width: 5rem;">Actual expense</th>
+                  <th scope="col" style="width: 15rem;">Comment</th>
+                  <th scope="col" style="width: 7rem;">Balance</th>
                 </tr>
               </thead>
               <tbody>
@@ -3133,10 +3146,10 @@
                     <td class="text-end no-wrap" style="width: 4rem;">
                       <span x-text="item.price !== 0 ? $formatCurrency(item.price) : '-'"></span>
                     </td>
-                    <td class="text-end no-wrap" style="width: 6rem;">
+                    <td class="text-end no-wrap" style="width: 7rem;">
                       <span x-text="item.hasOwnProperty('size') ? $formatNumber(+item.num * +item.size) : '-'"></span>
                     </td>
-                    <td class="text-end no-wrap" style="width: 6rem;">
+                    <td class="text-end no-wrap" style="width: 7rem;">
                       <span x-text="item.hasOwnProperty('amount') ? $formatNumber(item.amount) : '-'" class="grid-table-muted"></span>
                     </td>
                     <td style="width: 5rem;" class="no-wrap">
@@ -3150,6 +3163,28 @@
                     </td>
                     <td>
                       <span x-text="item.comment"></span>
+                    </td>
+                    <td style="width: 5rem;">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control text-end"
+                          :class="$isValidNumber($store.barkeeper.getEvent.barProgram.purchases[item.id].expense) ? 'is-invalid' : ''"
+                          x-number.2.unsigned
+                          x-model.number="$store.barkeeper.getEvent.barProgram.purchases[item.id].expense">
+                        <span class="input-group-text">€</span>
+                      </div>
+                    </td>
+                    <td style="width: 15rem;">
+                      <input
+                        type="text"
+                        class="form-control"
+                        x-model="$store.barkeeper.getEvent.barProgram.purchases[item.id].comment">
+                    </td>
+                    <td class="text-end no-wrap" style="width: 7rem;">
+                      <span
+                        :style="((+item.num * +item.price) - $store.barkeeper.getEvent.barProgram.purchases[item.id].expense) >= 0 ? 'color: green;' : 'color: red;' "
+                        x-text="$formatCurrency((+item.num * +item.price) - $store.barkeeper.getEvent.barProgram.purchases[item.id].expense)"></span>
                     </td>
                   </tr>
                 </template>
