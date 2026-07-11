@@ -3103,7 +3103,7 @@
       </section>
 
 <!-- shopping list -->
-      <div class="card shadow-sm rounded mt-5" style="max-width: 160rem; margin-inline: auto;">
+      <div class="card shadow-sm rounded mt-5" style="max-width: 280rem; margin-inline: auto;">
         <div class="card-header card-title">
           Shopping List
           <button type="button" class="btn btn-primary" @click="$store.barkeeper.exportShoppingListCSV($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ))">⇩ export csv</button>
@@ -3188,6 +3188,17 @@
                     </td>
                   </tr>
                 </template>
+
+                  <tr>
+                    <td colspan="13"></td>
+                    <td class="text-end no-wrap" style="width: 7rem;">
+                      <div style="border-top: 6px double black;">
+                        <span
+                          :style="($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ).reduce((acc, item) => acc + ((+item.num * +item.price) - $store.barkeeper.getEvent.barProgram.purchases[item.id].expense), 0 )) >= 0 ? 'color: green;' : 'color: red;' "
+                          x-text="$formatCurrency($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ).reduce((acc, item) => acc + ((+item.num * +item.price) - $store.barkeeper.getEvent.barProgram.purchases[item.id].expense), 0 ))"></span>
+                      </div>
+                    </td>
+                  </tr>
 
               </tbody>
             </table>
