@@ -3232,7 +3232,7 @@
               x-bind:style="(ingredient.ingredients.length === 0 && ingredient.sources.length === 0) ? 'border-color: red; border-width: 3px' : ''">
 
   <!-- Ingredients / Name -->
-              <div class="card-header p-2">
+              <div class="card-header p-2" :style="'background-color: #' + $store.barkeeper.palette[ingredient.color] + ';'">
                 <input
                   type="text"
                   class="form-control card-title bg-transparent p-1 m-0"
