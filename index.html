@@ -199,7 +199,8 @@
                 largeCubeCost: 0,
               },
               equipment: [],
-              purchases: {}
+              purchases: {},
+              cocktailsSold: []
             },
           });
         },
@@ -926,7 +927,7 @@
           [dataset, totals, parts] = this.finances;
 
           const total_revenue  = dataset.reduce((acc, {revenue}) => acc + revenue, 0);
-          const actual_revenue = 0; // TODO
+          const actual_revenue = this.getEvent.barProgram.cocktailsSold.reduce((acc, day) => acc + Object.entries(day).reduce((acc, [id, num]) => acc + num * this.data.cocktails.find((i) => i.id === id).price, 0), 0 );
           const total_expense  = Object.values(totals).reduce((acc, cur) => acc + cur, 0);
           const actual_expense = this.shoppingList.reduce((acc, item) => acc + this.getEvent.barProgram.purchases[item.id].expense, 0 );
           const max = Math.max(total_expense, total_revenue);
@@ -2654,6 +2655,55 @@
                         "></span>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div class="container grid-table grid-table-striped mt-3">
+
+                <div class="row grid-table-heading">
+                  <div class="col-2">Day</div>
+                  <div class="col-4">Cocktails sold</div>
+                  <div class="col-5">Projected revenue</div>
+                  <div class="col-1"></div>
+                </div>
+
+                <template x-for="(day, index) in $store.barkeeper.getEvent.barProgram.cocktailsSold" :key="index">
+
+                  <div class="row">
+                    <div class="col-2" style="padding: .375rem .75rem;">
+                      <span class="form-label" x-text="index + 1"></span>
+                    </div>
+                    <div class="col-4">
+                      <div class="input-group">
+                        <input
+                          type="number"
+                          step="1"
+                          class="form-control text-end"
+                          x-model.number="day[cocktail.id]"
+                          :class="$isValidNumber(day[cocktail.id]) ? 'is-invalid' : ''">
+                      </div>
+                    </div>
+                    <div class="col-5 text-end">  
+                      <span x-text="$formatCurrency(day[cocktail.id] * cocktail.price)"></span>
+                    </div>
+                    <div class="col-1" style="padding-left: 0;">
+                      <button
+                        type="button"
+                        class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
+                        x-on:click="$store.barkeeper.getEvent.barProgram.cocktailsSold.splice(index, 1)">✗</button>
+                    </div>
+                  </div>
+                  
+                </template>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-12">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-xs m-0 p-1 w-100"
+                    x-on:click="$store.barkeeper.getEvent.barProgram.cocktailsSold.push({})"
+                  >✚</button>
                 </div>
               </div>
 
