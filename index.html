@@ -3261,7 +3261,14 @@
                 </template>
 
                   <tr>
-                    <td colspan="13"></td>
+                    <td colspan="8"></td>
+                    <td class="text-end no-wrap" style="width: 7rem;">
+                      <div style="border-top: 6px double black;">
+                        <span
+                          x-text="$formatCurrency($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ).reduce((acc, item) => acc + (+item.num * +item.price), 0 ))"></span>
+                      </div>
+                    </td>
+                    <td colspan="4"></td>
                     <td class="text-end no-wrap" style="width: 7rem;">
                       <div style="border-top: 6px double black;">
                         <span
