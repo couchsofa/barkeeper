@@ -30,6 +30,7 @@
           events: [],
           prepMethods: [],
           glassTypes: [],
+          productCategories: [],
           settings: {
             costDistRange: [50, 200],
             costDistMinimaNum: 5,
@@ -38,7 +39,7 @@
           }
         },
 
-        activeTab: 'null',
+        activeTab: 'products',
         charts: {},
         barChart: null,
         revenueChart: null,
@@ -138,6 +139,20 @@
           }
 
           return collection;
+        },
+
+        removePorductCategory(id) {
+          this.data.productCategories = this.data.productCategories.filter((c) => c.id !== id);
+          this.data.cocktails.forEach((c) => {
+            if (c.category === id) { c.category = '' }
+          });
+        },
+
+        addProductCategory(name) {
+          this.data.productCategories.push({
+            id:   self.crypto.randomUUID(),
+            name: name,
+          });
         },
 
         // Persistence
@@ -379,6 +394,7 @@
             event: event,
             numToPrep: 0,
             price: 0,
+            category: '',
           });
         },
 
@@ -1927,17 +1943,13 @@
 
 </head>
 <body>
-  <div
-    x-data="{
-      tabs: ['Ingredients', '⚙', ],
-      ideaTabStub: [{id: 'null', name: 'Ideas'}],
-    }">
+  <div x-data="{}">
 
 <!-- Navigation -->
     <div id="header">
       <h1>🥃 barkeeper</h1>
       <ul class="nav nav-tabs">
-        <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)" :key="event.id">
+        <template x-for="event in $store.barkeeper.data.events" :key="event.id">
           <li
             @click="$store.barkeeper.activeTab = event.id"
             class="nav-item">
@@ -1948,17 +1960,40 @@
               x-text="event.name"></a>
           </li>
         </template>
-        <template x-for="tab in tabs">
+
+        <li class="nav-item">
+          <a href="#" class="nav-link disabled px-0">|</a>
+        </li>
+
+        <li class="nav-item" @click="$store.barkeeper.activeTab = 'products'">
+          <a 
+            href="#"
+            class="nav-link"
+            :class="{ 'active': $store.barkeeper.activeTab === 'products' }">Products</a>
+        </li>
+
+        <template x-for="category in $store.barkeeper.data.productCategories">
           <li
-            @click="$store.barkeeper.activeTab = tab"
+            @click="$store.barkeeper.activeTab = category.id"
             class="nav-item">
             <a
               class="nav-link"
-              :class="{ 'active': $store.barkeeper.activeTab === tab }"
+              :class="{ 'active': $store.barkeeper.activeTab === category.id }"
               href="#"
-              x-text="tab"></a>
+              x-text="category.name"></a>
           </li>
         </template>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link disabled px-0">|</a>
+        </li>
+
+        <li class="nav-item" @click="$store.barkeeper.activeTab = '⚙'">
+          <a 
+            href="#"
+            class="nav-link"
+            :class="{ 'active': $store.barkeeper.activeTab === '⚙' }">⚙</a>
+        </li>
       </ul>
     </div>
 
@@ -2094,7 +2129,45 @@
         <div>
           <div class="card">
             <div class="card-header card-title">
-              Cost distribution
+              Product categories
+            </div>
+            <ul class="list-group list-group-flush">
+              <template x-for="category in $store.barkeeper.data.productCategories">
+                <li class="list-group-item">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control p-1 m-0"
+                      x-model="category.name">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-xs m-0 p-1"
+                      x-on:click="$store.barkeeper.removePorductCategory(category.id)">✗</button>
+                  </div>
+                </li>
+              </template>
+
+              <li class="list-group-item" x-data="{newCategory: ''}">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control p-1 m-0"
+                    x-model="newCategory"
+                    x-on:keyup.enter="if (newCategory !== '') {$store.barkeeper.addProductCategory(newCategory); newCategory = ''}">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-xs m-0 p-1"
+                    x-on:click="if (newCategory !== '') {$store.barkeeper.addProductCategory(newCategory); newCategory = ''}">✚</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header card-title">
+              Cost distribution graph
             </div>
             <div class="alert alert-secondary m-3" role="alert">
               Set the range for which to calculate ingredient costs.
@@ -2233,7 +2306,7 @@
   </template>
 
 <!-- Cocktails -->
-  <template x-if="$store.barkeeper.data.events.concat(ideaTabStub).some((e) => e.id === $store.barkeeper.activeTab)">
+  <template x-if="$store.barkeeper.data.events.some((e) => e.id === $store.barkeeper.activeTab)">
     
     <div class="container p-3" x-data="{searchCocktails: ''}">
 
@@ -2537,7 +2610,7 @@
                     <span class="input-group-text">Event:</span>
                   </div>
                   <select class="form-select" x-model="cocktail.event">
-                    <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)">
+                    <template x-for="event in $store.barkeeper.data.events">
                         <option
                             x-bind:selected="cocktail.event === event.id"
                             x-bind:value="event.id"
