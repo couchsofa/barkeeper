@@ -59,7 +59,7 @@
 
         formatURLinText(text) {
           // this isn't perfect, but good enough
-          return text.replace(/(http|https):\/\/([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?/g, (e) => '<a href="' + e + '">' + e + '</a>');
+          return text.replace(/(http|https):\/\/([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?/g, (e) => '<a target="_blank" rel="noopener noreferrer" href="' + e + '">' + e + '</a>');
         },
 
         download(dataAttr, dataString, fileName) {
@@ -184,6 +184,7 @@
               },
               equipment: [],
               purchases: {},
+              sources: {},
               cocktailsSold: []
             },
           });
@@ -1372,12 +1373,20 @@
             const i = this.getIngredient(ingredient.id);
             if (i === undefined) { return };
 
-            // find cheapest source
-            const calcCost = s => Math.ceil((ingredient.amount)/s.size)*s.price;
-            const source = i.sources.reduce((cheapest, current) => 
-              calcCost(current) < calcCost(cheapest) ? current : cheapest
-            );
+            // look for event specific source, if there is none, find the cheapest
+            let source = {};
+            if (barProgram.sources.hasOwnProperty(i.id)) {
+              source = JSON.parse(JSON.stringify(barProgram.sources[i.id]));
+            } else {
+              const calcCost = s => Math.ceil((ingredient.amount)/s.size)*s.price;
+              source = i.sources.reduce((cheapest, current) => 
+                calcCost(current) < calcCost(cheapest) ? current : cheapest
+              );
 
+              barProgram.sources[i.id] = JSON.parse(JSON.stringify(source));
+            };  
+
+            ingredients.id      = i.id;
             ingredient.comment  = i.notes;
             ingredient.size     = source.size;
             ingredient.num      = Math.ceil((ingredient.amount)/source.size);
@@ -3232,7 +3241,25 @@
                       <span x-text="$formatCurrency(+item.num * +item.price)"></span>
                     </td>
                     <td>
-                      <span x-html="item.hasOwnProperty('shopLink') ? $store.barkeeper.formatURLinText(item.shopLink) : '-'"></span>
+                      <div class="dropdown">
+
+                        <template x-if="$store.barkeeper.getIngredient(item.id) !== undefined && $store.barkeeper.getIngredient(item.id).sources.length > 1">
+                          <span>
+                            <span data-bs-toggle="dropdown">︾ </span>
+                     
+                            <ul class="dropdown-menu">
+                              <template x-for="source in $store.barkeeper.getIngredient(item.id).sources">
+                                  <li><span
+                                    class="dropdown-item"
+                                    x-text="source.size + item.unit + ' ' + $formatCurrency(source.price) + ' ' + source.shopLink"
+                                    x-on:click="$store.barkeeper.getEvent.barProgram.sources[item.id] = Alpine.raw(source)"></span></li>
+                              </template>
+                            </ul>
+                          </span>
+                        </template>
+                        
+                        <span x-html="item.hasOwnProperty('shopLink') ? $store.barkeeper.formatURLinText(item.shopLink) : '-'"></span>
+                      </div>
                     </td>
                     <td>
                       <span x-text="item.comment"></span>
