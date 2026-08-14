@@ -475,7 +475,7 @@
           if (ingredient.ingredients.length !== 0) {
             // jump one level up and adjust amounts for yield
             ingredient.ingredients.forEach((e, index) => {
-              ingredient.ingredients[index].amount = (e.amount / ingredient.yield) * recipe_entry.amount * conversionFactor;
+              ingredient.ingredients[index].amount = (e.amount / ingredient.yield) * recipe_entry.amount;
             });
           };
 
@@ -1163,11 +1163,9 @@
 
             c_recipes.forEach((item) => {
               item.amount *= cocktail.numToPrep;
-              item.raw_amount *= cocktail.numToPrep;
               
               item.ingredients.forEach((ingredient) => {
                 ingredient.amount *= cocktail.numToPrep;
-                ingredient.raw_amount *= cocktail.numToPrep;
                 if (ingredient.type === 'recipe') { delete ingredient.ingredients };
               });
             });
