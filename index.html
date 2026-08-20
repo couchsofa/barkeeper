@@ -1934,6 +1934,12 @@
     .bar-sheet .recipe .garnishes {
       border-top: 2px solid black;
     }
+
+    @media print {
+      .btn {
+        display: none !important;
+      }
+    }
   </style>
 
 </head>
@@ -1945,7 +1951,7 @@
     }">
 
 <!-- Navigation -->
-    <div id="header">
+    <div id="header" class="d-print-none">
       <h1>🥃 barkeeper</h1>
       <ul class="nav nav-tabs">
         <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)" :key="event.id">
@@ -2246,9 +2252,9 @@
 <!-- Cocktails -->
   <template x-if="$store.barkeeper.data.events.concat(ideaTabStub).some((e) => e.id === $store.barkeeper.activeTab)">
     
-    <div class="container p-3" x-data="{searchCocktails: ''}">
+    <div class="container p-3" x-data="{searchCocktails: ''}" style="break-after: page;">
 
-      <div class="input-group">
+      <div class="input-group d-print-none">
         <button
           type="button"
           class="btn btn-success"
@@ -2686,7 +2692,7 @@
       </section>
 
 <!-- ice management -->
-      <section class="double-width cards-2 mt-3">
+      <section class="double-width cards-2 mt-3 d-print-none">
         <div>
           <div class="card shadow-sm rounded">
             <div class="card-header card-title">Ice</div>
@@ -2848,7 +2854,7 @@
         </div>
 
 <!-- equipmentlist -->
-        <div>
+        <div class="d-print-none">
           <div class="card shadow-sm rounded">
             <div class="card-header card-title">Equipment</div>
 
@@ -2957,7 +2963,7 @@
       </section>
 
 <!-- cocktail cost bar plot -->
-      <div class="card shadow-sm rounded mt-5" :style="'max-width: ' + $store.barkeeper.getCocktails().length * 35 + 'rem; margin-inline: auto;'">
+      <div class="card shadow-sm rounded mt-5" :style="'max-width: ' + $store.barkeeper.getCocktails().length * 35 + 'rem; margin-inline: auto; break-after: page;'">
         <div
           class="costBarChart"
           style="width: 100%; height: 450px;"
@@ -2973,7 +2979,7 @@
       </div>
 
 <!-- recipes / menu / bar sheet -->
-      <section class="double-width cards-4 mt-5">
+      <section class="double-width cards-4 mt-5" style="break-after: page;">
         <div>
           <div class="card shadow-sm rounded">
             <div class="card-header card-title">Cocktails</div>
