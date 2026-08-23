@@ -445,6 +445,59 @@
           return [...new Set(ingredients)];
         },
 
+        getCocktailVolume(cocktail_id) {
+          const cocktail = this.data.cocktails.find((c) => c.id === cocktail_id);
+          if(!cocktail) { return 0; };
+
+          let volume = 0;
+
+          cocktail.ingredients.forEach((ingredient) => {
+            const baseUnit = this.getIngredient(ingredient.id).baseUnit;
+            let conversionFactor = 1;
+            let units = undefined;
+            let unitConvTableEntry = undefined;
+
+            // only consider ingredients which convert to ml, for now
+
+            // if unit is in ml, just add, no conversion necessary
+            if (ingredient.unit === 'ml') {
+              volume += ingredient.amount;
+              return;
+            };
+
+            // if ingredient has a base unit in ml, try to find a conversion entry
+            if (baseUnit === 'ml') {
+              units = this.getIngredientUnits(ingredient.id);
+              unitConvTableEntry = units.find((e) => e[0] === ingredient.unit);
+
+              if(unitConvTableEntry) {
+                conversionFactor = unitConvTableEntry[1];
+                volume += ingredient.amount * conversionFactor;
+
+                return;
+              };
+            };
+
+            // last resort: check if there is a matching entry in the global conversion table
+            units = [];
+
+            this.data.settings.unitConvTable.forEach((entry) => {
+              if (entry[0] === 'ml') { units.push([entry[1], 1/entry[2]]) };
+              if (entry[1] === 'ml') { units.push([entry[0], entry[2]]) };
+            });
+
+            unitConvTableEntry = units.find((e) => e[0] === ingredient.unit);
+
+            if(unitConvTableEntry) {
+              conversionFactor = unitConvTableEntry[1];
+              volume += ingredient.amount * conversionFactor;
+            };
+
+          });
+
+          return volume;
+        },
+
         // accepts a recipe entry
         // and applys safetyFactor, unitConversion
         // and adjusts for yield if it's a recipe
@@ -2566,6 +2619,16 @@
                   </div>
                 </div>
 
+  <!-- Cocktails / Volume -->
+                <label for="volume"><h5>Volume</h5></label>
+                <div id="volume">
+                  <div class="row">
+                    <div class="col-7">Pre dilution</div>
+                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id))"></div>
+                    <div class="col-2">ml</div>
+                  </div>
+
+  <!-- Cocktails / Cost Distribution -->
                 <h5>Cost distribution</h5>
                 <div
                   class="costDistChart mb-3"
