@@ -453,9 +453,11 @@
           if(!cocktail) { return 0; };
 
           let volume = 0;
+          let ethanol = 0;
 
           cocktail.ingredients.forEach((ingredient) => {
             const baseUnit = this.getIngredient(ingredient.id).baseUnit;
+            const abv = this.getIngredient(ingredient.id).abv/100;
             let conversionFactor = 1;
             let units = undefined;
             let unitConvTableEntry = undefined;
@@ -465,6 +467,7 @@
             // if unit is in ml, just add, no conversion necessary
             if (ingredient.unit === 'ml') {
               volume += ingredient.amount;
+              ethanol += ingredient.amount * abv;
               return;
             };
 
@@ -476,6 +479,7 @@
               if(unitConvTableEntry) {
                 conversionFactor = unitConvTableEntry[1];
                 volume += ingredient.amount * conversionFactor;
+                ethanol += ingredient.amount * conversionFactor * abv;
 
                 return;
               };
@@ -494,11 +498,12 @@
             if(unitConvTableEntry) {
               conversionFactor = unitConvTableEntry[1];
               volume += ingredient.amount * conversionFactor;
+              ethanol += ingredient.amount * conversionFactor * abv;
             };
 
           });
 
-          return volume;
+          return {volume: volume, ethanol: ethanol, volumeDiluted: this.getDilutedVolume(volume, ethanol, cocktail.method)};
         },
 
         getIceVolumePrep(cocktail_id) {
@@ -506,7 +511,6 @@
           if(!cocktail) { return 0; };
 
           let volume = 0;
-          // TODO: split prep ice and ice in glass
 
           // cubes
           const cubeSize = this.getEvent.barProgram.ice.cubeSize;
@@ -529,7 +533,6 @@
           if(!cocktail) { return 0; };
 
           let volume = 0;
-          // TODO: split prep ice and ice in glass
 
           // cubes
           const cubeSize = this.getEvent.barProgram.ice.cubeSize;
@@ -547,8 +550,19 @@
           return volume;
         },
 
-        getDilition(cocktail_id) {
-          // TODO: calculate estimated dilution (add water from prep) by Dave Arnolds formulas
+        getDilutedVolume(volume, ethanol, method) {
+          // using Dave Arnolds formulas for stirred and shaken drinks
+          const abv = ethanol / volume;
+
+          if (method === 'stirred') {
+            return volume * (1 + (-1.21 * abv**2 + 1.246 * abv + 0.145));
+          };
+
+          if (method === 'shaken') {
+            return volume * (1 + (-1.567 * abv**2 + 1.742 * abv + 0.0203));
+          };
+
+          return volume;
         },
 
         // accepts a recipe entry
@@ -2724,16 +2738,31 @@
                 </div>
 
   <!-- Cocktails / Volume -->
-                <label for="volume"><h5>Volume</h5></label>
+                <label for="volume"><h5>Volumes</h5></label>
                 <div id="volume">
                   <div class="row">
                     <div class="col-7">Pre dilution</div>
-                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id))"></div>
+                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volume)"></div>
+                    <div class="col-2">ml</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7">Post dilution</div>
+                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted)"></div>
                     <div class="col-2">ml</div>
                   </div>
                   <div class="row">
                     <div class="col-7">Ice</div>
                     <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id))"></div>
+                    <div class="col-2">ml</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7">ABV</div>
+                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).ethanol/$store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted*100)"></div>
+                    <div class="col-2">%</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7">Total Volume in Glass</div>
+                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted + $store.barkeeper.getIceVolumeServing(cocktail.id))"></div>
                     <div class="col-2">ml</div>
                   </div>
                 </div>
