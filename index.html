@@ -144,7 +144,7 @@
         export() {
           this.download(
             'data:text/json;charset=utf-8,',
-            encodeURIComponent(JSON.stringify(this.data)),
+            encodeURIComponent(JSON.stringify(this.data, null, 2)),
             'barkeeper.json'
           );
         },
