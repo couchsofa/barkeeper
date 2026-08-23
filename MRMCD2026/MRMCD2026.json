@@ -1,1 +1,1164 @@
-{"cocktails":[{"id":"8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b","name":"Bramble","ingredients":[{"unit":"oz","amount":1.5,"id":"ee3c3e19-9f3a-4fcb-837b-7798ad432cdf"},{"unit":"oz","amount":1,"id":"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8"},{"unit":"oz","amount":0.75,"id":"229f29a9-732f-447f-8a3f-cf52160bfe38"},{"unit":"pcs","amount":6,"id":"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876"}],"garnishes":[{"unit":"pcs","amount":1,"id":"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876"},{"unit":"sprig","amount":3,"id":"a3366841-4e38-4e42-a5b9-606f029f4656"},{"unit":"slice","amount":1,"id":"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8"}],"notes":"","cubes":6,"crushed":0,"largeCubes":0,"cubesServing":0,"crushedServing":1,"largeCubesServing":0,"method":"shaken","glass":"Tumbler","event":"248445d5-1ef5-4a34-9489-1bcbea86d957","numToPrep":42,"price":7,"flavorCues":["tard","bright","dark fruits"]},{"id":"6f77b2c9-3e71-4c85-9f91-1340e20c5b32","name":"Rum & Coke","ingredients":[{"unit":"oz","amount":1.5,"id":"5fc4ac40-35bf-4ad7-8db8-75aa338368b4"},{"unit":"oz","amount":2,"id":"e188d55e-819a-4861-8300-3d1e5d2ccde3"},{"unit":"dashes","amount":2,"id":"772bae91-6104-4195-a34d-bd6e99b69240"},{"unit":"oz","amount":0.5,"id":"94968f68-986b-44e1-afe6-e40971fb9faf"}],"garnishes":[{"unit":"wedge","amount":1,"id":"18323e71-b096-46cf-985c-00cc40b5636f"}],"notes":"","cubes":0,"crushed":0,"largeCubes":0,"cubesServing":4,"crushedServing":0,"largeCubesServing":0,"method":"stirred","glass":"Highball","event":"248445d5-1ef5-4a34-9489-1bcbea86d957","numToPrep":42,"price":6,"flavorCues":["fresh","zingy"]},{"id":"32221c97-b81a-4d0c-8649-b1b06bd8d58d","name":"Nucular Daiquiri","ingredients":[{"unit":"oz","amount":1,"id":"c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b"},{"unit":"oz","amount":0.5,"id":"92acd4fa-9937-40fc-946f-544b1cbe9022"},{"unit":"oz","amount":0.5,"id":"23e1815a-97d3-4e65-891b-57bcb089f379"},{"unit":"oz","amount":0.5,"id":"a76c2559-32bf-4eb5-bf49-6e162db2517b"},{"unit":"oz","amount":0.75,"id":"18323e71-b096-46cf-985c-00cc40b5636f"},{"unit":"dashes","amount":2,"id":"772bae91-6104-4195-a34d-bd6e99b69240"}],"garnishes":[],"notes":"Überwindet Alkoholtoleranzschwellen schneller als ihr euer Dosimeter rekalibrieren könnt.","cubes":6,"crushed":0,"largeCubes":0,"cubesServing":0,"crushedServing":0,"largeCubesServing":0,"method":"shaken","glass":"Coupe","event":"248445d5-1ef5-4a34-9489-1bcbea86d957","numToPrep":44,"price":6,"flavorCues":["botanical","sharp","funky"]}],"ingredients":[{"id":"94968f68-986b-44e1-afe6-e40971fb9faf","name":"Averna","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":14.3,"shopLink":"https://www.conalco.de/averna-amaro-0-7l-29-vol"},{"size":1000,"price":17.8,"shopLink":"https://www.conalco.de/averna-amaro-bitter-1-liter-29-vol"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":29,"color":"#e9ecef","hideInShoppingList":false},{"id":"5fc4ac40-35bf-4ad7-8db8-75aa338368b4","name":"Plantation XO Rum","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":40,"shopLink":"https://www.rumundco.de/Plantation-Rum-Barbados-XO-20-Anniversary-Rum-40-07l"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":40,"color":"#e9ecef","hideInShoppingList":false},{"id":"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876","name":"Blackberries","baseUnit":"g","units":[["pcs",6]],"ingredients":[],"yield":0,"sources":[{"size":125,"price":2.5,"shopLink":"Metro"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":0,"color":"#6462e4","hideInShoppingList":false},{"id":"a3366841-4e38-4e42-a5b9-606f029f4656","name":"Mint","baseUnit":"g","units":[["sprig",5]],"ingredients":[],"yield":0,"sources":[{"size":100,"price":4,"shopLink":"Metro"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":0,"color":"#75d043","hideInShoppingList":false},{"id":"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8","name":"Lemon","baseUnit":"pcs","units":[["ml",0.02],["slice",0.2],["oz",0.6]],"ingredients":[],"yield":0,"sources":[{"size":1,"price":1,"shopLink":"Metro"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":0,"color":"#ede60c","hideInShoppingList":false},{"id":"229f29a9-732f-447f-8a3f-cf52160bfe38","name":"Grenadine","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":6.8,"shopLink":"https://www.conalco.de/riemerschmid-grenadine-sirup-0-7l"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":0,"color":"#c51171","hideInShoppingList":false},{"id":"ee3c3e19-9f3a-4fcb-837b-7798ad432cdf","name":"Gin","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":27.5,"shopLink":"https://www.conalco.de/beefeater-24-london-dry-gin-0-7l-45-vol"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":45,"color":"#d62b1f","hideInShoppingList":false},{"id":"49956e98-28e6-41d5-a94a-643b9baa3a72","name":"Cruzan Back Strap Rum","baseUnit":"ml","units":[],"ingredients":[],"yield":1000,"sources":[{"size":1000,"price":46,"shopLink":"https://www.rumundco.de/cruzan-black-strap-rum"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":40,"color":"#5e6164","hideInShoppingList":false},{"id":"e188d55e-819a-4861-8300-3d1e5d2ccde3","name":"Cockta Cola","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":3300,"price":26.9,"shopLink":"12 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"},{"size":1650,"price":16.9,"shopLink":"6 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"},{"size":6600,"price":48.9,"shopLink":"24 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":0,"color":"#6db9df","hideInShoppingList":false},{"id":"9c900f81-23bd-4174-9db6-8efa744427a8","name":"Angostura Bitters","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":200,"price":11.5,"shopLink":"https://www.conalco.de/angostura-bitters-0-2l-44-7-vol"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":44.7,"color":"#e9ecef","hideInShoppingList":false},{"id":"12cbd45f-195e-4404-b114-27a764337014","name":"Discarded Rum","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":28,"shopLink":"https://www.conalco.de/discarded-banana-peel-rum-0-7l-37-5-vol"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":37.5,"color":"#e9ecef","hideInShoppingList":false},{"id":"64ebf777-aec4-4164-b3d7-c42a9be51c99","name":"Amaro Montenegro","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":15.8,"shopLink":"https://www.conalco.de/amaro-montenegro-0-7l-23-vol"}],"allergens":["traces of sulphites"],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":23,"color":"#bd8e4c","hideInShoppingList":false},{"id":"772bae91-6104-4195-a34d-bd6e99b69240","name":"Orange Bitters","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":200,"price":12,"shopLink":"https://www.conalco.de/the-bitter-truth-orange-bitters-cocktail-flavouring-0-2l-39-vol"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":39,"color":"#ec8e22","hideInShoppingList":false},{"id":"18323e71-b096-46cf-985c-00cc40b5636f","name":"Lime","baseUnit":"pcs","units":[["ml",0.033],["wedge",0.25],["oz",1]],"ingredients":[],"yield":0,"sources":[{"size":1,"price":0.3,"shopLink":"Metro"},{"size":4,"price":1.5,"shopLink":"Rewe"},{"size":12,"price":6,"shopLink":"https://www.rewe.de/produkte/rewe-beste-wahl-limetten-4-stueck/1316461"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.1,"abv":0,"color":"#4f8f0f","hideInShoppingList":false},{"id":"a76c2559-32bf-4eb5-bf49-6e162db2517b","name":"Simple","baseUnit":"ml","units":[],"ingredients":[{"unit":"ml","amount":125,"id":"8c6f3a01-9e3e-41c3-950f-26114c659425"},{"unit":"g","amount":125,"id":"7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e"}],"yield":200,"sources":[],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0,"abv":0,"color":"#e9ecef","hideInShoppingList":false},{"id":"8c6f3a01-9e3e-41c3-950f-26114c659425","name":"Water","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":1000,"price":0,"shopLink":"tap"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0,"abv":0,"color":"#7cbdfd","hideInShoppingList":true},{"id":"7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e","name":"Sugar","baseUnit":"g","units":[],"ingredients":[],"yield":0,"sources":[{"size":1000,"price":1,"shopLink":"Metro"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0,"abv":0,"color":"#fcfcfc","hideInShoppingList":false},{"id":"23e1815a-97d3-4e65-891b-57bcb089f379","name":"Golden Falernum","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":500,"price":18.5,"shopLink":"https://www.rumundco.de/Bitter-Truth-Golden-Falernum-Rumlikoer-05l"},{"size":500,"price":18.5,"shopLink":"https://www.conalco.de/the-bitter-truth-golden-falernum-likoer-0-5l-18-vol"}],"allergens":["traces of nuts"],"nonVeganIngredients":[],"notes":"","safetyFactor":0.05,"abv":18,"color":"#dfba34","hideInShoppingList":false},{"id":"92acd4fa-9937-40fc-946f-544b1cbe9022","name":"Green Chartreuse","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":49.5,"shopLink":"https://www.rumundco.de/Chartreuse-gruen-Likoer-07l"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.05,"abv":55,"color":"#45df3a","hideInShoppingList":false},{"id":"c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b","name":"SBS WPH","baseUnit":"ml","units":[],"ingredients":[],"yield":0,"sources":[{"size":700,"price":43.5,"shopLink":"https://www.rumundco.de/sbs-rum-jamaica-wph-07l"}],"allergens":[],"nonVeganIngredients":[],"notes":"","safetyFactor":0.05,"abv":57,"color":"#e9ecef","hideInShoppingList":false}],"events":[{"id":"248445d5-1ef5-4a34-9489-1bcbea86d957","name":"MRMCD2027","barProgram":{"ice":{"cubeID":"28f3a9b5-faf9-4aad-890f-688cc19fb302","cubeSize":30,"cubeBagWeight":10,"cubeBagCost":11,"crushedID":"f5e9b5ae-e8b7-42c4-871c-07517bb02141","scoopSize":150,"crushedBagWeight":5,"crushedBagCost":5.5,"largeCubeID":"884d4e50-2f6e-4bee-8184-f183e03cfab1","largeCubeSize":50,"largeCubeCost":0.66},"equipment":[],"sources":{"c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b":{"size":700,"price":43.5,"shopLink":"https://www.rumundco.de/sbs-rum-jamaica-wph-07l"},"92acd4fa-9937-40fc-946f-544b1cbe9022":{"size":700,"price":49.5,"shopLink":"https://www.rumundco.de/Chartreuse-gruen-Likoer-07l"},"23e1815a-97d3-4e65-891b-57bcb089f379":{"size":500,"price":18.5,"shopLink":"https://www.conalco.de/the-bitter-truth-golden-falernum-likoer-0-5l-18-vol"},"18323e71-b096-46cf-985c-00cc40b5636f":{"size":1,"price":0.3,"shopLink":"Metro"},"772bae91-6104-4195-a34d-bd6e99b69240":{"size":200,"price":12,"shopLink":"https://www.conalco.de/the-bitter-truth-orange-bitters-cocktail-flavouring-0-2l-39-vol"},"8c6f3a01-9e3e-41c3-950f-26114c659425":{"size":1000,"price":0,"shopLink":"tap"},"7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e":{"size":1000,"price":1,"shopLink":"Metro"},"c793d9c3-e05b-40f5-ada7-e439cff7b4ed":{"size":1,"price":1,"shopLink":"test"},"12cbd45f-195e-4404-b114-27a764337014":{"size":700,"price":28,"shopLink":"https://www.conalco.de/discarded-banana-peel-rum-0-7l-37-5-vol"},"e188d55e-819a-4861-8300-3d1e5d2ccde3":{"size":3300,"price":26.9,"shopLink":"12 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"},"9c900f81-23bd-4174-9db6-8efa744427a8":{"size":200,"price":11.5,"shopLink":"https://www.conalco.de/angostura-bitters-0-2l-44-7-vol"},"64ebf777-aec4-4164-b3d7-c42a9be51c99":{"size":700,"price":15.8,"shopLink":"https://www.conalco.de/amaro-montenegro-0-7l-23-vol"},"49956e98-28e6-41d5-a94a-643b9baa3a72":{"size":1000,"price":46,"shopLink":"https://www.rumundco.de/cruzan-black-strap-rum"},"ee3c3e19-9f3a-4fcb-837b-7798ad432cdf":{"size":700,"price":27.5,"shopLink":"https://www.conalco.de/beefeater-24-london-dry-gin-0-7l-45-vol"},"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8":{"size":1,"price":1,"shopLink":"Metro"},"229f29a9-732f-447f-8a3f-cf52160bfe38":{"size":700,"price":6.8,"shopLink":"https://www.conalco.de/riemerschmid-grenadine-sirup-0-7l"},"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876":{"size":125,"price":2.5,"shopLink":"Metro"},"a3366841-4e38-4e42-a5b9-606f029f4656":{"size":100,"price":4,"shopLink":"Metro"},"5fc4ac40-35bf-4ad7-8db8-75aa338368b4":{"size":700,"price":40,"shopLink":"https://www.rumundco.de/Plantation-Rum-Barbados-XO-20-Anniversary-Rum-40-07l"},"94968f68-986b-44e1-afe6-e40971fb9faf":{"size":700,"price":14.3,"shopLink":"https://www.conalco.de/averna-amaro-0-7l-29-vol"}},"purchases":{"f783cb9c-ffa1-4de9-9a69-9f5e7ac7358d":{"comment":"","expense":5},"771cc825-90f2-4a5e-94d5-90823d862e99":{"comment":"","expense":1200},"fd944f21-ffa4-467a-a982-4e0f058bf6aa":{"comment":"","expense":180},"f14a37ef-2ca5-4baf-b9c7-ba86fc5099be":{"comment":"","expense":345},"bca8a2e6-f7c4-4bf9-89e4-941e1f86a0f2":{"comment":"","expense":1400},"2b8137a4-cc98-40dc-a9b3-d3a8aafc0083":{"comment":"","expense":0},"2eceb9c1-bb8a-4829-8807-a874f74a7573":{"comment":"","expense":700},"28f3a9b5-faf9-4aad-890f-688cc19fb302":{"comment":"","expense":0},"f5e9b5ae-e8b7-42c4-871c-07517bb02141":{"comment":"","expense":0},"884d4e50-2f6e-4bee-8184-f183e03cfab1":{"comment":"","expense":100},"undefined":{"comment":"","expense":0},"af29a4da-986e-4f8f-9d0d-f09aef21c8da":{"comment":"","expense":0},"dcfe79bf-c245-4a52-9bef-5eec0d9a9f55":{"comment":"","expense":0},"c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b":{"comment":"","expense":0},"92acd4fa-9937-40fc-946f-544b1cbe9022":{"comment":"","expense":0},"23e1815a-97d3-4e65-891b-57bcb089f379":{"comment":"","expense":0},"18323e71-b096-46cf-985c-00cc40b5636f":{"comment":"","expense":0},"772bae91-6104-4195-a34d-bd6e99b69240":{"comment":"","expense":0},"8c6f3a01-9e3e-41c3-950f-26114c659425":{"comment":"","expense":0},"7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e":{"comment":"","expense":0},"c793d9c3-e05b-40f5-ada7-e439cff7b4ed":{"comment":"","expense":0},"12cbd45f-195e-4404-b114-27a764337014":{"comment":"","expense":0},"e188d55e-819a-4861-8300-3d1e5d2ccde3":{"comment":"","expense":0},"9c900f81-23bd-4174-9db6-8efa744427a8":{"comment":"","expense":0},"64ebf777-aec4-4164-b3d7-c42a9be51c99":{"comment":"","expense":0},"49956e98-28e6-41d5-a94a-643b9baa3a72":{"comment":"","expense":0},"ee3c3e19-9f3a-4fcb-837b-7798ad432cdf":{"comment":"","expense":0},"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8":{"comment":"","expense":0},"229f29a9-732f-447f-8a3f-cf52160bfe38":{"comment":"","expense":0},"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876":{"comment":"","expense":0},"a3366841-4e38-4e42-a5b9-606f029f4656":{"comment":"","expense":0},"5fc4ac40-35bf-4ad7-8db8-75aa338368b4":{"comment":"","expense":0},"94968f68-986b-44e1-afe6-e40971fb9faf":{"comment":"","expense":0}},"cocktailsSold":[],"recipes":{"cocktails":{"8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b":[{"unit":"ml","amount":2079.0000000000005,"color":"#d62b1f","id":"ee3c3e19-9f3a-4fcb-837b-7798ad432cdf","name":"Gin","type":"ingredient"},{"unit":"pcs","amount":27.720000000000002,"color":"#ede60c","id":"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8","name":"Lemon","type":"ingredient"},{"unit":"ml","amount":1039.5000000000002,"color":"#c51171","id":"229f29a9-732f-447f-8a3f-cf52160bfe38","name":"Grenadine","type":"ingredient"},{"unit":"g","amount":1663.2,"color":"#6462e4","id":"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876","name":"Blackberries","type":"ingredient"},{"unit":"g","amount":277.20000000000005,"color":"#6462e4","id":"4ca4570e-9d4d-4c17-8dc3-4f4eafb43876","name":"Blackberries","type":"ingredient"},{"unit":"g","amount":693,"color":"#75d043","id":"a3366841-4e38-4e42-a5b9-606f029f4656","name":"Mint","type":"ingredient"},{"unit":"pcs","amount":9.240000000000002,"color":"#ede60c","id":"773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8","name":"Lemon","type":"ingredient"}],"6f77b2c9-3e71-4c85-9f91-1340e20c5b32":[{"unit":"ml","amount":2079.0000000000005,"color":"#e9ecef","id":"5fc4ac40-35bf-4ad7-8db8-75aa338368b4","name":"Plantation XO Rum","type":"ingredient"},{"unit":"ml","amount":2772,"color":"#6db9df","id":"e188d55e-819a-4861-8300-3d1e5d2ccde3","name":"Cockta Cola","type":"ingredient"},{"unit":"ml","amount":13.860000000000001,"color":"#ec8e22","id":"772bae91-6104-4195-a34d-bd6e99b69240","name":"Orange Bitters","type":"ingredient"},{"unit":"ml","amount":693,"color":"#e9ecef","id":"94968f68-986b-44e1-afe6-e40971fb9faf","name":"Averna","type":"ingredient"},{"unit":"pcs","amount":11.55,"color":"#4f8f0f","id":"18323e71-b096-46cf-985c-00cc40b5636f","name":"Lime","type":"ingredient"}],"32221c97-b81a-4d0c-8649-b1b06bd8d58d":[{"unit":"ml","amount":1386,"color":"#e9ecef","id":"c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b","name":"SBS WPH","type":"ingredient"},{"unit":"ml","amount":693,"color":"#45df3a","id":"92acd4fa-9937-40fc-946f-544b1cbe9022","name":"Green Chartreuse","type":"ingredient"},{"unit":"ml","amount":693,"color":"#dfba34","id":"23e1815a-97d3-4e65-891b-57bcb089f379","name":"Golden Falernum","type":"ingredient"},{"unit":"ml","amount":660,"color":"#e9ecef","id":"a76c2559-32bf-4eb5-bf49-6e162db2517b","name":"Simple","notes":"","type":"recipe"},{"unit":"pcs","amount":36.300000000000004,"color":"#4f8f0f","id":"18323e71-b096-46cf-985c-00cc40b5636f","name":"Lime","type":"ingredient"},{"unit":"ml","amount":14.520000000000001,"color":"#ec8e22","id":"772bae91-6104-4195-a34d-bd6e99b69240","name":"Orange Bitters","type":"ingredient"}]},"recipes":[{"unit":"ml","amount":660,"color":"#e9ecef","id":"a76c2559-32bf-4eb5-bf49-6e162db2517b","name":"Simple","type":"recipe","notes":"","ingredients":[{"unit":"ml","amount":412.5,"color":"#7cbdfd","id":"8c6f3a01-9e3e-41c3-950f-26114c659425","name":"Water","type":"ingredient"},{"unit":"g","amount":412.5,"color":"#fcfcfc","id":"7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e","name":"Sugar","type":"ingredient"}]}]}}}],"prepMethods":["shaken","stirred"],"glassTypes":["Hurricane","Coupe","Tumbler","Highball","Flute","Cup"],"settings":{"costDistRange":[20,100],"unitConvTable":[["oz","ml",30],["dashes","ml",0.15],["ml","l",0.001]],"costDistMinimaNum":5,"costDistMinimaThreshold":"7"}}
+{
+  "cocktails": [
+    {
+      "id": "8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b",
+      "name": "Bramble",
+      "ingredients": [
+        {
+          "unit": "oz",
+          "amount": 1.5,
+          "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf"
+        },
+        {
+          "unit": "oz",
+          "amount": 1,
+          "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.75,
+          "id": "229f29a9-732f-447f-8a3f-cf52160bfe38"
+        },
+        {
+          "unit": "pcs",
+          "amount": 6,
+          "id": "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876"
+        }
+      ],
+      "garnishes": [
+        {
+          "unit": "pcs",
+          "amount": 1,
+          "id": "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876"
+        },
+        {
+          "unit": "sprig",
+          "amount": 3,
+          "id": "a3366841-4e38-4e42-a5b9-606f029f4656"
+        },
+        {
+          "unit": "slice",
+          "amount": 1,
+          "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8"
+        }
+      ],
+      "notes": "",
+      "cubes": 6,
+      "crushed": 0,
+      "largeCubes": 0,
+      "cubesServing": 0,
+      "crushedServing": 1,
+      "largeCubesServing": 0,
+      "method": "shaken",
+      "glass": "Tumbler",
+      "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
+      "numToPrep": 42,
+      "price": 7,
+      "flavorCues": [
+        "tard",
+        "bright",
+        "dark fruits"
+      ]
+    },
+    {
+      "id": "6f77b2c9-3e71-4c85-9f91-1340e20c5b32",
+      "name": "Rum & Coke",
+      "ingredients": [
+        {
+          "unit": "oz",
+          "amount": 1.5,
+          "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4"
+        },
+        {
+          "unit": "oz",
+          "amount": 2,
+          "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3"
+        },
+        {
+          "unit": "dashes",
+          "amount": 2,
+          "id": "772bae91-6104-4195-a34d-bd6e99b69240"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.5,
+          "id": "94968f68-986b-44e1-afe6-e40971fb9faf"
+        }
+      ],
+      "garnishes": [
+        {
+          "unit": "wedge",
+          "amount": 1,
+          "id": "18323e71-b096-46cf-985c-00cc40b5636f"
+        }
+      ],
+      "notes": "",
+      "cubes": 0,
+      "crushed": 0,
+      "largeCubes": 0,
+      "cubesServing": 4,
+      "crushedServing": 0,
+      "largeCubesServing": 0,
+      "method": "stirred",
+      "glass": "Highball",
+      "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
+      "numToPrep": 42,
+      "price": 6,
+      "flavorCues": [
+        "fresh",
+        "zingy"
+      ]
+    },
+    {
+      "id": "32221c97-b81a-4d0c-8649-b1b06bd8d58d",
+      "name": "Nucular Daiquiri",
+      "ingredients": [
+        {
+          "unit": "oz",
+          "amount": 1,
+          "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.5,
+          "id": "92acd4fa-9937-40fc-946f-544b1cbe9022"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.5,
+          "id": "23e1815a-97d3-4e65-891b-57bcb089f379"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.5,
+          "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.75,
+          "id": "18323e71-b096-46cf-985c-00cc40b5636f"
+        },
+        {
+          "unit": "dashes",
+          "amount": 2,
+          "id": "772bae91-6104-4195-a34d-bd6e99b69240"
+        }
+      ],
+      "garnishes": [],
+      "notes": "Überwindet Alkoholtoleranzschwellen schneller als ihr euer Dosimeter rekalibrieren könnt.",
+      "cubes": 6,
+      "crushed": 0,
+      "largeCubes": 0,
+      "cubesServing": 0,
+      "crushedServing": 0,
+      "largeCubesServing": 0,
+      "method": "shaken",
+      "glass": "Coupe",
+      "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
+      "numToPrep": 44,
+      "price": 6,
+      "flavorCues": [
+        "botanical",
+        "sharp",
+        "funky"
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "94968f68-986b-44e1-afe6-e40971fb9faf",
+      "name": "Averna",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 14.3,
+          "shopLink": "https://www.conalco.de/averna-amaro-0-7l-29-vol"
+        },
+        {
+          "size": 1000,
+          "price": 17.8,
+          "shopLink": "https://www.conalco.de/averna-amaro-bitter-1-liter-29-vol"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 29,
+      "color": "#e9ecef",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4",
+      "name": "Plantation XO Rum",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 40,
+          "shopLink": "https://www.rumundco.de/Plantation-Rum-Barbados-XO-20-Anniversary-Rum-40-07l"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 40,
+      "color": "#e9ecef",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876",
+      "name": "Blackberries",
+      "baseUnit": "g",
+      "units": [
+        [
+          "pcs",
+          6
+        ]
+      ],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 125,
+          "price": 2.5,
+          "shopLink": "Metro"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 0,
+      "color": "#6462e4",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "a3366841-4e38-4e42-a5b9-606f029f4656",
+      "name": "Mint",
+      "baseUnit": "g",
+      "units": [
+        [
+          "sprig",
+          5
+        ]
+      ],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 100,
+          "price": 4,
+          "shopLink": "Metro"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 0,
+      "color": "#75d043",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8",
+      "name": "Lemon",
+      "baseUnit": "pcs",
+      "units": [
+        [
+          "ml",
+          0.02
+        ],
+        [
+          "slice",
+          0.2
+        ],
+        [
+          "oz",
+          0.6
+        ]
+      ],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 1,
+          "price": 1,
+          "shopLink": "Metro"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 0,
+      "color": "#ede60c",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "229f29a9-732f-447f-8a3f-cf52160bfe38",
+      "name": "Grenadine",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 6.8,
+          "shopLink": "https://www.conalco.de/riemerschmid-grenadine-sirup-0-7l"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 0,
+      "color": "#c51171",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf",
+      "name": "Gin",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 27.5,
+          "shopLink": "https://www.conalco.de/beefeater-24-london-dry-gin-0-7l-45-vol"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 45,
+      "color": "#d62b1f",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "49956e98-28e6-41d5-a94a-643b9baa3a72",
+      "name": "Cruzan Back Strap Rum",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 1000,
+      "sources": [
+        {
+          "size": 1000,
+          "price": 46,
+          "shopLink": "https://www.rumundco.de/cruzan-black-strap-rum"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 40,
+      "color": "#5e6164",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3",
+      "name": "Cockta Cola",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 3300,
+          "price": 26.9,
+          "shopLink": "12 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"
+        },
+        {
+          "size": 1650,
+          "price": 16.9,
+          "shopLink": "6 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"
+        },
+        {
+          "size": 6600,
+          "price": 48.9,
+          "shopLink": "24 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 0,
+      "color": "#6db9df",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "9c900f81-23bd-4174-9db6-8efa744427a8",
+      "name": "Angostura Bitters",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 200,
+          "price": 11.5,
+          "shopLink": "https://www.conalco.de/angostura-bitters-0-2l-44-7-vol"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 44.7,
+      "color": "#e9ecef",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "12cbd45f-195e-4404-b114-27a764337014",
+      "name": "Discarded Rum",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 28,
+          "shopLink": "https://www.conalco.de/discarded-banana-peel-rum-0-7l-37-5-vol"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 37.5,
+      "color": "#e9ecef",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "64ebf777-aec4-4164-b3d7-c42a9be51c99",
+      "name": "Amaro Montenegro",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 15.8,
+          "shopLink": "https://www.conalco.de/amaro-montenegro-0-7l-23-vol"
+        }
+      ],
+      "allergens": [
+        "traces of sulphites"
+      ],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 23,
+      "color": "#bd8e4c",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "772bae91-6104-4195-a34d-bd6e99b69240",
+      "name": "Orange Bitters",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 200,
+          "price": 12,
+          "shopLink": "https://www.conalco.de/the-bitter-truth-orange-bitters-cocktail-flavouring-0-2l-39-vol"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 39,
+      "color": "#ec8e22",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "18323e71-b096-46cf-985c-00cc40b5636f",
+      "name": "Lime",
+      "baseUnit": "pcs",
+      "units": [
+        [
+          "ml",
+          0.033
+        ],
+        [
+          "wedge",
+          0.25
+        ],
+        [
+          "oz",
+          1
+        ]
+      ],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 1,
+          "price": 0.3,
+          "shopLink": "Metro"
+        },
+        {
+          "size": 4,
+          "price": 1.5,
+          "shopLink": "Rewe"
+        },
+        {
+          "size": 12,
+          "price": 6,
+          "shopLink": "https://www.rewe.de/produkte/rewe-beste-wahl-limetten-4-stueck/1316461"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.1,
+      "abv": 0,
+      "color": "#4f8f0f",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b",
+      "name": "Simple",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [
+        {
+          "unit": "ml",
+          "amount": 125,
+          "id": "8c6f3a01-9e3e-41c3-950f-26114c659425"
+        },
+        {
+          "unit": "g",
+          "amount": 125,
+          "id": "7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e"
+        }
+      ],
+      "yield": 200,
+      "sources": [],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0,
+      "abv": 0,
+      "color": "#e9ecef",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "8c6f3a01-9e3e-41c3-950f-26114c659425",
+      "name": "Water",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 1000,
+          "price": 0,
+          "shopLink": "tap"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0,
+      "abv": 0,
+      "color": "#7cbdfd",
+      "hideInShoppingList": true
+    },
+    {
+      "id": "7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e",
+      "name": "Sugar",
+      "baseUnit": "g",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 1000,
+          "price": 1,
+          "shopLink": "Metro"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0,
+      "abv": 0,
+      "color": "#fcfcfc",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "23e1815a-97d3-4e65-891b-57bcb089f379",
+      "name": "Golden Falernum",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 500,
+          "price": 18.5,
+          "shopLink": "https://www.rumundco.de/Bitter-Truth-Golden-Falernum-Rumlikoer-05l"
+        },
+        {
+          "size": 500,
+          "price": 18.5,
+          "shopLink": "https://www.conalco.de/the-bitter-truth-golden-falernum-likoer-0-5l-18-vol"
+        }
+      ],
+      "allergens": [
+        "traces of nuts"
+      ],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.05,
+      "abv": 18,
+      "color": "#dfba34",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "92acd4fa-9937-40fc-946f-544b1cbe9022",
+      "name": "Green Chartreuse",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 49.5,
+          "shopLink": "https://www.rumundco.de/Chartreuse-gruen-Likoer-07l"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.05,
+      "abv": 55,
+      "color": "#45df3a",
+      "hideInShoppingList": false
+    },
+    {
+      "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b",
+      "name": "SBS WPH",
+      "baseUnit": "ml",
+      "units": [],
+      "ingredients": [],
+      "yield": 0,
+      "sources": [
+        {
+          "size": 700,
+          "price": 43.5,
+          "shopLink": "https://www.rumundco.de/sbs-rum-jamaica-wph-07l"
+        }
+      ],
+      "allergens": [],
+      "nonVeganIngredients": [],
+      "notes": "",
+      "safetyFactor": 0.05,
+      "abv": 57,
+      "color": "#e9ecef",
+      "hideInShoppingList": false
+    }
+  ],
+  "events": [
+    {
+      "id": "248445d5-1ef5-4a34-9489-1bcbea86d957",
+      "name": "MRMCD2026",
+      "barProgram": {
+        "ice": {
+          "cubeID": "28f3a9b5-faf9-4aad-890f-688cc19fb302",
+          "cubeSize": 30,
+          "cubeBagWeight": 10,
+          "cubeBagCost": 11,
+          "crushedID": "f5e9b5ae-e8b7-42c4-871c-07517bb02141",
+          "scoopSize": 150,
+          "crushedBagWeight": 5,
+          "crushedBagCost": 5.5,
+          "largeCubeID": "884d4e50-2f6e-4bee-8184-f183e03cfab1",
+          "largeCubeSize": 50,
+          "largeCubeCost": 0.66
+        },
+        "equipment": [],
+        "sources": {
+          "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b": {
+            "size": 700,
+            "price": 43.5,
+            "shopLink": "https://www.rumundco.de/sbs-rum-jamaica-wph-07l"
+          },
+          "92acd4fa-9937-40fc-946f-544b1cbe9022": {
+            "size": 700,
+            "price": 49.5,
+            "shopLink": "https://www.rumundco.de/Chartreuse-gruen-Likoer-07l"
+          },
+          "23e1815a-97d3-4e65-891b-57bcb089f379": {
+            "size": 500,
+            "price": 18.5,
+            "shopLink": "https://www.conalco.de/the-bitter-truth-golden-falernum-likoer-0-5l-18-vol"
+          },
+          "18323e71-b096-46cf-985c-00cc40b5636f": {
+            "size": 1,
+            "price": 0.3,
+            "shopLink": "Metro"
+          },
+          "772bae91-6104-4195-a34d-bd6e99b69240": {
+            "size": 200,
+            "price": 12,
+            "shopLink": "https://www.conalco.de/the-bitter-truth-orange-bitters-cocktail-flavouring-0-2l-39-vol"
+          },
+          "8c6f3a01-9e3e-41c3-950f-26114c659425": {
+            "size": 1000,
+            "price": 0,
+            "shopLink": "tap"
+          },
+          "7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e": {
+            "size": 1000,
+            "price": 1,
+            "shopLink": "Metro"
+          },
+          "c793d9c3-e05b-40f5-ada7-e439cff7b4ed": {
+            "size": 1,
+            "price": 1,
+            "shopLink": "test"
+          },
+          "12cbd45f-195e-4404-b114-27a764337014": {
+            "size": 700,
+            "price": 28,
+            "shopLink": "https://www.conalco.de/discarded-banana-peel-rum-0-7l-37-5-vol"
+          },
+          "e188d55e-819a-4861-8300-3d1e5d2ccde3": {
+            "size": 3300,
+            "price": 26.9,
+            "shopLink": "12 x 275 ml https://bier-berlin.com/products/cockta-das-original?variant=42673572380900&country=DE&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic"
+          },
+          "9c900f81-23bd-4174-9db6-8efa744427a8": {
+            "size": 200,
+            "price": 11.5,
+            "shopLink": "https://www.conalco.de/angostura-bitters-0-2l-44-7-vol"
+          },
+          "64ebf777-aec4-4164-b3d7-c42a9be51c99": {
+            "size": 700,
+            "price": 15.8,
+            "shopLink": "https://www.conalco.de/amaro-montenegro-0-7l-23-vol"
+          },
+          "49956e98-28e6-41d5-a94a-643b9baa3a72": {
+            "size": 1000,
+            "price": 46,
+            "shopLink": "https://www.rumundco.de/cruzan-black-strap-rum"
+          },
+          "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf": {
+            "size": 700,
+            "price": 27.5,
+            "shopLink": "https://www.conalco.de/beefeater-24-london-dry-gin-0-7l-45-vol"
+          },
+          "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8": {
+            "size": 1,
+            "price": 1,
+            "shopLink": "Metro"
+          },
+          "229f29a9-732f-447f-8a3f-cf52160bfe38": {
+            "size": 700,
+            "price": 6.8,
+            "shopLink": "https://www.conalco.de/riemerschmid-grenadine-sirup-0-7l"
+          },
+          "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876": {
+            "size": 125,
+            "price": 2.5,
+            "shopLink": "Metro"
+          },
+          "a3366841-4e38-4e42-a5b9-606f029f4656": {
+            "size": 100,
+            "price": 4,
+            "shopLink": "Metro"
+          },
+          "5fc4ac40-35bf-4ad7-8db8-75aa338368b4": {
+            "size": 700,
+            "price": 40,
+            "shopLink": "https://www.rumundco.de/Plantation-Rum-Barbados-XO-20-Anniversary-Rum-40-07l"
+          },
+          "94968f68-986b-44e1-afe6-e40971fb9faf": {
+            "size": 700,
+            "price": 14.3,
+            "shopLink": "https://www.conalco.de/averna-amaro-0-7l-29-vol"
+          }
+        },
+        "purchases": {
+          "f783cb9c-ffa1-4de9-9a69-9f5e7ac7358d": {
+            "comment": "",
+            "expense": 5
+          },
+          "771cc825-90f2-4a5e-94d5-90823d862e99": {
+            "comment": "",
+            "expense": 1200
+          },
+          "fd944f21-ffa4-467a-a982-4e0f058bf6aa": {
+            "comment": "",
+            "expense": 180
+          },
+          "f14a37ef-2ca5-4baf-b9c7-ba86fc5099be": {
+            "comment": "",
+            "expense": 345
+          },
+          "bca8a2e6-f7c4-4bf9-89e4-941e1f86a0f2": {
+            "comment": "",
+            "expense": 1400
+          },
+          "2b8137a4-cc98-40dc-a9b3-d3a8aafc0083": {
+            "comment": "",
+            "expense": 0
+          },
+          "2eceb9c1-bb8a-4829-8807-a874f74a7573": {
+            "comment": "",
+            "expense": 700
+          },
+          "28f3a9b5-faf9-4aad-890f-688cc19fb302": {
+            "comment": "",
+            "expense": 0
+          },
+          "f5e9b5ae-e8b7-42c4-871c-07517bb02141": {
+            "comment": "",
+            "expense": 0
+          },
+          "884d4e50-2f6e-4bee-8184-f183e03cfab1": {
+            "comment": "",
+            "expense": 100
+          },
+          "undefined": {
+            "comment": "",
+            "expense": 0
+          },
+          "af29a4da-986e-4f8f-9d0d-f09aef21c8da": {
+            "comment": "",
+            "expense": 0
+          },
+          "dcfe79bf-c245-4a52-9bef-5eec0d9a9f55": {
+            "comment": "",
+            "expense": 0
+          },
+          "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b": {
+            "comment": "",
+            "expense": 0
+          },
+          "92acd4fa-9937-40fc-946f-544b1cbe9022": {
+            "comment": "",
+            "expense": 0
+          },
+          "23e1815a-97d3-4e65-891b-57bcb089f379": {
+            "comment": "",
+            "expense": 0
+          },
+          "18323e71-b096-46cf-985c-00cc40b5636f": {
+            "comment": "",
+            "expense": 0
+          },
+          "772bae91-6104-4195-a34d-bd6e99b69240": {
+            "comment": "",
+            "expense": 0
+          },
+          "8c6f3a01-9e3e-41c3-950f-26114c659425": {
+            "comment": "",
+            "expense": 0
+          },
+          "7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e": {
+            "comment": "",
+            "expense": 0
+          },
+          "c793d9c3-e05b-40f5-ada7-e439cff7b4ed": {
+            "comment": "",
+            "expense": 0
+          },
+          "12cbd45f-195e-4404-b114-27a764337014": {
+            "comment": "",
+            "expense": 0
+          },
+          "e188d55e-819a-4861-8300-3d1e5d2ccde3": {
+            "comment": "",
+            "expense": 0
+          },
+          "9c900f81-23bd-4174-9db6-8efa744427a8": {
+            "comment": "",
+            "expense": 0
+          },
+          "64ebf777-aec4-4164-b3d7-c42a9be51c99": {
+            "comment": "",
+            "expense": 0
+          },
+          "49956e98-28e6-41d5-a94a-643b9baa3a72": {
+            "comment": "",
+            "expense": 0
+          },
+          "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf": {
+            "comment": "",
+            "expense": 0
+          },
+          "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8": {
+            "comment": "",
+            "expense": 0
+          },
+          "229f29a9-732f-447f-8a3f-cf52160bfe38": {
+            "comment": "",
+            "expense": 0
+          },
+          "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876": {
+            "comment": "",
+            "expense": 0
+          },
+          "a3366841-4e38-4e42-a5b9-606f029f4656": {
+            "comment": "",
+            "expense": 0
+          },
+          "5fc4ac40-35bf-4ad7-8db8-75aa338368b4": {
+            "comment": "",
+            "expense": 0
+          },
+          "94968f68-986b-44e1-afe6-e40971fb9faf": {
+            "comment": "",
+            "expense": 0
+          }
+        },
+        "cocktailsSold": [],
+        "recipes": {
+          "cocktails": {
+            "8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b": [
+              {
+                "unit": "ml",
+                "amount": 2079.0000000000005,
+                "color": "#d62b1f",
+                "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf",
+                "name": "Gin",
+                "type": "ingredient"
+              },
+              {
+                "unit": "pcs",
+                "amount": 27.720000000000002,
+                "color": "#ede60c",
+                "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8",
+                "name": "Lemon",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 1039.5000000000002,
+                "color": "#c51171",
+                "id": "229f29a9-732f-447f-8a3f-cf52160bfe38",
+                "name": "Grenadine",
+                "type": "ingredient"
+              },
+              {
+                "unit": "g",
+                "amount": 1663.2,
+                "color": "#6462e4",
+                "id": "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876",
+                "name": "Blackberries",
+                "type": "ingredient"
+              },
+              {
+                "unit": "g",
+                "amount": 277.20000000000005,
+                "color": "#6462e4",
+                "id": "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876",
+                "name": "Blackberries",
+                "type": "ingredient"
+              },
+              {
+                "unit": "g",
+                "amount": 693,
+                "color": "#75d043",
+                "id": "a3366841-4e38-4e42-a5b9-606f029f4656",
+                "name": "Mint",
+                "type": "ingredient"
+              },
+              {
+                "unit": "pcs",
+                "amount": 9.240000000000002,
+                "color": "#ede60c",
+                "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8",
+                "name": "Lemon",
+                "type": "ingredient"
+              }
+            ],
+            "6f77b2c9-3e71-4c85-9f91-1340e20c5b32": [
+              {
+                "unit": "ml",
+                "amount": 2079.0000000000005,
+                "color": "#e9ecef",
+                "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4",
+                "name": "Plantation XO Rum",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 2772,
+                "color": "#6db9df",
+                "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3",
+                "name": "Cockta Cola",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 13.860000000000001,
+                "color": "#ec8e22",
+                "id": "772bae91-6104-4195-a34d-bd6e99b69240",
+                "name": "Orange Bitters",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 693,
+                "color": "#e9ecef",
+                "id": "94968f68-986b-44e1-afe6-e40971fb9faf",
+                "name": "Averna",
+                "type": "ingredient"
+              },
+              {
+                "unit": "pcs",
+                "amount": 11.55,
+                "color": "#4f8f0f",
+                "id": "18323e71-b096-46cf-985c-00cc40b5636f",
+                "name": "Lime",
+                "type": "ingredient"
+              }
+            ],
+            "32221c97-b81a-4d0c-8649-b1b06bd8d58d": [
+              {
+                "unit": "ml",
+                "amount": 1386,
+                "color": "#e9ecef",
+                "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b",
+                "name": "SBS WPH",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 693,
+                "color": "#45df3a",
+                "id": "92acd4fa-9937-40fc-946f-544b1cbe9022",
+                "name": "Green Chartreuse",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 693,
+                "color": "#dfba34",
+                "id": "23e1815a-97d3-4e65-891b-57bcb089f379",
+                "name": "Golden Falernum",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 660,
+                "color": "#e9ecef",
+                "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b",
+                "name": "Simple",
+                "notes": "",
+                "type": "recipe"
+              },
+              {
+                "unit": "pcs",
+                "amount": 36.300000000000004,
+                "color": "#4f8f0f",
+                "id": "18323e71-b096-46cf-985c-00cc40b5636f",
+                "name": "Lime",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 14.520000000000001,
+                "color": "#ec8e22",
+                "id": "772bae91-6104-4195-a34d-bd6e99b69240",
+                "name": "Orange Bitters",
+                "type": "ingredient"
+              }
+            ]
+          },
+          "recipes": [
+            {
+              "unit": "ml",
+              "amount": 660,
+              "color": "#e9ecef",
+              "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b",
+              "name": "Simple",
+              "type": "recipe",
+              "notes": "",
+              "ingredients": [
+                {
+                  "unit": "ml",
+                  "amount": 412.5,
+                  "color": "#7cbdfd",
+                  "id": "8c6f3a01-9e3e-41c3-950f-26114c659425",
+                  "name": "Water",
+                  "type": "ingredient"
+                },
+                {
+                  "unit": "g",
+                  "amount": 412.5,
+                  "color": "#fcfcfc",
+                  "id": "7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e",
+                  "name": "Sugar",
+                  "type": "ingredient"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "prepMethods": [
+    "shaken",
+    "stirred"
+  ],
+  "glassTypes": [
+    "Hurricane",
+    "Coupe",
+    "Tumbler",
+    "Highball",
+    "Flute",
+    "Cup"
+  ],
+  "settings": {
+    "costDistRange": [
+      20,
+      100
+    ],
+    "unitConvTable": [
+      [
+        "oz",
+        "ml",
+        30
+      ],
+      [
+        "dashes",
+        "ml",
+        0.15
+      ],
+      [
+        "ml",
+        "l",
+        0.001
+      ]
+    ],
+    "costDistMinimaNum": 5,
+    "costDistMinimaThreshold": "7"
+  }
+}
