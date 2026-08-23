@@ -210,7 +210,7 @@
           const cocktails = this.data.cocktails.filter((c) => c.event === id);
           if (!cocktails) {return 0};
 
-          return cocktails.reduce((sum, c) => sum + +c.cubes * +c.numToPrep, 0 );
+          return cocktails.reduce((sum, c) => sum + (+c.cubes + +c.cubesServing)  * +c.numToPrep, 0 );
         },
 
         get getCubeWeight() {
@@ -229,7 +229,7 @@
           const cocktails = this.data.cocktails.filter((c) => c.event === id);
           if (!cocktails) {return 0};
 
-          return cocktails.reduce((sum, c) => sum + c.crushed * c.numToPrep, 0 );
+          return cocktails.reduce((sum, c) => sum + (+c.crushed + c.crushedServing) * +c.numToPrep, 0 );
         },
 
         get getCrushedWeight () {
@@ -247,7 +247,7 @@
           const cocktails = this.data.cocktails.filter((c) => c.event === id);
           if (!cocktails) {return 0};
 
-          return cocktails.reduce((sum, c) => sum + c.largeCubes * c.numToPrep, 0 );
+          return cocktails.reduce((sum, c) => sum + (+c.largeCubes + +c.largeCubesServing) * +c.numToPrep, 0 );
         },
 
         get getLargeCubeWeight() {
@@ -375,6 +375,9 @@
             cubes: 0,
             crushed: 0,
             largeCubes: 0,
+            cubesServing: 0,
+            crushedServing: 0,
+            largeCubesServing: 0,
             method: '',
             glass: '',
             event: event,
@@ -496,6 +499,56 @@
           });
 
           return volume;
+        },
+
+        getIceVolumePrep(cocktail_id) {
+          const cocktail = this.data.cocktails.find((c) => c.id === cocktail_id);
+          if(!cocktail) { return 0; };
+
+          let volume = 0;
+          // TODO: split prep ice and ice in glass
+
+          // cubes
+          const cubeSize = this.getEvent.barProgram.ice.cubeSize;
+          volume += cocktail.cubes * (cubeSize/10)**3;
+
+          // large cubes
+          const largeCubeSize = this.getEvent.barProgram.ice.largeCubeSize;
+          volume += cocktail.largeCubes * (largeCubeSize/10)**3;
+
+          // crushed
+          const scoopSize = this.getEvent.barProgram.ice.scoopSize;
+          const density = 0.917;
+          volume += cocktail.crushed * scoopSize / density;
+
+          return volume;
+        },
+
+        getIceVolumeServing(cocktail_id) {
+          const cocktail = this.data.cocktails.find((c) => c.id === cocktail_id);
+          if(!cocktail) { return 0; };
+
+          let volume = 0;
+          // TODO: split prep ice and ice in glass
+
+          // cubes
+          const cubeSize = this.getEvent.barProgram.ice.cubeSize;
+          volume += cocktail.cubesServing * (cubeSize/10)**3;
+
+          // large cubes
+          const largeCubeSize = this.getEvent.barProgram.ice.largeCubeSize;
+          volume += cocktail.largeCubesServing * (largeCubeSize/10)**3;
+
+          // crushed
+          const scoopSize = this.getEvent.barProgram.ice.scoopSize;
+          const density = 0.917;
+          volume += cocktail.crushedServing * scoopSize / density;
+
+          return volume;
+        },
+
+        getDilition(cocktail_id) {
+          // TODO: calculate estimated dilution (add water from prep) by Dave Arnolds formulas
         },
 
         // accepts a recipe entry
@@ -1315,20 +1368,20 @@
           cocktails.forEach((c) => {
             // cubes
             let cube_expense = 0;
-            if ( total_cubes !== 0 && (+c.cubes * +c.numToPrep) !== 0 ) {
-              cube_expense = total_cubes_expense / total_cubes * (+c.cubes * +c.numToPrep);
+            if ( total_cubes !== 0 && ((+c.cubes + +c.cubesServing) * +c.numToPrep) !== 0 ) {
+              cube_expense = total_cubes_expense / total_cubes * ((+c.cubes + +c.cubesServing) * +c.numToPrep);
             };
             
             // crushed
             let crushed_expense = 0;
-            if ( total_scoops !== 0 && (+c.crushed * +c.numToPrep) !== 0 ) {
-              crushed_expense = total_scoops_expense / total_scoops * (+c.crushed * +c.numToPrep);
+            if ( total_scoops !== 0 && ((+c.crushed + +c.crushedServing) * +c.numToPrep) !== 0 ) {
+              crushed_expense = total_scoops_expense / total_scoops * ((+c.crushed + +c.crushedServing) * +c.numToPrep);
             }
 
             // large cubes
             let largeCube_expense = 0;
-            if ( total_largeCubes !== 0 && (+c.largeCubes * +c.numToPrep) !== 0 ) {
-              largeCube_expense = total_largeCubes_expense / total_largeCubes * (+c.largeCubes * +c.numToPrep);
+            if ( total_largeCubes !== 0 && ((+c.largeCubes + c.largeCubesServing) * +c.numToPrep) !== 0 ) {
+              largeCube_expense = total_largeCubes_expense / total_largeCubes * ((+c.largeCubes + c.largeCubesServing) * +c.numToPrep);
             }
 
             dataset.find((e) => e.id === c.id).Ice = cube_expense + crushed_expense + largeCube_expense;
@@ -2570,6 +2623,7 @@
                     </div>
                   </div>
 
+                  <div class="mb-1">Ice for prep:</div>
                   <div class="row">
                     <div class="col-3">
                       <div class="input-group">
@@ -2617,6 +2671,56 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="mb-1">Ice for serving:</div>
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="input-group">
+                        <input
+                          type="number"
+                          step="1"
+                          size="2"
+                          maxLength="2"
+                          class="form-control text-end"
+                          x-model.number="cocktail.cubesServing"
+                          :class="$isValidNumber(cocktail.cubesServing) ? 'is-invalid' : ''">
+                        <div class="input-group-append">
+                          <span class="input-group-text">cubes</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="input-group">
+                        <input
+                          type="number"
+                          step="1"
+                          size="2"
+                          maxLength="2"
+                          class="form-control text-end"
+                          x-model.number="cocktail.largeCubesServing"
+                          :class="$isValidNumber(cocktail.largeCubesServing) ? 'is-invalid' : ''">
+                        <div class="input-group-append">
+                          <span class="input-group-text">big cubes</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="input-group">
+                        <input
+                          type="number"
+                          step="1"
+                          size="2"
+                          maxLength="2"
+                          class="form-control text-end"
+                          x-model.number="cocktail.crushedServing"
+                          :class="$isValidNumber(cocktail.crushedServing) ? 'is-invalid' : ''">
+                        <div class="input-group-append">
+                          <span class="input-group-text">scoops crushed</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
   <!-- Cocktails / Volume -->
@@ -2627,6 +2731,12 @@
                     <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id))"></div>
                     <div class="col-2">ml</div>
                   </div>
+                  <div class="row">
+                    <div class="col-7">Ice</div>
+                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id))"></div>
+                    <div class="col-2">ml</div>
+                  </div>
+                </div>
 
   <!-- Cocktails / Cost Distribution -->
                 <h5>Cost distribution</h5>
@@ -3211,15 +3321,33 @@
                   unitWidth: Math.max(...$store.barkeeper.getCocktails().map((c) => c.ingredients).flat().map((i) => i.unit).map((e) => e.toString().length))
                 }">
                 <template x-for="(cocktail, index) in $store.barkeeper.getCocktails()">
-                  <div class="bar-sheet" x-data="{ ice: [ cocktail.cubes ? 'Cubes' : '', cocktail.crushed ? 'Crushed ice' : '', cocktail.largeCubes ? 'Big cube' : '' ] }">
+                  <div class="bar-sheet">
                     <div class="name" x-text="cocktail.name"></div>
 
                     <div class="prep" :style="'width: ' + prepWidth + 'ch;'">
 
                       <div x-text="cocktail.glass" style="font-style: italic;"></div>
+
+                      <template x-if="cocktail.cubesServing !== 0">
+                        <div x-text="cocktail.cubesServing + ' cubes'"></div>
+                      </template>
+                      <template x-if="cocktail.largeCubesServing !== 0">
+                        <div x-text="cocktail.largeCubesServing + ' large cubes'"></div>
+                      </template>
+                      <template x-if="cocktail.crushedServing !== 0">
+                        <div x-text="cocktail.crushedServing + ' scoops crushed'"></div>
+                      </template>
+
                       <div x-text="cocktail.method" style="font-style: italic;"></div>
-                      <template x-for="i in ice.filter((e) => e !== '')">
-                        <div x-text="i"></div>
+
+                      <template x-if="cocktail.cubes !== 0">
+                        <div x-text="cocktail.cubes + ' cubes'"></div>
+                      </template>
+                      <template x-if="cocktail.largeCubes !== 0">
+                        <div x-text="cocktail.largeCubes + ' large cubes'"></div>
+                      </template>
+                      <template x-if="cocktail.crushed !== 0">
+                        <div x-text="cocktail.crushed + ' scoops crushed'"></div>
                       </template>
 
                     </div>
