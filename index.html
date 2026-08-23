@@ -380,6 +380,7 @@
             event: event,
             numToPrep: 0,
             price: 0,
+            flavorCues: [],
           });
         },
 
@@ -1871,6 +1872,11 @@
       font-size: 1rem;
     }
 
+    .menu-minimal .flavorCues {
+      padding-top: .25rem;
+      font-size: 1rem;
+    }
+
     .menu-minimal .info {
       padding-top: .25rem;
       font-size: .8rem;
@@ -2464,6 +2470,25 @@
                   class="form-control mt-1 mb-1"
                   rows="5"
                   x-model="cocktail.notes"></textarea>
+
+  <!-- Cocktails / Flavor Cues -->
+                <label for="flavorcues"><h5>Flavor Cues</h5></label>
+
+                <div class="tags-input" id="flavorcues" x-data="{ newCue: '' }">
+                  <template x-for="(cue, index) in cocktail.flavorCues" :key="index">
+                    <span class="tags-input-tag">
+                      <span x-text="cue"></span>
+                      <button type="button" class="tags-input-remove" @click="cocktail.flavorCues = cocktail.flavorCues.filter((e) => e !== cue)">✗</button>
+                    </span>
+                  </template>
+
+                  <input
+                    type="text"
+                    placeholder="..."
+                    class="tags-input-text form-control"
+                    @keydown.enter.prevent="if (newCue.trim() !== '') { cocktail.flavorCues.push(newCue.trim()); newCue = '' }"
+                    x-model="newCue">
+                </div>
 
   <!-- Cocktails / Prep -->
                 <label for="prep-method"><h5>Prep</h5></label>
@@ -3086,8 +3111,11 @@
                       nonVeganIngredients: $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')
                     }">
                     <tr>
-                      <td class="price" rowspan="3" x-text="$formatNumber(cocktail.price).replace(',','.')"></td>
+                      <td class="price" rowspan="4" x-text="$formatNumber(cocktail.price).replace(',','.')"></td>
                       <td class="name" x-text="cocktail.name"></td>
+                    </tr>
+                    <tr>
+                      <td class="flavorCues" x-text="cocktail.flavorCues.length ? Alpine.raw(cocktail.flavorCues).join(', ') : ''"></td>
                     </tr>
                     <tr>
                       <td class="ingredients" x-text="$store.barkeeper.getCocktailIngredientNames(cocktail.id).join(', ')"></td>
@@ -3126,6 +3154,7 @@
                     <div class="prep" :style="'width: ' + prepWidth + 'ch;'">
 
                       <div x-text="cocktail.glass" style="font-style: italic;"></div>
+                      <div x-text="cocktail.method" style="font-style: italic;"></div>
                       <template x-for="i in ice.filter((e) => e !== '')">
                         <div x-text="i"></div>
                       </template>
