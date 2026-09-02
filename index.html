@@ -276,6 +276,14 @@
           });
         },
 
+        addGlassType(name) {
+          this.data.glassTypes.push({
+            id: self.crypto.randomUUID(),
+            name: name,
+            volume: 0
+          });
+        },
+
         // Ingredients
         addIngredient(name) {
           this.data.ingredients.unshift({
@@ -379,12 +387,22 @@
             crushedServing: 0,
             largeCubesServing: 0,
             method: '',
-            glass: '',
+            glass: undefined,
             event: event,
             numToPrep: 0,
             price: 0,
             flavorCues: [],
           });
+        },
+
+        getGlassVolume(cocktail_id) {
+          const cocktail = this.data.cocktails.find((c) => c.id === cocktail_id);
+          if(!cocktail) { return 0; };
+
+          const glass = this.data.glassTypes.find((g) => g.id === cocktail.glass);
+          if(!glass) { return 0; };
+
+          return glass.volume;
         },
 
         getCocktails(searchString = false) {
@@ -2202,13 +2220,19 @@
               Glass types
             </div>
             <ul class="list-group list-group-flush">
-              <template x-for="glass in $store.barkeeper.data.glassTypes">
+              <template x-for="glass in $store.barkeeper.data.glassTypes" :key="glass.id">
                 <li class="list-group-item">
                   <div class="input-group">
                     <input
                       type="text"
                       class="form-control p-1 m-0"
-                      x-model="glass">
+                      x-model="glass.name">
+                    <input
+                      type="numer"
+                      step="1"
+                      class="form-control p-1 m-0 text-end"
+                      x-model.number="glass.volume">
+                    <div class="input-group-text">ml</div>
                     <button
                       type="button"
                       class="btn btn-outline-danger btn-xs m-0 p-1"
@@ -2223,11 +2247,11 @@
                     type="text"
                     class="form-control p-1 m-0"
                     x-model="newGlass"
-                    x-on:keyup.enter="if (newGlass !== '') {$store.barkeeper.data.glassTypes.push(newGlass); newGlass = ''}">
+                    x-on:keyup.enter="if (newGlass !== '') {$store.barkeeper.addGlassType(newGlass); newGlass = ''}">
                   <button
                     type="button"
                     class="btn btn-outline-success btn-xs m-0 p-1"
-                    x-on:click="if (newGlass !== '') {$store.barkeeper.data.glassTypes.push(newGlass); newGlass = ''}">✚</button>
+                    x-on:click="if (newGlass !== '') {$store.barkeeper.addGlassType(newGlass); newGlass = ''}">✚</button>
                 </div>
               </li>
             </ul>
@@ -2625,15 +2649,28 @@
                         </template>
                       </select>
                     </div>
-                    <div class="col-6">  
-                      <select class="form-select" x-model="cocktail.glass">
-                        <template x-for="glass in $store.barkeeper.data.glassTypes">
-                            <option
-                                x-bind:selected="cocktail.glass === glass"
-                                x-text="glass" 
-                            />
-                        </template>
-                      </select>
+                    <div class="col-6">
+
+                      <div class="dropdown">
+                        <span
+                          type="text"
+                          class="form-select w-100"
+                          data-bs-toggle="dropdown"
+                          x-text="(cocktail.glass === undefined) ? 'glass...' : $store.barkeeper.data.glassTypes.find((e) => e.id === cocktail.glass).name"
+                        ></span>
+                   
+                        <ul class="dropdown-menu w-100">
+                          <template
+                            x-for="glass in $store.barkeeper.data.glassTypes"
+                            :key="glass.id">
+                              <li><span
+                                class="dropdown-item"
+                                x-text="glass.name"
+                                x-on:click="cocktail.glass = glass.id"></span></li>
+                          </template>
+                        </ul>
+                      </div>
+
                     </div>
                   </div>
 
@@ -2751,20 +2788,26 @@
                     <div class="col-2">ml</div>
                   </div>
                   <div class="row">
-                    <div class="col-7">Ice</div>
-                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id))"></div>
-                    <div class="col-2">ml</div>
-                  </div>
-                  <div class="row">
                     <div class="col-7">ABV</div>
                     <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).ethanol/$store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted*100)"></div>
                     <div class="col-2">%</div>
                   </div>
                   <div class="row">
-                    <div class="col-7">Total Volume in Glass</div>
-                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted + $store.barkeeper.getIceVolumeServing(cocktail.id))"></div>
-                    <div class="col-2">ml</div>
+                    <div class="col-12">Total Volume in Glass</div>
                   </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="progress" style="height: 1.6rem; font-size: 1rem;">
+                        <div class="progress-bar bg-info" role="progressbar" :style="'width: ' + ($store.barkeeper.getIceVolumeServing(cocktail.id) / $store.barkeeper.getGlassVolume(cocktail.id) * 100) + '%'">
+                          <span x-text="'Ice: ' + $formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id)) + ' ml'"></span>
+                        </div>
+                        <div class="progress-bar" role="progressbar" :style="'width: ' + ($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted / $store.barkeeper.getGlassVolume(cocktail.id) * 100) + '%'">
+                          <span x-text="'Liquid: ' + $formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted) + ' ml'"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
   <!-- Cocktails / Cost Distribution -->
