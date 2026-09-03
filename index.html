@@ -1,4 +1,4 @@
-<html>
+<html data-bs-theme="dark">
 <head>
   <title>barkeeper</title>
   <meta name="description" content="barkeeper is a simple tool to manage bar programs. Proudly coded by hand without LLMs - I have no idea what I'm doing and am well capable of generating my own tech debt!">
@@ -8,9 +8,9 @@
 
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
@@ -35,6 +35,7 @@
             costDistMinimaNum: 5,
             costDistMinimaThreshold: 7,
             unitConvTable: [],
+            darkMode: false,
           }
         },
 
@@ -1647,6 +1648,9 @@
             // Persist to local storage
             localStorage.setItem('barkeeper', JSON.stringify(this.data));
 
+            // update theme
+            document.documentElement.setAttribute('data-bs-theme', this.data.settings.darkMode ? 'dark' : 'light');
+
             // Update bar programs
             this.data.events.forEach((e) => {
               e.barProgram['recipes'] = this.assembleEventProgram(e.id);
@@ -1695,6 +1699,10 @@
       background: #CCE7ED;
       background-image: linear-gradient(135deg, hsla(191, 48%, 86%, 1) 36%, hsla(288, 85%, 84%, 1) 96%);
       min-width: 64rem;
+    }
+
+    [data-bs-theme=dark] body {
+      background: #2C3545;
     }
 
     canvas {
@@ -1783,6 +1791,10 @@
       background-color: white;
     }
 
+    [data-bs-theme=dark] #header {
+      background-color: black;
+    }
+
     .container {
       max-width: 100%;
     }
@@ -1795,6 +1807,16 @@
     .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
       background-color: #CCE7ED;
       border-bottom-color: #CCE7ED;
+    }
+
+    [data-bs-theme=dark] .nav-tabs .nav-item.show .nav-link {
+      background-color: #2C3545;
+      border-bottom-color: #2C3545;
+    }
+
+    [data-bs-theme=dark] .nav-tabs .nav-link.active {
+      background-color: #2C3545;
+      border-bottom-color: #2C3545;
     }
 
     .form-control, .form-select {
@@ -1826,11 +1848,19 @@
       background-color: #f8f9fa;
     }
 
+    [data-bs-theme=dark] .grid-table-striped .row:nth-child(even of :not(.grid-table-block, .grid-table-heading)) {
+      background-color: #232424;
+    }
+
     .grid-table-heading {
       font-weight: 500;
       font-size: 1.25rem;
       background-color: #e9ecef;
       border-bottom-width: 4px !important;
+    }
+
+    [data-bs-theme=dark] .grid-table-heading {
+      background-color: #3c3d3d;
     }
 
     .grid-table-heading > div:first-child {
@@ -1840,6 +1870,10 @@
     .grid-table-block {
       background-color: #fff !important;
       white-space: pre;
+    }
+
+    [data-bs-theme=dark] .grid-table-block {
+      background-color: #000 !important;
     }
 
     .grid-table-block > div:first-child{
@@ -1854,8 +1888,17 @@
       background-color: #fff3cd !important;
     }
 
+    [data-bs-theme=dark] .grid-table .row:not(.grid-table-block, .grid-table-heading):hover {
+      background-color: #373838 !important;
+    }
+
+
     .grid-table-muted {
       color: #a4a7ab;
+    }
+
+    [data-bs-theme=dark] .grid-table-muted {
+      color: #3b3c3d;
     }
 
     .grid-table-muted:before {
@@ -1877,8 +1920,16 @@
       border-bottom-width: 4px !important;
     }
 
+    [data-bs-theme=dark] .table-scroll-heading {
+      background-color: #3c3d3d;
+    }
+
     .table-scroll tr:not(.table-scroll-heading):hover {
       background-color: #fff3cd !important;
+    }
+
+    [data-bs-theme=dark] .table-scroll tr:not(.table-scroll-heading):hover {
+      background-color: #373838 !important;
     }
 
     .table-scroll tr {
@@ -1889,6 +1940,10 @@
 
     .table-scroll-striped tr:nth-child(even) {
       background-color: #f8f9fa;
+    }
+
+    [data-bs-theme=dark] .table-scroll-striped tr:nth-child(even) {
+      background-color: #232424;
     }
 
     .table-scroll td {
@@ -1915,6 +1970,9 @@
       border: 3px solid rgba(0, 0, 0, .1);
       border-radius: .5rem;
       padding: .1rem .35rem .1rem .35rem;
+      height: 1rem;
+      width: 1.6rem;
+      margin-right: 1rem;
     }
 
     /* tag input */
@@ -1931,6 +1989,10 @@
       min-height: 3.25rem;
     }
 
+    [data-bs-theme=dark] .tags-input {
+      background-color: #212529;
+    }
+
     .tags-input-tag {
       display: inline-flex;
       line-height: 1.5;
@@ -1944,6 +2006,11 @@
       padding-inline: .5rem;
       margin-right: .5rem;
       margin-bottom: .25rem;
+    }
+
+    [data-bs-theme=dark] .tags-input-tag {
+      background-color: #2b3035;
+      border-color: #404040;
     }
 
     .tags-input-tag:last-of-type {
@@ -2131,6 +2198,10 @@
         <button type="button" class="btn btn-primary" @click="$store.barkeeper.export()">⇩ export bar</button>
         <button type="button" class="btn btn-primary" @click="$store.barkeeper.import()">↺ import bar</button>
         <input type="file" id="import" style="display: none;">
+      </div>
+
+      <div class="container mb-3">
+        <button type="button" class="btn btn-info" @click="$store.barkeeper.data.settings.darkMode = !$store.barkeeper.data.settings.darkMode" x-text="$store.barkeeper.data.settings.darkMode ? 'Light theme' : 'Dark theme'"></button>        
       </div>
         
       <section>
@@ -3285,7 +3356,8 @@
                           class="col-7"
                           :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''"
                           >
-                          <span class="pill" :style="'background-color: ' + ingredient.color + ';'" x-text="ingredient.name"></span>
+                          <div class="pill" :style="'background-color: ' + ingredient.color + ';'"></div>
+                          <span x-text="ingredient.name" :class="(ingredient.type === 'recipe') ? 'text-decoration-underline' : ''"></span>
                         </div>
                         <div class="col-4 text-end">
                           <span x-text="$formatNumber(ingredient.amount)"></span>
@@ -3313,11 +3385,11 @@
               <div class="container grid-table grid-table-striped">
                 <template x-for="(recipe, index) in $store.barkeeper.getEvent.barProgram.recipes.recipes" :key="index">
                   <div>
-                    <div class="row grid-table-heading" :style="'background-color: ' + recipe.color + ';'">
-                      <div
-                        class="col-7"
-                        x-text="recipe.name"
-                        ></div>
+                    <div class="row grid-table-heading">
+                      <div class="col-7">
+                        <div class="pill" :style="'background-color: ' + recipe.color + ';'"></div>
+                        <span x-text="recipe.name"></span>
+                      </div>
                       <div class="col-4 text-end">
                         <span x-text="$formatNumber(recipe.amount)"></span>
                       </div>
@@ -3337,7 +3409,8 @@
                       <div class="row">
                         <div
                           class="col-7" :class="(ingredient.type === 'recipe') ? 'grid-table-highlight' : ''">
-                            <span class="pill" :style="'background-color: ' + ingredient.color + ';'" x-text="ingredient.name"></span>
+                            <div class="pill" :style="'background-color: ' + ingredient.color + ';'" ></div>
+                            <span x-text="ingredient.name" :class="(ingredient.type === 'recipe') ? 'text-decoration-underline' : ''"></span>
                           </div>
                         <div class="col-4 text-end">
                           <span x-text="$formatNumber(ingredient.amount)"></span>
@@ -3664,7 +3737,7 @@
               x-bind:style="(ingredient.ingredients.length === 0 && ingredient.sources.length === 0) ? 'border-color: red; border-width: 3px' : ''">
 
   <!-- Ingredients / Name -->
-              <div class="card-header p-2" :style="'background-color: ' + ingredient.color + ';'">
+              <div class="card-header p-2">
                 <input
                   type="text"
                   class="form-control card-title bg-transparent p-1 m-0"
@@ -3744,7 +3817,6 @@
                           </div>
                           <div
                             class="form-control"
-                            style="background-color: #e9ecef !important;"
                             x-text="unit[0]"></div>
                           <div class="input-group-append">
                             <span class="input-group-text">=</span>
@@ -3756,7 +3828,6 @@
                         <div class="input-group">
                           <div
                             class="form-control text-end"
-                            style="background-color: #e9ecef !important;"
                             x-text="$formatNumber(unit[1])"></div>
                           <div class="input-group-append">
                             <span class="input-group-text" x-text="ingredient.baseUnit"></span>
