@@ -110,6 +110,17 @@
           );
         },
 
+        printElement(element_id, page='A4 portrait', zoom='100') {
+          let css = document.styleSheets[0];
+          let rule = css.insertRule('@media print { body > :not(#printarea) {display: none; } @page { size: ' + page + ';} body { zoom: ' + zoom + '%; } }');
+
+          document.getElementById('printarea').innerHTML = document.getElementById(element_id).innerHTML;
+          window.print();
+          document.getElementById('printarea').innerHTML = '';
+          
+          css.deleteRule(rule);
+        },
+
         collectPropFromIngredients(id, propName) {
           let item = this.data.cocktails.find((i) => i.id === id);
           if (item === undefined) {
@@ -2058,6 +2069,7 @@
       font-family: "Arial", sans-serif;
       font-size: 1.85rem;
       line-height: 1.2;
+      margin-left: 1rem;
     }
 
     .menu-minimal .price {
@@ -2148,7 +2160,7 @@
     }
 
     @media print {
-      .btn {
+      .btn, .shopping-list-source-select {
         display: none !important;
       }
     }
@@ -2156,6 +2168,7 @@
 
 </head>
 <body>
+  <div id="printarea"></div>
   <div
     x-data="{
       tabs: ['Ingredients', '⚙', ],
@@ -3380,8 +3393,11 @@
         
         <div>
           <div class="card shadow-sm rounded">
-            <div class="card-header card-title">Recipes</div>
-            <div class="card-body">
+            <div class="card-header card-title">
+              Recipes
+              <button type="button" class="btn btn-primary" @click="$store.barkeeper.printElement('bar-recipes')">🖶</button>
+            </div>
+            <div class="card-body" id="bar-recipes">
               
               <div class="container grid-table grid-table-striped">
                 <template x-for="(recipe, index) in $store.barkeeper.getEvent.barProgram.recipes.recipes" :key="index">
@@ -3435,8 +3451,9 @@
           <div class="card shadow-sm rounded">
             <div class="card-header card-title">
               Menu
+              <button type="button" class="btn btn-primary" @click="$store.barkeeper.printElement('bar-menu')">🖶</button>
             </div> 
-            <div class="card-body">
+            <div class="card-body" id="bar-menu">
 
               <table class="menu-minimal">
 
@@ -3474,8 +3491,9 @@
           <div class="card shadow-sm rounded">
             <div class="card-header card-title">
               Bar sheet
+              <button type="button" class="btn btn-primary" @click="$store.barkeeper.printElement('bar-sheet')">🖶</button>
             </div> 
-            <div class="card-body">
+            <div class="card-body" id="bar-sheet">
               <div class="bar-sheet-container"
                 x-data="{
                   prepWidth: Math.max(...$store.barkeeper.getCocktails().map((c) => ['Cubes', 'Crushed ice', 'Big cube', c.glass]).flat().map((e) => e.toString().length)),
@@ -3577,8 +3595,9 @@
         <div class="card-header card-title">
           Shopping List
           <button type="button" class="btn btn-primary" @click="$store.barkeeper.exportShoppingListCSV($store.barkeeper.shoppingList.filter((item) => !item.hideInShoppingList ))">⇩ export csv</button>
+          <button type="button" class="btn btn-primary" @click="$store.barkeeper.printElement('shopping-list', 'A3 landscape', '33')">🖶</button>
         </div> 
-        <div class="card-body">
+        <div class="card-body" id="shopping-list">
           
           <div class="container table-scroll table-scroll-striped">
 
@@ -3641,7 +3660,7 @@
                       <div class="dropdown">
 
                         <template x-if="$store.barkeeper.getIngredient(item.id) !== undefined && $store.barkeeper.getIngredient(item.id).sources.length > 0 && !$store.barkeeper.getEvent.barProgram.purchases[item.id].checked">
-                          <span>
+                          <span class="shopping-list-source-select">
                             <span data-bs-toggle="dropdown">︾ </span>
                      
                             <ul class="dropdown-menu">
