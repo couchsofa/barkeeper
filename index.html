@@ -114,9 +114,11 @@
           let css = document.styleSheets[0];
           let rule = css.insertRule('@media print { body > :not(#printarea) {display: none; } @page { size: ' + page + ';} body { zoom: ' + zoom + '%; } }');
 
+          document.documentElement.setAttribute('data-bs-theme', 'light');
           document.getElementById('printarea').innerHTML = document.getElementById(element_id).innerHTML;
           window.print();
           document.getElementById('printarea').innerHTML = '';
+          document.documentElement.setAttribute('data-bs-theme', this.data.settings.darkMode ? 'dark' : 'light');
           
           css.deleteRule(rule);
         },
