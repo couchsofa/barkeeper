@@ -49,8 +49,8 @@
       "cubesServing": 0,
       "crushedServing": 1,
       "largeCubesServing": 0,
-      "method": "shaken",
-      "glass": "Tumbler",
+      "method": 1,
+      "glass": 2,
       "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
       "numToPrep": 42,
       "price": 7,
@@ -99,8 +99,8 @@
       "cubesServing": 4,
       "crushedServing": 0,
       "largeCubesServing": 0,
-      "method": "stirred",
-      "glass": "Highball",
+      "method": 0,
+      "glass": 3,
       "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
       "numToPrep": 42,
       "price": 6,
@@ -152,8 +152,8 @@
       "cubesServing": 0,
       "crushedServing": 0,
       "largeCubesServing": 0,
-      "method": "shaken",
-      "glass": "Coupe",
+      "method": 1,
+      "glass": 1,
       "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
       "numToPrep": 44,
       "price": 6,
@@ -557,7 +557,7 @@
       "sources": [],
       "allergens": [],
       "nonVeganIngredients": [],
-      "notes": "",
+      "notes": "Ordentlich mischen bis sich der Zucker auflöst. Ggf. mit warmen Wasser, im Blender oder auf dem Herd.\nNicht zum Kochen bringen um Verdunstung zu vermeiden!",
       "safetyFactor": 0,
       "abv": 0,
       "color": "#e9ecef",
@@ -1070,7 +1070,7 @@
                 "color": "#e9ecef",
                 "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b",
                 "name": "Simple",
-                "notes": "",
+                "notes": "Ordentlich mischen bis sich der Zucker auflöst. Ggf. mit warmen Wasser, im Blender oder auf dem Herd.\nNicht zum Kochen bringen um Verdunstung zu vermeiden!",
                 "type": "recipe"
               },
               {
@@ -1099,7 +1099,7 @@
               "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b",
               "name": "Simple",
               "type": "recipe",
-              "notes": "",
+              "notes": "Ordentlich mischen bis sich der Zucker auflöst. Ggf. mit warmen Wasser, im Blender oder auf dem Herd.\nNicht zum Kochen bringen um Verdunstung zu vermeiden!",
               "ingredients": [
                 {
                   "unit": "ml",
@@ -1125,16 +1125,48 @@
     }
   ],
   "prepMethods": [
-    "shaken",
-    "stirred"
+    {
+      "id": 0,
+      "name": "stirred",
+      "dilutionFormula": "1 + (-1.21 * abv^2 + 1.246 * abv + 0.145)"
+    },
+    {
+      "id": 1,
+      "name": "shaken",
+      "dilutionFormula": "1 + (-1.567 * abv^2 + 1.742 * abv + 0.0203)"
+    }
   ],
   "glassTypes": [
-    "Hurricane",
-    "Coupe",
-    "Tumbler",
-    "Highball",
-    "Flute",
-    "Cup"
+    {
+      "id": 0,
+      "name": "Hurricane",
+      "volume": 450
+    },
+    {
+      "id": 1,
+      "name": "Coupe",
+      "volume": 200
+    },
+    {
+      "id": 2,
+      "name": "Tumbler",
+      "volume": 300
+    },
+    {
+      "id": 3,
+      "name": "Highball",
+      "volume": 280
+    },
+    {
+      "id": 4,
+      "name": "Flute",
+      "volume": 120
+    },
+    {
+      "id": 5,
+      "name": "Cup",
+      "volume": 0
+    }
   ],
   "settings": {
     "costDistRange": [
@@ -1159,6 +1191,7 @@
       ]
     ],
     "costDistMinimaNum": 5,
-    "costDistMinimaThreshold": "7"
+    "costDistMinimaThreshold": "7",
+    "darkMode": true
   }
 }
