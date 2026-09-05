@@ -2120,6 +2120,10 @@
       border-top: 2px solid black;
     }
 
+    [data-bs-theme=dark] .bar-sheet .recipe .garnishes {
+      border-top: 2px solid #fff;
+    }
+
     @media print {
       .btn, .shopping-list-source-select {
         display: none !important;
@@ -3515,7 +3519,7 @@
 
                     <div class="prep" :style="'width: ' + prepWidth + 'ch;'">
 
-                      <div x-text="cocktail.glass" style="font-style: italic;"></div>
+                      <div x-text="$store.barkeeper.data.glassTypes.find((e) => e.id === cocktail.glass).name" style="font-style: italic;"></div>
 
                       <template x-if="cocktail.cubesServing !== 0">
                         <div x-text="cocktail.cubesServing + ' cubes'"></div>
