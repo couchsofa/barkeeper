@@ -14,6 +14,8 @@
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@15.2.0/lib/browser/math.min.js"></script>
+
   <script>
     chartCurrencyFormatDE = d3.formatDefaultLocale({
       thousands: '.',
@@ -28,7 +30,18 @@
           cocktails: [],
           ingredients: [],
           events: [],
-          prepMethods: [],
+          prepMethods: [
+            {
+              id: 0,
+              name: 'stirred',
+              dilutionFormula: '1 + (-1.21 * abv^2 + 1.246 * abv + 0.145)',
+            },
+            {
+              id: 1,
+              name: 'shaken',
+              dilutionFormula: '1 + (-1.567 * abv^2 + 1.742 * abv + 0.0203)',
+            },
+          ],
           glassTypes: [],
           settings: {
             costDistRange: [50, 200],
@@ -275,10 +288,18 @@
         },
 
         // Prep Methods
+        addPrepMethod(method_name) {
+          this.data.prepMethods.push({
+            id: self.crypto.randomUUID(),
+            name: method_name,
+            dilutionFormula: '1',
+          });
+        },
+
         removePrepMethod(method) {
-          this.data.prepMethods = this.data.prepMethods.filter((e) => e !== method);
+          this.data.prepMethods = this.data.prepMethods.filter((e) => e.id !== method.id);
           this.data.cocktails.forEach((c) => {
-            if (c.method === method) { c.method = '' }
+            if (c.method === method.id) { c.method = '' }
           });
         },
 
@@ -400,7 +421,7 @@
             cubesServing: 0,
             crushedServing: 0,
             largeCubesServing: 0,
-            method: '',
+            method: undefined,
             glass: undefined,
             event: event,
             numToPrep: 0,
@@ -582,19 +603,14 @@
           return volume;
         },
 
-        getDilutedVolume(volume, ethanol, method) {
-          // using Dave Arnolds formulas for stirred and shaken drinks
+        getDilutedVolume(volume, ethanol, method_id) {
+          const method = this.data.prepMethods.find((m) => m.id === method_id);
+          if (!method) { return 0; };
+
           const abv = ethanol / volume;
+          const f = math.parse(method.dilutionFormula);
 
-          if (method === 'stirred') {
-            return volume * (1 + (-1.21 * abv**2 + 1.246 * abv + 0.145));
-          };
-
-          if (method === 'shaken') {
-            return volume * (1 + (-1.567 * abv**2 + 1.742 * abv + 0.0203));
-          };
-
-          return volume;
+          return volume * f.evaluate({abv: abv});
         },
 
         // accepts a recipe entry
@@ -2261,14 +2277,23 @@
             <div class="card-header card-title">
               Prep methods
             </div>
+            <div class="alert alert-secondary m-3" role="alert">
+              Formula to calculate dilution based on 'abv' will be evaluated by <a href="https://mathjs.org/docs/expressions/syntax.html">mathjs</a>.
+              Liquid volume is multiplied by the result of the expression, i.e. the constant default of '1' will equal no dilution and no change in volume from prepping. 
+            </div>
+
             <ul class="list-group list-group-flush">
-              <template x-for="method in $store.barkeeper.data.prepMethods">
+              <template x-for="method in $store.barkeeper.data.prepMethods" :key="method.id">
                 <li class="list-group-item">
                   <div class="input-group">
                     <input
                       type="text"
                       class="form-control p-1 m-0"
-                      x-model="method">
+                      x-model="method.name">
+                    <input
+                      type="text"
+                      class="form-control p-1 m-0"
+                      x-model="method.dilutionFormula">
                     <button
                       type="button"
                       class="btn btn-outline-danger btn-xs m-0 p-1"
@@ -2283,11 +2308,11 @@
                     type="text"
                     class="form-control p-1 m-0"
                     x-model="newMethod"
-                    x-on:keyup.enter="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">
+                    x-on:keyup.enter="if (newMethod !== '') {$store.barkeeper.addPrepMethod(newMethod); newMethod = ''}">
                   <button
                     type="button"
                     class="btn btn-outline-success btn-xs m-0 p-1"
-                    x-on:click="if (newMethod !== '') {$store.barkeeper.data.prepMethods.push(newMethod); newMethod = ''}">✚</button>
+                    x-on:click="if (newMethod !== '') {$store.barkeeper.addPrepMethod(newMethod); newMethod = ''}">✚</button>
                 </div>
               </li>
             </ul>
@@ -2719,15 +2744,28 @@
                 <div id="prep-method">
 
                   <div class="row mb-3">
-                    <div class="col-6">  
-                      <select class="form-select" x-model="cocktail.method">
-                        <template x-for="method in $store.barkeeper.data.prepMethods">
-                            <option
-                                x-bind:selected="cocktail.method === method"
-                                x-text="method" 
-                            />
-                        </template>
-                      </select>
+                    <div class="col-6">
+
+                      <div class="dropdown">
+                        <span
+                          type="text"
+                          class="form-select w-100"
+                          data-bs-toggle="dropdown"
+                          x-text="(cocktail.method === undefined) ? 'method...' : $store.barkeeper.data.prepMethods.find((m) => m.id === cocktail.method).name"
+                        ></span>
+                   
+                        <ul class="dropdown-menu w-100">
+                          <template
+                            x-for="method in $store.barkeeper.data.prepMethods"
+                            :key="method.id">
+                              <li><span
+                                class="dropdown-item"
+                                x-text="method.name"
+                                x-on:click="cocktail.method = method.id"></span></li>
+                          </template>
+                        </ul>
+                      </div>
+
                     </div>
                     <div class="col-6">
 
@@ -3531,7 +3569,7 @@
                         <div x-text="cocktail.crushedServing + ' scoops crushed'"></div>
                       </template>
 
-                      <div x-text="cocktail.method" style="font-style: italic;"></div>
+                      <div x-text="$store.barkeeper.data.prepMethods.find((m) => m.id === cocktail.method).name" style="font-style: italic;"></div>
 
                       <template x-if="cocktail.cubes !== 0">
                         <div x-text="cocktail.cubes + ' cubes'"></div>
