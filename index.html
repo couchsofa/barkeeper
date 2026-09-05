@@ -125,7 +125,13 @@
 
         printElement(element_id, page='A4 portrait', zoom='100') {
           let css = document.styleSheets[0];
-          let rule = css.insertRule('@media print { body > :not(#printarea) {display: none; } @page { size: ' + page + ';} body { zoom: ' + zoom + '%; } }');
+          let rule = css.insertRule(
+            '@media print { \
+              body > :not(#printarea) {display: none; } \
+              @page { size: ' + page + ';} \
+              body { zoom: ' + zoom + '%; } \
+              .pill {display: none !important; } \
+            }');
 
           document.documentElement.setAttribute('data-bs-theme', 'light');
           document.getElementById('printarea').innerHTML = document.getElementById(element_id).innerHTML;
