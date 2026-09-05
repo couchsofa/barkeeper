@@ -850,16 +850,6 @@
           const box_h = 50;
           const box_margin = 20;
 
-          const box = svg.append("rect")
-            .style("fill", "white")
-            .style("opacity", "0.5")
-            .attr("x", text_x - box_w + box_margin)
-            .attr("y", text_y - box_h + box_margin)
-            .attr("width", box_w)
-            .attr("height", box_h)
-            .attr('display', 'none');
-            //.attr('transform', 'translate(' + (text_x) + ',' + (text_y) + ')');
-
           const text = svg.append('text')
             .text('')
             .attr("fill", "currentColor")
@@ -870,7 +860,6 @@
           var pointerenter = function() {
             dot.attr('display', null);
             text.attr('display', null);
-            box.attr('display', null);
           };
 
           var mousemove = function(event) {
@@ -887,7 +876,6 @@
           var pointerleave = function() {
             dot.attr('display', 'none');
             text.attr('display', 'none');
-            box.attr('display', 'none');
             //svg.node().value = null;
             //svg.dispatch('input', {bubbles: true});
           };
@@ -1000,7 +988,7 @@
               .attr("y2", y(c.revenue))
               .style("stroke-width", 2)
               .style("stroke-dasharray", "15, 5")
-              .style("stroke", "black")
+              .style("stroke", "currentColor")
               .style("fill", "none");
 
             svg.append('text')
@@ -1008,12 +996,6 @@
               .attr("fill", "currentColor")
               .attr("text-anchor", "middle")
               .attr("font-size", "1rem")
-              .style("stroke", "#ffffff")
-              .style("stroke-width", ".3rem")
-              .style("stroke-opacity", "0.7")
-              .style("stroke-linecap", "butt")
-              .style("stroke-linejoin", "round")
-              .style("paint-order", "stroke fill")
               .attr('transform', 'translate(' + (x(c.name) + x.bandwidth()/2) + ',' + (y(c.revenue) - 7) + ')');
           });
         },
@@ -1122,7 +1104,7 @@
             .attr("x2", x(total_revenue))
             .attr("y2", y('_') + y.bandwidth())
             .style("stroke-width", 2)
-            .style("stroke", "black")
+            .style("stroke", "currentColor")
             .style("fill", "none");
 
           svg.append("line")
@@ -1132,7 +1114,7 @@
             .attr("y2", y('_') + y.bandwidth())
             .style("stroke-width", 2)
             .style("stroke-dasharray", "5, 5")
-            .style("stroke", "black")
+            .style("stroke", "currentColor")
             .style("fill", "none");
 
           svg.append("line")
@@ -1141,7 +1123,7 @@
             .attr("x2", x(total_expense))
             .attr("y2", y('_') + y.bandwidth()/2)
             .style("stroke-width", 2)
-            .style("stroke", "black")
+            .style("stroke", "currentColor")
             .style("fill", "none");
 
           svg.append("line")
@@ -1151,7 +1133,7 @@
             .attr("y2", y('_') + y.bandwidth()/2)
             .style("stroke-width", 2)
             .style("stroke-dasharray", "5, 5")
-            .style("stroke", "black")
+            .style("stroke", "currentColor")
             .style("fill", "none");
 
           // render revenue and expense text
@@ -1160,12 +1142,6 @@
             .attr("fill", "green")
             .attr("text-anchor", "end")
             .attr("font-size", "1rem")
-            .style("stroke", "#ffffff")
-            .style("stroke-width", ".3rem")
-            .style("stroke-opacity", "0.7")
-            .style("stroke-linecap", "butt")
-            .style("stroke-linejoin", "round")
-            .style("paint-order", "stroke fill")
             .attr('transform', 'translate(' + x(total_revenue) + ',' + (y('_') + y.bandwidth() * (1 + rangePadding)) + ')');
 
           svg.append('text')
@@ -1174,12 +1150,6 @@
             .attr("text-anchor", "end")
             .attr("dominant-baseline", "auto")
             .attr("font-size", "1rem")
-            .style("stroke", "#ffffff")
-            .style("stroke-width", ".3rem")
-            .style("stroke-opacity", "0.7")
-            .style("stroke-linecap", "butt")
-            .style("stroke-linejoin", "round")
-            .style("paint-order", "stroke fill")
             .attr('transform', 'translate(' + (x(actual_revenue) - 8) + ',' + (y('_') + y.bandwidth() * (1 - rangePadding)) + ')');
 
           svg.append('text')
@@ -1188,12 +1158,6 @@
             .attr("text-anchor", "end")
             .attr("dominant-baseline", "hanging")
             .attr("font-size", "1rem")
-            .style("stroke", "#ffffff")
-            .style("stroke-width", ".3rem")
-            .style("stroke-opacity", "0.7")
-            .style("stroke-linecap", "butt")
-            .style("stroke-linejoin", "round")
-            .style("paint-order", "stroke fill")
             .attr('transform', 'translate(' + x(total_expense) + ',' + (y('_') - (y.bandwidth() * rangePadding)) + ')');
 
           svg.append('text')
@@ -1202,12 +1166,6 @@
             .attr("text-anchor", "end")
             .attr("dominant-baseline", "auto")
             .attr("font-size", "1rem")
-            .style("stroke", "#ffffff")
-            .style("stroke-width", ".3rem")
-            .style("stroke-opacity", "0.7")
-            .style("stroke-linecap", "butt")
-            .style("stroke-linejoin", "round")
-            .style("paint-order", "stroke fill")
             .attr('transform', 'translate(' + (x(actual_expense) - 8) + ',' + (y('_') + y.bandwidth()/4) + ')');
 
           // render legend
@@ -1234,6 +1192,7 @@
             .attr('y', 0)
             .attr('text-anchor', 'start')
             .attr('alignment-baseline', 'hanging')
+            .attr('fill', "currentColor")
             .append('tspan')
             .text((d) => { return chartCurrencyFormatDE.format('$,.2f')(totals[d]); })
             .attr('x', (d, i) => { return i * 150 + 26; })
