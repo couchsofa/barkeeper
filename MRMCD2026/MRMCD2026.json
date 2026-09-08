@@ -42,14 +42,14 @@
           "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8"
         }
       ],
-      "notes": "",
+      "notes": "Eine beerige Chance\nSo manch eine Grenze wurde bereits geschmückt von dem dornigen Strauch, dem die treibende Komponente dieses Getränks entwächst",
       "cubes": 6,
       "crushed": 0,
       "largeCubes": 0,
       "cubesServing": 0,
       "crushedServing": 1,
       "largeCubesServing": 0,
-      "method": 1,
+      "method": "6f108e24-6ec2-4c1b-b501-7418f54e6451",
       "glass": 2,
       "event": "248445d5-1ef5-4a34-9489-1bcbea86d957",
       "numToPrep": 42,
@@ -92,7 +92,7 @@
           "id": "18323e71-b096-46cf-985c-00cc40b5636f"
         }
       ],
-      "notes": "",
+      "notes": "Überwindet Erinnerungen an Studiparties\nund lange Abende in Jugendherbergen\nmit der wahrscheinlich angenehmsten\nForm der Expositionstherapie\nin liquider Darreichung\n",
       "cubes": 0,
       "crushed": 0,
       "largeCubes": 0,
@@ -145,7 +145,7 @@
         }
       ],
       "garnishes": [],
-      "notes": "Überwindet Alkoholtoleranzschwellen schneller als ihr euer Dosimeter rekalibrieren könnt.",
+      "notes": "Überwindet Alkoholtoleranzschwellen\nschneller als ihr euer Dosimeter\nrekalibrieren könnt",
       "cubes": 6,
       "crushed": 0,
       "largeCubes": 0,
@@ -699,7 +699,17 @@
           "largeCubeSize": 50,
           "largeCubeCost": 0.66
         },
-        "equipment": [],
+        "equipment": [
+          {
+            "id": "ba4f5838-8bf6-49aa-a04d-d15b28311034",
+            "name": "Strohhalme, 100 Stk",
+            "num": 1,
+            "price": 5,
+            "shopLink": "https://www.metro.de/marktplatz/product/a5724c53-2b24-47d2-bc01-cd4dbd83b83d",
+            "comment": "Für Bramble, halbieren",
+            "hideInShoppingList": false
+          }
+        ],
         "sources": {
           "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b": {
             "size": 700,
@@ -832,12 +842,14 @@
             "expense": 700
           },
           "28f3a9b5-faf9-4aad-890f-688cc19fb302": {
-            "comment": "",
-            "expense": 0
+            "comment": "dj-spock, Eis Winter",
+            "expense": 22,
+            "checked": true
           },
           "f5e9b5ae-e8b7-42c4-871c-07517bb02141": {
-            "comment": "",
-            "expense": 0
+            "comment": "dj-spock, Eis Winter",
+            "expense": 11,
+            "checked": true
           },
           "884d4e50-2f6e-4bee-8184-f183e03cfab1": {
             "comment": "",
@@ -944,6 +956,11 @@
             "comment": "",
             "expense": 0,
             "checked": true
+          },
+          "ba4f5838-8bf6-49aa-a04d-d15b28311034": {
+            "comment": "",
+            "expense": 0,
+            "checked": false
           }
         },
         "cocktailsSold": [],
@@ -1143,6 +1160,11 @@
     {
       "id": 1,
       "name": "shaken",
+      "dilutionFormula": "1 + (-1.567 * abv^2 + 1.742 * abv + 0.0203)"
+    },
+    {
+      "id": "6f108e24-6ec2-4c1b-b501-7418f54e6451",
+      "name": "shaken, double strained",
       "dilutionFormula": "1 + (-1.567 * abv^2 + 1.742 * abv + 0.0203)"
     }
   ],
