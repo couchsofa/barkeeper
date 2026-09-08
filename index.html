@@ -2960,30 +2960,46 @@
                   x-render="() => { $store.barkeeper.createCocktailCostChart($el, $store.barkeeper.calcCocktailCost(cocktail.id)); $store.barkeeper.charts[cocktail.id] = $el; }"
                   x-destroy="() => { delete $store.barkeeper.charts[cocktail.id] }"></div>
 
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Event:</span>
+              </div>
+
+
+              <div class="card-footer">
+                <div class="row">
+
+                  <div class="col-8">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">Event:</div>
+                      </div>
+
+                      <select class="form-select" x-model="cocktail.event">
+                        <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)">
+                            <option
+                                x-bind:selected="cocktail.event === event.id"
+                                x-bind:value="event.id"
+                                x-text="event.name" 
+                            />
+                        </template>
+                      </select>
+                    </div>
                   </div>
-                  <select class="form-select" x-model="cocktail.event">
-                    <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)">
-                        <option
-                            x-bind:selected="cocktail.event === event.id"
-                            x-bind:value="event.id"
-                            x-text="event.name" 
-                        />
-                    </template>
-                  </select>
-                </div>
 
-                <div class="input-group mt-3">
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    x-on:click="$store.barkeeper.removeCocktail(cocktail.id)">Remove</button>
-                </div>
+                  <div class="col-4">
+                    <button
+                      type="button"
+                      class="btn btn-danger w-100"
+                      x-on:click="$store.barkeeper.removeCocktail(cocktail.id)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                      </svg>
+                      Remove
+                    </button>
+                  </div>
 
+                </div>
               </div>
             </div> <!-- /card -->
+
           </div>
         </template>
       </section>
@@ -4222,29 +4238,33 @@
                 </div>
 
     <!-- Ingredeints / Shopping list settings -->
-                  <div class="alert alert-danger mt-3">
-                    <div class="form-check form-switch">
-                      <input
-                        class="form-check-input"
-                        :id="'hideInShoppingList-' + ingredient.id"
-                        type="checkbox"
-                        x-model.boolean="ingredient.hideInShoppingList">
-                      <label
-                        class="form-check-label"
-                        :for="'hideInShoppingList-' + ingredient.id">
-                        Hide ingredient in shopping list. Item will still be considered in calculations!
-                      </label>
-                    </div>
-                  </div>
+              </div>
 
-                  <div class="input-group">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      x-on:click="$store.barkeeper.removeIngredient(ingredient.id)">Remove</button>
+              <div class="card-footer">
+                <div class="alert alert-danger mt-3">
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      :id="'hideInShoppingList-' + ingredient.id"
+                      type="checkbox"
+                      x-model.boolean="ingredient.hideInShoppingList">
+                    <label
+                      class="form-check-label"
+                      :for="'hideInShoppingList-' + ingredient.id">
+                      Hide ingredient in shopping list. Item will still be considered in calculations!
+                    </label>
                   </div>
-
                 </div>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  x-on:click="$store.barkeeper.removeIngredient(ingredient.id)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                    <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                  </svg>
+                  Remove
+                </button>
+              </div>
 
               </div>
             </div>
