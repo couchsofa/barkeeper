@@ -180,7 +180,7 @@
         },
         {
           "size": 1000,
-          "price": 17.8,
+          "price": 14.95,
           "shopLink": "https://www.conalco.de/averna-amaro-bitter-1-liter-29-vol"
         }
       ],
@@ -313,7 +313,7 @@
       "sources": [
         {
           "size": 700,
-          "price": 6.8,
+          "price": 6.35,
           "shopLink": "https://www.conalco.de/riemerschmid-grenadine-sirup-0-7l"
         }
       ],
@@ -335,7 +335,7 @@
       "sources": [
         {
           "size": 700,
-          "price": 27.5,
+          "price": 23.1,
           "shopLink": "https://www.conalco.de/beefeater-24-london-dry-gin-0-7l-45-vol"
         }
       ],
@@ -479,7 +479,7 @@
       "sources": [
         {
           "size": 200,
-          "price": 12,
+          "price": 11.21,
           "shopLink": "https://www.conalco.de/the-bitter-truth-orange-bitters-cocktail-flavouring-0-2l-39-vol"
         }
       ],
@@ -622,7 +622,7 @@
         },
         {
           "size": 500,
-          "price": 18.5,
+          "price": 15.54,
           "shopLink": "https://www.conalco.de/the-bitter-truth-golden-falernum-likoer-0-5l-18-vol"
         }
       ],
@@ -797,9 +797,9 @@
             "shopLink": "https://www.rumundco.de/Plantation-Rum-Barbados-XO-20-Anniversary-Rum-40-07l"
           },
           "94968f68-986b-44e1-afe6-e40971fb9faf": {
-            "size": 700,
-            "price": 14.3,
-            "shopLink": "https://www.conalco.de/averna-amaro-0-7l-29-vol"
+            "size": 1000,
+            "price": 14.95,
+            "shopLink": "https://www.conalco.de/averna-amaro-bitter-1-liter-29-vol"
           }
         },
         "purchases": {
@@ -857,15 +857,18 @@
           },
           "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "92acd4fa-9937-40fc-946f-544b1cbe9022": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "23e1815a-97d3-4e65-891b-57bcb089f379": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "18323e71-b096-46cf-985c-00cc40b5636f": {
             "comment": "",
@@ -873,7 +876,8 @@
           },
           "772bae91-6104-4195-a34d-bd6e99b69240": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "8c6f3a01-9e3e-41c3-950f-26114c659425": {
             "comment": "",
@@ -881,7 +885,8 @@
           },
           "7d2c4ccc-1f3a-46a5-8d34-6fa6ca0fc57e": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "c793d9c3-e05b-40f5-ada7-e439cff7b4ed": {
             "comment": "",
@@ -893,7 +898,8 @@
           },
           "e188d55e-819a-4861-8300-3d1e5d2ccde3": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "9c900f81-23bd-4174-9db6-8efa744427a8": {
             "comment": "",
@@ -909,7 +915,8 @@
           },
           "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8": {
             "comment": "",
@@ -917,7 +924,8 @@
           },
           "229f29a9-732f-447f-8a3f-cf52160bfe38": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876": {
             "comment": "",
@@ -929,11 +937,13 @@
           },
           "5fc4ac40-35bf-4ad7-8db8-75aa338368b4": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           },
           "94968f68-986b-44e1-afe6-e40971fb9faf": {
             "comment": "",
-            "expense": 0
+            "expense": 0,
+            "checked": true
           }
         },
         "cocktailsSold": [],
