@@ -1888,7 +1888,6 @@
       background-color: #373838 !important;
     }
 
-
     .grid-table-muted {
       color: #a4a7ab;
     }
@@ -2698,258 +2697,6 @@
                     x-on:click="cocktail.garnishes.push({unit: '', amount: 0, id: undefined})">✚</button>
                   </div>
                 </div>
-  <!-- Cocktails / allergens -->
-                <label for="allergens"><h5>Allergens</h5></label>
-
-                <div class="tags-input" id="allergens">
-                  <template x-for="(allergen, index) in $store.barkeeper.getTags(cocktail.id, 'allergens')" :key="index">
-                    <span class="tags-input-tag">
-                      <span x-text="allergen"></span>
-                    </span>
-                  </template>
-                </div>
-                
-  <!-- Cocktails / vegan -->
-                <label for="nonVeganIngredients"><h5>Non-vegan ingredients</h5></label>
-
-                <div class="tags-input" id="nonVeganIngredients">
-                  <template x-for="(v_ingredient, index) in $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')" :key="index">
-                    <span class="tags-input-tag">
-                      <span x-text="v_ingredient"></span>
-                    </span>
-                  </template>
-                </div>
-
-  <!-- Cocktails / Notes -->
-                <label for="notes"><h5>Notes</h5></label>
-                <textarea
-                  class="form-control mt-1 mb-1"
-                  rows="5"
-                  x-model="cocktail.notes"></textarea>
-
-  <!-- Cocktails / Flavor Cues -->
-                <label for="flavorcues"><h5>Flavor Cues</h5></label>
-
-                <div class="tags-input" id="flavorcues" x-data="{ newCue: '' }">
-                  <template x-for="(cue, index) in cocktail.flavorCues" :key="index">
-                    <span class="tags-input-tag">
-                      <span x-text="cue"></span>
-                      <button type="button" class="tags-input-remove" @click="cocktail.flavorCues = cocktail.flavorCues.filter((e) => e !== cue)">✗</button>
-                    </span>
-                  </template>
-
-                  <input
-                    type="text"
-                    placeholder="..."
-                    class="tags-input-text form-control"
-                    @keydown.enter.prevent="if (newCue.trim() !== '') { cocktail.flavorCues.push(newCue.trim()); newCue = '' }"
-                    x-model="newCue">
-                </div>
-
-  <!-- Cocktails / Prep -->
-                <label for="prep-method"><h5>Prep</h5></label>
-                <div id="prep-method">
-
-                  <div class="row mb-3">
-                    <div class="col-6">
-
-                      <div class="dropdown">
-                        <span
-                          type="text"
-                          class="form-select w-100"
-                          data-bs-toggle="dropdown"
-                          x-text="(cocktail.method === undefined) ? 'method...' : $store.barkeeper.data.prepMethods.find((m) => m.id === cocktail.method).name"
-                        ></span>
-                   
-                        <ul class="dropdown-menu w-100">
-                          <template
-                            x-for="method in $store.barkeeper.data.prepMethods"
-                            :key="method.id">
-                              <li><span
-                                class="dropdown-item"
-                                x-text="method.name"
-                                x-on:click="cocktail.method = method.id"></span></li>
-                          </template>
-                        </ul>
-                      </div>
-
-                    </div>
-                    <div class="col-6">
-
-                      <div class="dropdown">
-                        <span
-                          type="text"
-                          class="form-select w-100"
-                          data-bs-toggle="dropdown"
-                          x-text="(cocktail.glass === undefined) ? 'glass...' : $store.barkeeper.data.glassTypes.find((e) => e.id === cocktail.glass).name"
-                        ></span>
-                   
-                        <ul class="dropdown-menu w-100">
-                          <template
-                            x-for="glass in $store.barkeeper.data.glassTypes"
-                            :key="glass.id">
-                              <li><span
-                                class="dropdown-item"
-                                x-text="glass.name"
-                                x-on:click="cocktail.glass = glass.id"></span></li>
-                          </template>
-                        </ul>
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div class="mb-1">Ice for prep:</div>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="input-group">
-                        <input
-                          type="number"
-                          step="1"
-                          size="2"
-                          maxLength="2"
-                          class="form-control text-end"
-                          x-model.number="cocktail.cubes"
-                          :class="$isValidNumber(cocktail.cubes) ? 'is-invalid' : ''">
-                        <div class="input-group-append">
-                          <span class="input-group-text">cubes</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="input-group">
-                        <input
-                          type="number"
-                          step="1"
-                          size="2"
-                          maxLength="2"
-                          class="form-control text-end"
-                          x-model.number="cocktail.largeCubes"
-                          :class="$isValidNumber(cocktail.largeCubes) ? 'is-invalid' : ''">
-                        <div class="input-group-append">
-                          <span class="input-group-text">big cubes</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-5">
-                      <div class="input-group">
-                        <input
-                          type="number"
-                          step="1"
-                          size="2"
-                          maxLength="2"
-                          class="form-control text-end"
-                          x-model.number="cocktail.crushed"
-                          :class="$isValidNumber(cocktail.crushed) ? 'is-invalid' : ''">
-                        <div class="input-group-append">
-                          <span class="input-group-text">scoops crushed</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mb-1">Ice for serving:</div>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="input-group">
-                        <input
-                          type="number"
-                          step="1"
-                          size="2"
-                          maxLength="2"
-                          class="form-control text-end"
-                          x-model.number="cocktail.cubesServing"
-                          :class="$isValidNumber(cocktail.cubesServing) ? 'is-invalid' : ''">
-                        <div class="input-group-append">
-                          <span class="input-group-text">cubes</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="input-group">
-                        <input
-                          type="number"
-                          step="1"
-                          size="2"
-                          maxLength="2"
-                          class="form-control text-end"
-                          x-model.number="cocktail.largeCubesServing"
-                          :class="$isValidNumber(cocktail.largeCubesServing) ? 'is-invalid' : ''">
-                        <div class="input-group-append">
-                          <span class="input-group-text">big cubes</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-5">
-                      <div class="input-group">
-                        <input
-                          type="number"
-                          step="1"
-                          size="2"
-                          maxLength="2"
-                          class="form-control text-end"
-                          x-model.number="cocktail.crushedServing"
-                          :class="$isValidNumber(cocktail.crushedServing) ? 'is-invalid' : ''">
-                        <div class="input-group-append">
-                          <span class="input-group-text">scoops crushed</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-  <!-- Cocktails / Volume -->
-                <label for="volume"><h5>Volumes</h5></label>
-                <div id="volume">
-                  <div class="row">
-                    <div class="col-7">Pre dilution</div>
-                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volume)"></div>
-                    <div class="col-2">ml</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-7">Post dilution</div>
-                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted)"></div>
-                    <div class="col-2">ml</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-7">ABV</div>
-                    <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).ethanol/$store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted*100)"></div>
-                    <div class="col-2">%</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">Total Volume in Glass</div>
-                  </div>
-
-                  <template x-if="$store.barkeeper.getIceVolumeServing(cocktail.id) + $store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted <= $store.barkeeper.getGlassVolume(cocktail.id)">
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="progress" style="height: 1.6rem; font-size: 1rem;">
-                          <div class="progress-bar bg-info" role="progressbar" :style="'width: ' + ($store.barkeeper.getIceVolumeServing(cocktail.id) / $store.barkeeper.getGlassVolume(cocktail.id) * 100) + '%'">
-                            <span x-text="'Ice: ' + $formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id)) + ' ml'"></span>
-                          </div>
-                          <div class="progress-bar" role="progressbar" :style="'width: ' + ($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted / $store.barkeeper.getGlassVolume(cocktail.id) * 100) + '%'">
-                            <span x-text="'Liquid: ' + $formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted) + ' ml'"></span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>                    
-                  </template>
-
-                  <template x-if="$store.barkeeper.getIceVolumeServing(cocktail.id) + $store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted > $store.barkeeper.getGlassVolume(cocktail.id)">
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="progress" style="height: 1.6rem; font-size: 1rem;">
-                          <div class="progress-bar bg-danger" role="progressbar" style="width: 100%">
-                            <span x-text="'Overfull glass: ' + $formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id) + $store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted) + ' > ' + $store.barkeeper.getGlassVolume(cocktail.id) + ' ml'"></span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </template>
-                  
-
-                </div>
 
   <!-- Cocktails / Cost Distribution -->
                 <h5>Cost distribution</h5>
@@ -2962,6 +2709,272 @@
 
               </div>
 
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div data-bs-toggle="collapse" data-bs-target="#descritpion" role="button" ><h5>Description</h5></div>
+                  <div class="collapse" id="descritpion">
+
+      <!-- Cocktails / Notes -->
+                    <label for="notes"><h5>Notes</h5></label>
+                    <textarea
+                      class="form-control mt-1 mb-1"
+                      rows="5"
+                      x-model="cocktail.notes"></textarea>
+
+      <!-- Cocktails / Flavor Cues -->
+                    <label for="flavorcues"><h5>Flavor Cues</h5></label>
+
+                    <div class="tags-input" id="flavorcues" x-data="{ newCue: '' }">
+                      <template x-for="(cue, index) in cocktail.flavorCues" :key="index">
+                        <span class="tags-input-tag">
+                          <span x-text="cue"></span>
+                          <button type="button" class="tags-input-remove" @click="cocktail.flavorCues = cocktail.flavorCues.filter((e) => e !== cue)">✗</button>
+                        </span>
+                      </template>
+
+                      <input
+                        type="text"
+                        placeholder="..."
+                        class="tags-input-text form-control"
+                        @keydown.enter.prevent="if (newCue.trim() !== '') { cocktail.flavorCues.push(newCue.trim()); newCue = '' }"
+                        x-model="newCue">
+                    </div>
+
+      <!-- Cocktails / allergens -->
+                    <label for="allergens"><h5>Allergens</h5></label>
+
+                    <div class="tags-input" id="allergens">
+                      <template x-for="(allergen, index) in $store.barkeeper.getTags(cocktail.id, 'allergens')" :key="index">
+                        <span class="tags-input-tag">
+                          <span x-text="allergen"></span>
+                        </span>
+                      </template>
+                    </div>
+                    
+      <!-- Cocktails / vegan -->
+                    <label for="nonVeganIngredients"><h5>Non-vegan ingredients</h5></label>
+
+                    <div class="tags-input" id="nonVeganIngredients">
+                      <template x-for="(v_ingredient, index) in $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')" :key="index">
+                        <span class="tags-input-tag">
+                          <span x-text="v_ingredient"></span>
+                        </span>
+                      </template>
+                    </div>
+
+                  </div>
+                </li>
+
+  <!-- Cocktails / Prep -->
+                <li class="list-group-item">
+                  <div data-bs-toggle="collapse" data-bs-target="#prep-method" role="button" ><h5>Prep</h5></div>
+                  <div class="collapse" id="prep-method">
+
+                    <div class="row mb-3">
+                      <div class="col-6">
+
+                        <div class="dropdown">
+                          <span
+                            type="text"
+                            class="form-select w-100"
+                            data-bs-toggle="dropdown"
+                            x-text="(cocktail.method === undefined) ? 'method...' : $store.barkeeper.data.prepMethods.find((m) => m.id === cocktail.method).name"
+                          ></span>
+                     
+                          <ul class="dropdown-menu w-100">
+                            <template
+                              x-for="method in $store.barkeeper.data.prepMethods"
+                              :key="method.id">
+                                <li><span
+                                  class="dropdown-item"
+                                  x-text="method.name"
+                                  x-on:click="cocktail.method = method.id"></span></li>
+                            </template>
+                          </ul>
+                        </div>
+
+                      </div>
+                      <div class="col-6">
+
+                        <div class="dropdown">
+                          <span
+                            type="text"
+                            class="form-select w-100"
+                            data-bs-toggle="dropdown"
+                            x-text="(cocktail.glass === undefined) ? 'glass...' : $store.barkeeper.data.glassTypes.find((e) => e.id === cocktail.glass).name"
+                          ></span>
+                     
+                          <ul class="dropdown-menu w-100">
+                            <template
+                              x-for="glass in $store.barkeeper.data.glassTypes"
+                              :key="glass.id">
+                                <li><span
+                                  class="dropdown-item"
+                                  x-text="glass.name"
+                                  x-on:click="cocktail.glass = glass.id"></span></li>
+                            </template>
+                          </ul>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="mb-1">Ice for prep:</div>
+                    <div class="row">
+                      <div class="col-3">
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            step="1"
+                            size="2"
+                            maxLength="2"
+                            class="form-control text-end"
+                            x-model.number="cocktail.cubes"
+                            :class="$isValidNumber(cocktail.cubes) ? 'is-invalid' : ''">
+                          <div class="input-group-append">
+                            <span class="input-group-text">cubes</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            step="1"
+                            size="2"
+                            maxLength="2"
+                            class="form-control text-end"
+                            x-model.number="cocktail.largeCubes"
+                            :class="$isValidNumber(cocktail.largeCubes) ? 'is-invalid' : ''">
+                          <div class="input-group-append">
+                            <span class="input-group-text">big cubes</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-5">
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            step="1"
+                            size="2"
+                            maxLength="2"
+                            class="form-control text-end"
+                            x-model.number="cocktail.crushed"
+                            :class="$isValidNumber(cocktail.crushed) ? 'is-invalid' : ''">
+                          <div class="input-group-append">
+                            <span class="input-group-text">scoops crushed</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-1">Ice for serving:</div>
+                    <div class="row">
+                      <div class="col-3">
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            step="1"
+                            size="2"
+                            maxLength="2"
+                            class="form-control text-end"
+                            x-model.number="cocktail.cubesServing"
+                            :class="$isValidNumber(cocktail.cubesServing) ? 'is-invalid' : ''">
+                          <div class="input-group-append">
+                            <span class="input-group-text">cubes</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            step="1"
+                            size="2"
+                            maxLength="2"
+                            class="form-control text-end"
+                            x-model.number="cocktail.largeCubesServing"
+                            :class="$isValidNumber(cocktail.largeCubesServing) ? 'is-invalid' : ''">
+                          <div class="input-group-append">
+                            <span class="input-group-text">big cubes</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-5">
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            step="1"
+                            size="2"
+                            maxLength="2"
+                            class="form-control text-end"
+                            x-model.number="cocktail.crushedServing"
+                            :class="$isValidNumber(cocktail.crushedServing) ? 'is-invalid' : ''">
+                          <div class="input-group-append">
+                            <span class="input-group-text">scoops crushed</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </li>
+
+  
+    <!-- Cocktails / Volume -->
+                  <li class="list-group-item">
+                    <div data-bs-toggle="collapse" data-bs-target="#volume" role="button" ><h5>Volumes</h5></div>
+
+                    <div class="collapse" id="volume">
+                      <div class="row">
+                        <div class="col-7">Pre dilution</div>
+                        <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volume)"></div>
+                        <div class="col-2">ml</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-7">Post dilution</div>
+                        <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted)"></div>
+                        <div class="col-2">ml</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-7">ABV</div>
+                        <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).ethanol/$store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted*100)"></div>
+                        <div class="col-2">%</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">Total Volume in Glass</div>
+                      </div>
+
+                      <template x-if="$store.barkeeper.getIceVolumeServing(cocktail.id) + $store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted <= $store.barkeeper.getGlassVolume(cocktail.id)">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="progress" style="height: 1.6rem; font-size: 1rem;">
+                              <div class="progress-bar bg-info" role="progressbar" :style="'width: ' + ($store.barkeeper.getIceVolumeServing(cocktail.id) / $store.barkeeper.getGlassVolume(cocktail.id) * 100) + '%'">
+                                <span x-text="'Ice: ' + $formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id)) + ' ml'"></span>
+                              </div>
+                              <div class="progress-bar" role="progressbar" :style="'width: ' + ($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted / $store.barkeeper.getGlassVolume(cocktail.id) * 100) + '%'">
+                                <span x-text="'Liquid: ' + $formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted) + ' ml'"></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>                    
+                      </template>
+
+                      <template x-if="$store.barkeeper.getIceVolumeServing(cocktail.id) + $store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted > $store.barkeeper.getGlassVolume(cocktail.id)">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="progress" style="height: 1.6rem; font-size: 1rem;">
+                              <div class="progress-bar bg-danger" role="progressbar" style="width: 100%">
+                                <span x-text="'Overfull glass: ' + $formatNumber($store.barkeeper.getIceVolumeServing(cocktail.id) + $store.barkeeper.getCocktailVolume(cocktail.id).volumeDiluted) + ' > ' + $store.barkeeper.getGlassVolume(cocktail.id) + ' ml'"></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </li>
+
+                </ul>   
 
               <div class="card-footer">
                 <div class="row">
