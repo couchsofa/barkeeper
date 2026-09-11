@@ -436,6 +436,31 @@
           });
         },
 
+        copyCocktail(id, event = 'null') {
+          const cocktail = this.data.cocktails.find((c) => c.id === id);
+          if(!cocktail) { return 0; };
+
+          this.data.cocktails.unshift({
+            id: self.crypto.randomUUID(),
+            name: cocktail.name,
+            ingredients: cocktail.ingredients,
+            garnishes: cocktail.garnishes,
+            notes: cocktail.notes,
+            cubes: cocktail.cubes,
+            crushed: cocktail.crushed,
+            largeCubes: cocktail.largeCubes,
+            cubesServing: cocktail.cubesServing,
+            crushedServing: cocktail.crushedServing,
+            largeCubesServing: cocktail.largeCubesServing,
+            method: cocktail.method,
+            glass: cocktail.glass,
+            event: event,
+            numToPrep: cocktail.numToPrep,
+            price: cocktail.price,
+            flavorCues: cocktail.flavorCues,
+          });
+        },
+
         getGlassVolume(cocktail_id) {
           const cocktail = this.data.cocktails.find((c) => c.id === cocktail_id);
           if(!cocktail) { return 0; };
@@ -2740,28 +2765,6 @@
                         x-model="newCue">
                     </div>
 
-      <!-- Cocktails / allergens -->
-                    <label for="allergens"><h5>Allergens</h5></label>
-
-                    <div class="tags-input" id="allergens">
-                      <template x-for="(allergen, index) in $store.barkeeper.getTags(cocktail.id, 'allergens')" :key="index">
-                        <span class="tags-input-tag">
-                          <span x-text="allergen"></span>
-                        </span>
-                      </template>
-                    </div>
-                    
-      <!-- Cocktails / vegan -->
-                    <label for="nonVeganIngredients"><h5>Non-vegan ingredients</h5></label>
-
-                    <div class="tags-input" id="nonVeganIngredients">
-                      <template x-for="(v_ingredient, index) in $store.barkeeper.getTags(cocktail.id, 'nonVeganIngredients')" :key="index">
-                        <span class="tags-input-tag">
-                          <span x-text="v_ingredient"></span>
-                        </span>
-                      </template>
-                    </div>
-
                   </div>
                 </li>
 
@@ -2976,25 +2979,53 @@
 
                 </ul>   
 
-              <div class="card-footer">
+              <div class="card-footer" x-data="{ dest_event: 'null' }">
                 <div class="row">
 
-                  <div class="col-8">
+                  <div class="col-12">
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <div class="input-group-text">Event:</div>
                       </div>
 
-                      <select class="form-select" x-model="cocktail.event">
+                      <select class="form-select" x-model="dest_event">
                         <template x-for="event in $store.barkeeper.data.events.concat(ideaTabStub)">
                             <option
-                                x-bind:selected="cocktail.event === event.id"
+                                x-bind:selected="event.id === 'null'"
                                 x-bind:value="event.id"
                                 x-text="event.name" 
                             />
                         </template>
                       </select>
                     </div>
+                  </div>
+
+                </div>
+                <div class="row mt-2">
+
+                  <div class="col-4">
+                    <button
+                      type="button"
+                      class="btn btn-primary w-100"
+                      x-on:click="$store.barkeeper.copyCocktail(cocktail.id, dest_event)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+
+                  <div class="col-4">
+                    <button
+                      type="button"
+                      class="btn btn-success w-100"
+                      x-on:click="cocktail.event = dest_event">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                      </svg>
+                      Move
+                    </button>
                   </div>
 
                   <div class="col-4">
@@ -3008,6 +3039,7 @@
                       Remove
                     </button>
                   </div>
+
 
                 </div>
               </div>
