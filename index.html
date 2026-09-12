@@ -2540,7 +2540,7 @@
   </template>
 
 <!-- Cocktails -->
-  <template x-if="$store.barkeeper.data.events.concat(ideaTabStub).some((e) => e.id === $store.barkeeper.activeTab)">
+  <template x-if="$store.barkeeper.data.events.concat(ideaTabStub).some((e) => e.id === $store.barkeeper.activeTab)"> <!-- template / cocktails -->
     
     <div class="container p-3" x-data="{searchCocktails: ''}" style="break-after: page;">
 
@@ -2556,11 +2556,11 @@
           x-model="searchCocktails">
       </div>
 
-      <section>
+      <section> <!-- section / cocktails -->
         <template
           x-for="cocktail in $store.barkeeper.getCocktails(searchCocktails)"
           :class="'cards-' + $store.barkeeper.getCocktails(searchCocktails).length"
-          :key="cocktail.id">
+          :key="cocktail.id"> <!-- template / cocktail card -->
           <div>
             <div class="card shadow-sm rounded mt-3">
 
@@ -2671,7 +2671,8 @@
                       
                       </div>
 
-                    </template>
+                    </div>
+                  </template>
 
                     <div class="input-group justify-content-md-end" style="padding-right: 7px;">
                         <button
@@ -2767,12 +2768,14 @@
                             </template>
                           </ul>
                         </div>
-                    </div>
-                    <div class="col-1">
-                      <button
-                        type="button"
-                        class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
-                        x-on:click="cocktail.garnishes = cocktail.garnishes.filter((e) => e.id !== c_garnish.id)">✗</button>
+                      </div>
+                      <div class="col-1">
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
+                          x-on:click="cocktail.garnishes = cocktail.garnishes.filter((e) => e.id !== c_garnish.id)">✗</button>
+                      </div>
+
                     </div>
                   </template>
 
@@ -3107,11 +3110,11 @@
             </div> <!-- /card -->
 
           </div>
-        </template>
-      </section>
+        </template> <!-- /template / cocktail card -->
+      </section> <!-- /section / cocktails -->
         
     </div>
-  </template>
+  </template> <!-- /template / cocktails -->
 
 <!-- Barprogram -->
   <template
@@ -3816,9 +3819,8 @@
                     <td style="width: 1rem;">
                       <input
                         class="form-check-input"
-                        style="opacity: unset !important;"
+                        style="opacity: unset !important; width: 1rem; height: 1rem;"
                         type="checkbox"
-                        style="width: 1rem; height: 1rem;"
                         x-model="$store.barkeeper.getEvent.barProgram.purchases[item.id].checked">
                     </td>
                     <td class="text-end no-wrap" style="width: 4rem;" :class="$store.barkeeper.getEvent.barProgram.purchases[item.id].checked ? 'text-decoration-line-through opacity-25' : ''">
@@ -3927,9 +3929,9 @@
   </template>
 
 <!-- Ingredients -->
-  <template x-if="$store.barkeeper.activeTab === 'Ingredients'">
+  <template x-if="$store.barkeeper.activeTab === 'Ingredients'"> <!-- template / ingredients -->
 
-    <div class="container p-3" x-data="{searchIngredients: ''}">
+    <div class="container p-3" x-data="{searchIngredients: ''}"> <!-- container -->
 
       <div class="alert alert-warning" role="alert">
         Warning: removing an ingredient removes it from all cocktails and ingredients that have a recipe listing it!
@@ -3947,11 +3949,11 @@
             x-model="searchIngredients">
       </div>
 
-      <section class="mt-3">
+      <section class="mt-3"> <!-- section / ingredients -->
         <template
           x-for="ingredient in $store.barkeeper.searchIngredient(searchIngredients)"
           :class="'cards-' + $store.barkeeper.searchIngredient(searchIngredients)"
-          :key="ingredient.id">
+          :key="ingredient.id"> <!-- template / ingredient card -->
           <div>
             <div
               class="card shadow-sm rounded"
@@ -4184,8 +4186,8 @@
     <!-- Ingredients / ingredients -->
                 <template x-if="ingredient.sources.length === 0">
                   <div>                      
-                    <label for="ingredients"><h5>Ingredients</h5></label>
-                    <div id="ingredients" class="row">
+                    <label :for="'ingredient-' + ingredient.id"><h5>Ingredients</h5></label>
+                    <div :id="'ingredient-' + ingredient.id" class="row">
 
                       <template x-for="(i_ingredient, index) in ingredient.ingredients" :key="i_ingredient.id">
                         <div class="input-group mb-1">
@@ -4241,12 +4243,13 @@
                                 </template>
                               </ul>
                             </div>
-                        </div>
-                        <div class="col-1">
-                          <button
-                            type="button"
-                            class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
-                            x-on:click="ingredient.ingredients = ingredient.ingredients.filter((e) => e.id !== i_ingredient.id)">✗</button>
+                          </div>
+                          <div class="col-1">
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
+                              x-on:click="ingredient.ingredients = ingredient.ingredients.filter((e) => e.id !== i_ingredient.id)">✗</button>
+                          </div>
                         </div>
                       </template>
 
@@ -4256,6 +4259,7 @@
                           class="btn btn-outline-success btn-xs col-1 m-1 p-0"
                           x-on:click="ingredient.ingredients.push({unit: '', amount: 0, id: undefined})">✚</button>
                       </div>
+
                     </div>
                     <div class="input-group mt-3">
                       <div class="input-group-prepend">
@@ -4274,15 +4278,15 @@
                 </template>
 
     <!-- Ingredients / notes -->
-                <label for="notes"><h5>Notes</h5></label>
+                <label :for="'notes-' + ingredient.id"><h5>Notes</h5></label>
                 <textarea
-                  id="notes"
+                  :id="'notes-' + ingredient.id"
                   class="form-control mt-1 mb-1"
                   rows="5"
                   x-model="ingredient.notes"></textarea>
 
     <!-- Ingredients / allergens -->
-                <label for="allergens"><h5>Allergens</h5></label>
+                <label :for="'allergens-' + ingredient.id"><h5>Allergens</h5></label>
 
                 <template x-if="$store.barkeeper.getTags(ingredient.id, 'allergens').length !== 0">
 
@@ -4296,7 +4300,7 @@
 
                 </template>
 
-                <div class="tags-input" id="allergens" x-data="{ newAllergen: '' }">
+                <div class="tags-input" :id="'allergens-' + ingredient.id" x-data="{ newAllergen: '' }">
                   <template x-for="(allergen, index) in ingredient.allergens" :key="index">
                     <span class="tags-input-tag">
                       <span x-text="allergen"></span>
@@ -4313,7 +4317,7 @@
                 </div>
                 
     <!-- Ingredients / vegan -->
-                <label for="nonVeganIngredients"><h5>Non-vegan ingredients</h5></label>
+                <label :for="'nonVeganIngredients-' + ingredient.id"><h5>Non-vegan ingredients</h5></label>
 
                 <template x-if="$store.barkeeper.getTags(ingredient.id, 'nonVeganIngredients').length !== 0">
                   
@@ -4327,7 +4331,7 @@
 
                 </template>
 
-                <div class="tags-input" id="nonVeganIngredients" x-data="{ newIngredient: '' }">
+                <div class="tags-input" :id="'nonVeganIngredients-' + ingredient.id" x-data="{ newIngredient: '' }">
                   <template x-for="(v_ingredient, index) in ingredient.nonVeganIngredients" :key="index">
                     <span class="tags-input-tag">
                       <span x-text="v_ingredient"></span>
@@ -4374,15 +4378,11 @@
 
               </div>
             </div>
-          </div>
-        </template>
-
-      </section>
-    </div>
-  </template>
-
+          </template>  <!-- /template / ingredient card -->
+        </section> <!-- /section / ingredients -->
+      </div> <!-- /container -->
+    </template> <!-- /template / ingredients -->
   </div>
-
 
 </body>
 </html>
