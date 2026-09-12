@@ -6,8 +6,8 @@
       "ingredients": [
         {
           "unit": "oz",
-          "amount": 1.5,
-          "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf"
+          "amount": 0.75,
+          "id": "229f29a9-732f-447f-8a3f-cf52160bfe38"
         },
         {
           "unit": "oz",
@@ -16,8 +16,8 @@
         },
         {
           "unit": "oz",
-          "amount": 0.75,
-          "id": "229f29a9-732f-447f-8a3f-cf52160bfe38"
+          "amount": 1.5,
+          "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf"
         },
         {
           "unit": "pcs",
@@ -32,14 +32,14 @@
           "id": "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876"
         },
         {
-          "unit": "sprig",
-          "amount": 3,
-          "id": "a3366841-4e38-4e42-a5b9-606f029f4656"
-        },
-        {
           "unit": "slice",
           "amount": 1,
           "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8"
+        },
+        {
+          "unit": "sprig",
+          "amount": 3,
+          "id": "a3366841-4e38-4e42-a5b9-606f029f4656"
         }
       ],
       "notes": "Eine beerige Chance\nSo manch eine Grenze wurde bereits geschmückt von dem dornigen Strauch, dem die treibende Komponente dieses Getränks entwächst",
@@ -65,16 +65,6 @@
       "name": "Rum & Coke",
       "ingredients": [
         {
-          "unit": "oz",
-          "amount": 1.5,
-          "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4"
-        },
-        {
-          "unit": "oz",
-          "amount": 2,
-          "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3"
-        },
-        {
           "unit": "dashes",
           "amount": 2,
           "id": "772bae91-6104-4195-a34d-bd6e99b69240"
@@ -83,6 +73,16 @@
           "unit": "oz",
           "amount": 0.5,
           "id": "94968f68-986b-44e1-afe6-e40971fb9faf"
+        },
+        {
+          "unit": "oz",
+          "amount": 1.5,
+          "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4"
+        },
+        {
+          "unit": "oz",
+          "amount": 2,
+          "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3"
         }
       ],
       "garnishes": [
@@ -115,21 +115,6 @@
       "ingredients": [
         {
           "unit": "oz",
-          "amount": 1,
-          "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b"
-        },
-        {
-          "unit": "oz",
-          "amount": 0.5,
-          "id": "92acd4fa-9937-40fc-946f-544b1cbe9022"
-        },
-        {
-          "unit": "oz",
-          "amount": 0.5,
-          "id": "23e1815a-97d3-4e65-891b-57bcb089f379"
-        },
-        {
-          "unit": "oz",
           "amount": 0.5,
           "id": "a76c2559-32bf-4eb5-bf49-6e162db2517b"
         },
@@ -142,6 +127,21 @@
           "unit": "dashes",
           "amount": 2,
           "id": "772bae91-6104-4195-a34d-bd6e99b69240"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.5,
+          "id": "23e1815a-97d3-4e65-891b-57bcb089f379"
+        },
+        {
+          "unit": "oz",
+          "amount": 0.5,
+          "id": "92acd4fa-9937-40fc-946f-544b1cbe9022"
+        },
+        {
+          "unit": "oz",
+          "amount": 1,
+          "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b"
         }
       ],
       "garnishes": [],
@@ -979,10 +979,10 @@
             "8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b": [
               {
                 "unit": "ml",
-                "amount": 2079.0000000000005,
-                "color": "#d62b1f",
-                "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf",
-                "name": "Gin",
+                "amount": 1039.5000000000002,
+                "color": "#c51171",
+                "id": "229f29a9-732f-447f-8a3f-cf52160bfe38",
+                "name": "Grenadine",
                 "type": "ingredient"
               },
               {
@@ -995,10 +995,10 @@
               },
               {
                 "unit": "ml",
-                "amount": 1039.5000000000002,
-                "color": "#c51171",
-                "id": "229f29a9-732f-447f-8a3f-cf52160bfe38",
-                "name": "Grenadine",
+                "amount": 2079.0000000000005,
+                "color": "#d62b1f",
+                "id": "ee3c3e19-9f3a-4fcb-837b-7798ad432cdf",
+                "name": "Gin",
                 "type": "ingredient"
               },
               {
@@ -1018,39 +1018,23 @@
                 "type": "ingredient"
               },
               {
-                "unit": "g",
-                "amount": 693,
-                "color": "#75d043",
-                "id": "a3366841-4e38-4e42-a5b9-606f029f4656",
-                "name": "Mint",
-                "type": "ingredient"
-              },
-              {
                 "unit": "pcs",
                 "amount": 9.240000000000002,
                 "color": "#ede60c",
                 "id": "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8",
                 "name": "Lemon",
                 "type": "ingredient"
+              },
+              {
+                "unit": "g",
+                "amount": 693,
+                "color": "#75d043",
+                "id": "a3366841-4e38-4e42-a5b9-606f029f4656",
+                "name": "Mint",
+                "type": "ingredient"
               }
             ],
             "6f77b2c9-3e71-4c85-9f91-1340e20c5b32": [
-              {
-                "unit": "ml",
-                "amount": 2079.0000000000005,
-                "color": "#e9ecef",
-                "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4",
-                "name": "Plantation XO Rum",
-                "type": "ingredient"
-              },
-              {
-                "unit": "ml",
-                "amount": 2772,
-                "color": "#6db9df",
-                "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3",
-                "name": "Cockta Cola",
-                "type": "ingredient"
-              },
               {
                 "unit": "ml",
                 "amount": 13.860000000000001,
@@ -1068,6 +1052,22 @@
                 "type": "ingredient"
               },
               {
+                "unit": "ml",
+                "amount": 2079.0000000000005,
+                "color": "#e9ecef",
+                "id": "5fc4ac40-35bf-4ad7-8db8-75aa338368b4",
+                "name": "Plantation XO Rum",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 2772,
+                "color": "#6db9df",
+                "id": "e188d55e-819a-4861-8300-3d1e5d2ccde3",
+                "name": "Cockta Cola",
+                "type": "ingredient"
+              },
+              {
                 "unit": "pcs",
                 "amount": 11.55,
                 "color": "#4f8f0f",
@@ -1077,30 +1077,6 @@
               }
             ],
             "32221c97-b81a-4d0c-8649-b1b06bd8d58d": [
-              {
-                "unit": "ml",
-                "amount": 1386,
-                "color": "#e9ecef",
-                "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b",
-                "name": "SBS WPH",
-                "type": "ingredient"
-              },
-              {
-                "unit": "ml",
-                "amount": 693,
-                "color": "#45df3a",
-                "id": "92acd4fa-9937-40fc-946f-544b1cbe9022",
-                "name": "Green Chartreuse",
-                "type": "ingredient"
-              },
-              {
-                "unit": "ml",
-                "amount": 693,
-                "color": "#dfba34",
-                "id": "23e1815a-97d3-4e65-891b-57bcb089f379",
-                "name": "Golden Falernum",
-                "type": "ingredient"
-              },
               {
                 "unit": "ml",
                 "amount": 660,
@@ -1124,6 +1100,30 @@
                 "color": "#ec8e22",
                 "id": "772bae91-6104-4195-a34d-bd6e99b69240",
                 "name": "Orange Bitters",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 693,
+                "color": "#dfba34",
+                "id": "23e1815a-97d3-4e65-891b-57bcb089f379",
+                "name": "Golden Falernum",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 693,
+                "color": "#45df3a",
+                "id": "92acd4fa-9937-40fc-946f-544b1cbe9022",
+                "name": "Green Chartreuse",
+                "type": "ingredient"
+              },
+              {
+                "unit": "ml",
+                "amount": 1386,
+                "color": "#e9ecef",
+                "id": "c3220d2f-6be5-4a13-b0a9-9b5fd1d9b08b",
+                "name": "SBS WPH",
                 "type": "ingredient"
               }
             ]
