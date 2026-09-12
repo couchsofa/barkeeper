@@ -913,7 +913,7 @@
             text.attr('display', null);
           };
 
-          var mousemove = function(event) {
+          var pointermove = function(event) {
             // find closest point on line to cursor
             const [xm, ym] = d3.pointer(event);
             const i = d3.leastIndex(dataset, ([_x, _y]) => Math.hypot(x(_x) - xm, 0));
@@ -933,7 +933,7 @@
 
           svg.on('pointerenter', pointerenter)
             .on('pointerleave', pointerleave)
-            .on('mousemove', mousemove)
+            .on('pointermove', pointermove)
             .on('touchstart', (e) => {e.preventDefault()});
 
           //return svg.node();
