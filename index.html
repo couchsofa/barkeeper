@@ -2648,7 +2648,7 @@
                             <input
                               type="text"
                               class="form-control"
-                              :id="'ingredientSearch-'+ingredient.id+'-'+index"
+                              :id="'ingredientSearch-'+c_ingredient.id+'-'+index"
                               name="search"
                               x-model="searchString">
                             <template
@@ -2756,7 +2756,7 @@
                             <input
                               type="text"
                               class="form-control"
-                              :id="'ingredientSearch-'+ingredient.id+'-'+index"
+                              :id="'ingredientSearch-'+c_garnish.id+'-'+index"
                               name="search"
                               x-model="searchString">
                             <template x-for="ingredient in $store.barkeeper.searchIngredient(searchString, excludeIdsArray = cocktail.garnishes.flatMap((e) => e.id))"
@@ -4231,7 +4231,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  :id="'ingredientSearch-'+ingredient.id+'-'+index"
+                                  :id="'ingredientSearch-'+i_ingredient.id+'-'+index"
                                   name="search"
                                   x-model="searchString">
                                 <template x-for="ingredient in $store.barkeeper.searchIngredient(searchString, excludeIdsArray = [...ingredient.ingredients.flatMap((e) => e.id), ingredient.id])"
