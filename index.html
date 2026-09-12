@@ -2576,8 +2576,8 @@
               <div class="card-body">
 
   <!-- Cocktails / Ingredients -->
-                <label for="ingredients"><h5>Ingredients</h5></label>
-                <div id="ingredients" class="row">
+                <label :for="'ingredients-'+cocktail.id"><h5>Ingredients</h5></label>
+                <div :id="'ingredients-'+cocktail.id" class="row">
 
                   <template x-for="(c_ingredient, index) in cocktail.ingredients" :key="c_ingredient.id">
                     <div class="input-group mb-1">
@@ -2648,7 +2648,7 @@
                             <input
                               type="text"
                               class="form-control"
-                              :id="'ingredientSearch'+index"
+                              :id="'ingredientSearch-'+ingredient.id+'-'+index"
                               name="search"
                               x-model="searchString">
                             <template
@@ -2683,8 +2683,8 @@
                 </div>
 
   <!-- Cocktails / Garnish -->
-                <label for="garnish"><h5>Garnish</h5></label>
-                <div id="garnish" class="row">
+                <label :for="'garnish-'+cocktail.id"><h5>Garnish</h5></label>
+                <div :id="'garnish-'+cocktail.id" class="row">
 
                   <template x-for="(c_garnish, index) in cocktail.garnishes" :key="c_garnish.id">
                     <div class="input-group mb-1">
@@ -2756,7 +2756,7 @@
                             <input
                               type="text"
                               class="form-control"
-                              :id="'ingredientSearch'+index"
+                              :id="'ingredientSearch-'+ingredient.id+'-'+index"
                               name="search"
                               x-model="searchString">
                             <template x-for="ingredient in $store.barkeeper.searchIngredient(searchString, excludeIdsArray = cocktail.garnishes.flatMap((e) => e.id))"
@@ -2800,8 +2800,8 @@
 
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  <div data-bs-toggle="collapse" data-bs-target="#descritpion" role="button" ><h5>Description</h5></div>
-                  <div class="collapse" id="descritpion">
+                  <div data-bs-toggle="collapse" data-bs-target=".descritpion" role="button" ><h5>Description</h5></div>
+                  <div class="collapse descritpion">
 
       <!-- Cocktails / Notes -->
                     <label for="notes"><h5>Notes</h5></label>
@@ -2811,9 +2811,9 @@
                       x-model="cocktail.notes"></textarea>
 
       <!-- Cocktails / Flavor Cues -->
-                    <label for="flavorcues"><h5>Flavor Cues</h5></label>
+                    <label :for="'flavorcues-'+cocktail.id"><h5>Flavor Cues</h5></label>
 
-                    <div class="tags-input" id="flavorcues" x-data="{ newCue: '' }">
+                    <div class="tags-input" :id="'flavorcues-'+cocktail.id" x-data="{ newCue: '' }">
                       <template x-for="(cue, index) in cocktail.flavorCues" :key="index">
                         <span class="tags-input-tag">
                           <span x-text="cue"></span>
@@ -2834,8 +2834,8 @@
 
   <!-- Cocktails / Prep -->
                 <li class="list-group-item">
-                  <div data-bs-toggle="collapse" data-bs-target="#prep-method" role="button" ><h5>Prep</h5></div>
-                  <div class="collapse" id="prep-method">
+                  <div data-bs-toggle="collapse" data-bs-target=".prep-method" role="button" ><h5>Prep</h5></div>
+                  <div class="collapse prep-method">
 
                     <div class="row mb-3">
                       <div class="col-6">
@@ -2990,9 +2990,9 @@
   
     <!-- Cocktails / Volume -->
                   <li class="list-group-item">
-                    <div data-bs-toggle="collapse" data-bs-target="#volume" role="button" ><h5>Volumes</h5></div>
+                    <div data-bs-toggle="collapse" data-bs-target=".volume" role="button" ><h5>Volumes</h5></div>
 
-                    <div class="collapse" id="volume">
+                    <div class="collapse volume">
                       <div class="row">
                         <div class="col-7">Pre dilution</div>
                         <div class="col-3 text-end" x-text="$formatNumber($store.barkeeper.getCocktailVolume(cocktail.id).volume)"></div>
@@ -4231,7 +4231,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  :id="'ingredientSearch'+index"
+                                  :id="'ingredientSearch-'+ingredient.id+'-'+index"
                                   name="search"
                                   x-model="searchString">
                                 <template x-for="ingredient in $store.barkeeper.searchIngredient(searchString, excludeIdsArray = [...ingredient.ingredients.flatMap((e) => e.id), ingredient.id])"
