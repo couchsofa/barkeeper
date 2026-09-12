@@ -2600,7 +2600,7 @@
                           class="btn btn-outline-secondary btn-xs p-0 w-100"
                           style="border-top-left-radius: 0; border-top-right-radius: 0;"
                           :disabled="index === cocktail.ingredients.length-1"
-                          x-on:click="$store.barkeeper.swap(cocktail.ingredients, index, index-1)">
+                          x-on:click="$store.barkeeper.swap(cocktail.ingredients, index+1, index)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                               <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                             </svg>
@@ -2706,7 +2706,7 @@
                           class="btn btn-outline-secondary btn-xs p-0 w-100"
                           style="border-top-left-radius: 0; border-top-right-radius: 0;"
                           :disabled="index === cocktail.garnishes.length-1"
-                          x-on:click="$store.barkeeper.swap(cocktail.garnishes, index, index-1)">
+                          x-on:click="$store.barkeeper.swap(cocktail.garnishes, index+1, index)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                               <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                             </svg>
