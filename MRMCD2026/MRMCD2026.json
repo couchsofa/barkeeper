@@ -884,7 +884,8 @@
           },
           "18323e71-b096-46cf-985c-00cc40b5636f": {
             "comment": "",
-            "expense": 0
+            "expense": 12.82,
+            "checked": true
           },
           "772bae91-6104-4195-a34d-bd6e99b69240": {
             "comment": "",
@@ -932,7 +933,8 @@
           },
           "773ee66c-60f1-4c4d-8f2a-7ef2e5cd01f8": {
             "comment": "",
-            "expense": 0
+            "expense": 13.13,
+            "checked": true
           },
           "229f29a9-732f-447f-8a3f-cf52160bfe38": {
             "comment": "",
@@ -941,11 +943,13 @@
           },
           "4ca4570e-9d4d-4c17-8dc3-4f4eafb43876": {
             "comment": "",
-            "expense": 0
+            "expense": 40.29,
+            "checked": true
           },
           "a3366841-4e38-4e42-a5b9-606f029f4656": {
             "comment": "",
-            "expense": 0
+            "expense": 14.95,
+            "checked": true
           },
           "5fc4ac40-35bf-4ad7-8db8-75aa338368b4": {
             "comment": "",
@@ -959,8 +963,8 @@
           },
           "ba4f5838-8bf6-49aa-a04d-d15b28311034": {
             "comment": "",
-            "expense": 0,
-            "checked": false
+            "expense": 5.7,
+            "checked": true
           }
         },
         "cocktailsSold": [
