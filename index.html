@@ -58,6 +58,10 @@
         revenueChart: null,
 
         // Utilities
+        swap(array, index1, index2) {
+          array[index1] = array.splice(index2, 1, array[index1])[0];
+        },
+
         formatNumber(num) {
           const options = {
             minimumFractionDigits: 2,
@@ -2577,6 +2581,33 @@
 
                   <template x-for="(c_ingredient, index) in cocktail.ingredients" :key="c_ingredient.id">
                     <div class="input-group mb-1">
+
+                      <div class="col-1">
+
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary btn-xs p-0 w-100"
+                          :disabled="index === 0"
+                          style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: 0;"
+                          x-on:click="$store.barkeeper.swap(cocktail.ingredients, index-1, index)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                              <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                            </svg>
+                        </button>
+                        
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary btn-xs p-0 w-100"
+                          style="border-top-left-radius: 0; border-top-right-radius: 0;"
+                          :disabled="index === cocktail.ingredients.length-1"
+                          x-on:click="$store.barkeeper.swap(cocktail.ingredients, index, index-1)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                        </button>
+
+                      </div>
+
                       <div class="col-2">
                         <template x-if="c_ingredient.id !== undefined">
                           <input
@@ -2604,7 +2635,7 @@
                         </template>
                       </div>
 
-                      <div class="col-6">
+                      <div class="col-5">
                         <div class="dropdown" x-on:click="document.getElementById('ingredientSearch'+index).focus()">
                           <span
                             type="text"
@@ -2630,21 +2661,24 @@
                             </template>
                           </ul>
                         </div>
-                    </div>
-                    <div class="col-1">
-                      <button
-                        type="button"
-                        class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
-                        x-on:click="cocktail.ingredients = cocktail.ingredients.filter((e) => e.id !== c_ingredient.id)">✗</button>
-                    </div>
-                  </template>
+                      </div>
 
-                  <div class="input-group justify-content-md-end" style="padding-right: 7px;">
-                      <button
-                        type="button"
-                        class="btn btn-outline-success btn-xs col-1 m-1 p-0"
-                    x-on:click="cocktail.ingredients.push({unit: '', amount: 0, id: undefined})">✚</button>
-                  </div>
+                      <div class="col-1">
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-xs m-1 p-0 w-100"
+                          x-on:click="cocktail.ingredients = cocktail.ingredients.filter((e) => e.id !== c_ingredient.id)">✗</button>
+                      
+                      </div>
+
+                    </template>
+
+                    <div class="input-group justify-content-md-end" style="padding-right: 7px;">
+                        <button
+                          type="button"
+                          class="btn btn-outline-success btn-xs col-1 m-1 p-0"
+                      x-on:click="cocktail.ingredients.push({unit: '', amount: 0, id: undefined})">✚</button>
+                    </div>
                 </div>
 
   <!-- Cocktails / Garnish -->
@@ -2653,6 +2687,33 @@
 
                   <template x-for="(c_garnish, index) in cocktail.garnishes" :key="c_garnish.id">
                     <div class="input-group mb-1">
+
+                      <div class="col-1">
+
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary btn-xs p-0 w-100"
+                          :disabled="index === 0"
+                          style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: 0;"
+                          x-on:click="$store.barkeeper.swap(cocktail.garnishes, index-1, index)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                              <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                            </svg>
+                        </button>
+                        
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary btn-xs p-0 w-100"
+                          style="border-top-left-radius: 0; border-top-right-radius: 0;"
+                          :disabled="index === cocktail.garnishes.length-1"
+                          x-on:click="$store.barkeeper.swap(cocktail.garnishes, index, index-1)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                        </button>
+
+                      </div>
+
                       <div class="col-2">
                         <template x-if="c_garnish.id !== undefined">
                           <input
@@ -2681,7 +2742,7 @@
                         </template>
                       </div>
 
-                      <div class="col-6">
+                      <div class="col-5">
                         <div class="dropdown" x-on:click="document.getElementById('ingredientSearch'+index).focus()">
                           <span
                             type="text"
