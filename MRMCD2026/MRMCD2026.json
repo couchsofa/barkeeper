@@ -963,7 +963,13 @@
             "checked": false
           }
         },
-        "cocktailsSold": [],
+        "cocktailsSold": [
+          {
+            "8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b": 31,
+            "6f77b2c9-3e71-4c85-9f91-1340e20c5b32": 15,
+            "32221c97-b81a-4d0c-8649-b1b06bd8d58d": 24
+          }
+        ],
         "recipes": {
           "cocktails": {
             "8b4e30f8-b5d8-4dd4-8a26-14f7cc43275b": [
